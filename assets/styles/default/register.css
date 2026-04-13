@@ -1,0 +1,36 @@
+.user_register{
+    margin-top: 1rem;
+}
+
+.form-input {
+    margin-bottom: 0.5rem;
+    margin-left: 5px;
+    border: none;
+    padding: 3px;
+}
+
+.user_address {
+    margin-top: 1rem;
+}
+
+.address-form-line {
+    display: flex;
+}
+
+.form-accept {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-button {
+    background: #ae8b00;
+    padding: 5px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px 5px 5px 5px;
+    border: none;
+}
+
+.return-home {
+    margin-top: 2rem;
+}

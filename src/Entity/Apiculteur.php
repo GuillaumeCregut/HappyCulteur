@@ -2,17 +2,33 @@
 
 namespace App\Entity;
 
-use App\Repository\ApiculteurRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ApiculteurRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ApiculteurRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_LOGIN', fields: ['login'])]
 #[UniqueEntity(fields: ['login'], message: 'There is already an account with this login')]
 class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const LANE = 'Allée';
+    const DEADEND = 'Impasse';
+    const AVENUE = 'Avenue';
+    const STREET = 'Rue';
+    const ROAD = 'Route';
+    const PATH = 'Voie';
+
+    const LANE_CHOICE =[
+        'allée' => self::LANE,
+        'Impasse' => self::DEADEND,
+        'Avenue' => self::AVENUE,
+        'Rue' => self::STREET,
+        'Route' => self::ROAD,
+        'Voie' => self::PATH
+    ];
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -60,13 +76,15 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 200)]
     private ?string $street = null;
 
-    #[ORM\Column]
-    private ?int $streetNumber = null;
+    #[ORM\Column(length: 10)]
+    #[Assert\Length(max: 10, maxMessage:'Ne pas dépasser 10 caractères')]
+    private ?string $streetNumber = null;
 
     #[ORM\Column(length: 5)]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\Choice(choices: Apiculteur::LANE_CHOICE, message: 'Type de voie non reconnu.')]
     private ?string $lane = null;
 
     public function getId(): ?int
@@ -197,7 +215,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->name;
     }
 
-    public function setNom(string $name): static
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -252,12 +270,12 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getStreetNumber(): ?int
+    public function getStreetNumber(): ?string
     {
         return $this->streetNumber;
     }
 
-    public function setStreetNumber(int $streetNumber): static
+    public function setStreetNumber(string $streetNumber): static
     {
         $this->streetNumber = $streetNumber;
 

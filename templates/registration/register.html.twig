@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/register.css')}}">
+{% endblock %}
+{% block body %}
+	<h1 class="title">Inscription d'un apiculteur</h1>
+
+	{{ form_errors(registrationForm) }}
+	<p>* : champs obligatoires</p>
+	{{ form_start(registrationForm) }}
+
+	<div class="user_register">
+		{{ form_row(registrationForm.login,{
+        label : 'Login* :',
+        attr : {
+            class: 'form-input'
+        }
+    }) }}
+		{{ form_row(registrationForm.plainPassword, {
+            label: 'Mot de passe* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+	</div>
+
+	<div class="user_register">
+		{{ form_row(registrationForm.name,  {
+            label: 'Nom* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(registrationForm.firstname,  {
+            label: 'Prénom* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+	</div>
+	<div class="user_register">
+		{{ form_row(registrationForm.email,  {
+            label: 'Adresse mail :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		<div class="user_address">
+			<p>Adresse*</p>
+			<div class="address-form-line">
+                {{ form_row(registrationForm.streetNumber,  {
+                    label: 'numéro* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'Numéro'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+
+                {{ form_row(registrationForm.lane,  {
+                    label: 'Type de voie* :',
+                    attr : {
+                        class: 'form-input'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+
+                {{ form_row(registrationForm.street,  {
+                    label: 'Rue* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'Nom de la voie'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+            </div>
+            <div class="address-form-line">
+                {{ form_row(registrationForm.zipCode,  {
+                    label: 'code postal* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'code'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+
+                {{ form_row(registrationForm.city,  {
+                    label: 'Ville* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'Ville'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+			</div>
+		</div>
+	</div>
+	<div class="user_register">
+		{{ form_row(registrationForm.codeAPE,  {
+            label: 'Code APE :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(registrationForm.codeAPI,  {
+            label: 'Code NAPI* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(registrationForm.siret,  {
+            label: 'Siret :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(registrationForm.numagri,  {
+            label: 'NUMAGRIT* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+	</div>
+
+	{{ form_row(registrationForm.agreeTerms,  {
+            label: "J'accepte les termes* :",
+             attr : {
+            class: 'form-accept'
+        }
+        }) }}
+
+	<button type="submit" class="form-button">Enregistrer</button>
+	{{ form_end(registrationForm) }}
+    <p class="return-home"><a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a></p>
+{% endblock %}
