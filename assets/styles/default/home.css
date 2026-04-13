@@ -39,6 +39,9 @@
     border : none;
 }
 
+.welcome {
+    margin-top: 1rem;
+}
 
 @media screen and (max-width: 450px){
     .menu {
@@ -50,5 +53,17 @@
         display:flex;
         flex-direction: column;
         gap : 3px;
+    }
+
+    .logout{
+        margin-top: 10px;
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 290px){
+    .logout{
+        margin-top: 10px;
+        display: inline-block;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\UserConnected;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,7 +16,12 @@ final class HomeController extends AbstractController
     {
         $value = $this->getParameter('app.site_name');
         $error = $authenticationUtils->getLastAuthenticationError();
-
+        $user = $this->getUser();
+        if(null !== $user) {
+            $userConnected = new UserConnected($user);
+            //TODO: a voir pour trouver un nom ou pas
+            $userConnected();
+        }
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('home/index.html.twig', [
@@ -23,6 +29,7 @@ final class HomeController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
+        
     }
 
     #[Route(path: '/login', name: 'login')]
@@ -38,6 +45,7 @@ final class HomeController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
+
     }
 
     #[Route(path: '/logout', name: 'logout')]
