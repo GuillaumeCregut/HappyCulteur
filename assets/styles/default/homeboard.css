@@ -1,0 +1,102 @@
+.container {
+    border-style: groove;
+    background-color: white;
+    border-width: 5px;
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container a {
+    text-decoration: none;
+    color: black;
+}
+
+.container hr {
+    margin: auto;
+    line-height: 1;
+    width: 60%;
+}
+
+.apiary-container,
+.other-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.item {
+    font-size: bold;
+    color : red;
+}
+
+.apiaries,
+.others {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.others {
+    margin-top: 5px;
+}
+
+.other-card-title, .apiary-card-title {
+    margin-top: 5px;
+}
+
+.apiary-card-title {
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.hivecard {
+     width: clamp(70px, 12vw,130px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.hivecard:hover {
+    background-color: #ccffff;
+}
+
+.hivecard:hover .apiary-card-title {
+    font-weight: bold;
+    opacity: 1;
+}
+
+.item-card {
+    width: clamp(70px, 12vw,130px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.item-card:hover {
+    background-color: #ccffff;
+}
+
+.item-card:hover .other-card-title {
+    font-weight: bold;
+}
+
+.other-picture, .apiary-picture{
+    width: calc(100% - 10px);
+    height: auto;
+}
+
+@media screen and (max-width: 280px){
+    .others, .apiaries {
+        flex-direction: column;
+        align-items: center;
+    }
+}

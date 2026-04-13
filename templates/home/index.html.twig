@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/home.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/homeboard.css')}}">
+{% endblock %}
+
+{% block body %}
+	<h1 class="title">Assitant de gestion de rucher</h1>
+	<div class="menu">
+		<div class="login_menu">
+			<div class="form-login">
+				<form method="post" action="{{ path('app_login') }}">
+                <div class="inner-form">
+					{% if error %}
+						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					{% endif %}
+					{% if app.user %}
+						<div class="mb-3">
+							Vous êtes connecté en tant que 
+							{{ app.user.userIdentifier }},
+							<a href="{{ logout_path() }}" class ="form-button logout">Logout</a>
+						</div>
+					{% else %}
+						<label for="username" class="hidden">Login</label>
+						<input type="text" placeholder="login" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
+						<label for="password" class="hidden">Mot de passe</label>
+						<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="mot de passe" required>
+						<input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+						<button class="form-button" type="submit">
+							Connexion
+						</button>
+					<a href="{{ path('app_register')}}" class="form-button">S'inscrire</a>
+				{% endif %}
+                </div>
+				</form>
+			</div>
+			{% if not app.user %}
+				<p>
+					<a href="" class="form-button link-button">mot de passe oublié</a>
+				</p>
+			{% endif %}
+
+		</div>
+	</div>
+	{% if not app.user %}
+		<div class="presentation">
+			<p>Bienvenue dans {{ value }}, un logiciel permettant de gérer votre activité d'apiculture.</p>
+			<p>Ce logiciel est un environnement multi-utilisateur, ce qui permet à plusieurs apiculteurs d'utiliser le même système sans pour autant que leurs informations soient connues des autres utilisateurs.</p>
+			<p>Avec cette application, vous serez capable de gérer vos ruchers, vos ruches, ainsi que d'autres caractéristiques liées à votre activité.</p>
+			<p>Le système est compatible avec l'enregisteur de données de ruches (en cours de développement) permettant un import direct des informations de vos ruches dans l'outil de travail, ce qui apporte une analyse des statistiques de l'exploitation.</p>
+			<p>Une aide est présente dans les différentes pages afin de faciliter l'utilisation.</p>
+		</div>
+		<div class="informations">
+			<p>Ce site utilise des cookies pour fonctionner. Ces cookies sont à rôle de gestion de sessions, et aucun cookies publicitaire ou autre n'est utilisé.<br>
+			En utilisant ce logiciel, vous acceptez de fait ces cookies.</p>
+		</div>
+	{% else %}
+	<p class="welcome">Bonjour {{app.user.firstname}} {{app.user.name}}</p>
+	{% block connected %}
+	{{ include('home/_board.html.twig')}}
+	{% endblock %}
+	{% endif %}
+{% endblock %}
