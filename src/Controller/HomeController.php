@@ -35,6 +35,7 @@ final class HomeController extends AbstractController
     #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        $value = $this->getParameter('app.site_name');
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -44,6 +45,7 @@ final class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+            'value' => $value
         ]);
 
     }
