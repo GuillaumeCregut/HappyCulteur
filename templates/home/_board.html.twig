@@ -82,6 +82,16 @@
 					</div>
 				</a>
 			</li>
+			{% if is_granted('ROLE_ADMIN') %}
+			<li>
+				<a href="{{ path('app_admin_index') }}">
+					<div class="item-card">
+						<img src="{{ asset('pictures/options/admin.png') }}" alt="admin" class="other-picture">
+						<p class="other-card-title">Admin</p>
+					</div>
+				</a>
+			</li>
+			{% endif %}
 		</ul>
 	</div>
 </section>
