@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/user.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/register.css')}}">
+{% endblock %}
+
+{% block body %}
+	<h1 class="title">Modification de vos informations</h1>
+
+	{{ form_errors(form) }}
+	<p>* : champs obligatoires</p>
+	{{ form_start(form) }}
+
+	<div class="user_register">
+		{{ form_row(form.login,{
+        label : 'Login* :',
+        attr : {
+            class: 'form-input'
+        }
+    }) }}
+		{{ form_row(form.plainPassword, {
+            label: 'Mot de passe :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+	</div>
+
+	<div class="user_register">
+		{{ form_row(form.name,  {
+            label: 'Nom* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(form.firstname,  {
+            label: 'Prénom* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+	</div>
+	<div class="user_register">
+		{{ form_row(form.email,  {
+            label: 'Adresse mail :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		<div class="user_address">
+			<p>Adresse*</p>
+			<div class="address-form-line">
+                {{ form_row(form.streetNumber,  {
+                    label: 'numéro* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'Numéro'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+
+                {{ form_row(form.lane,  {
+                    label: 'Type de voie* :',
+                    attr : {
+                        class: 'form-input'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+
+                {{ form_row(form.street,  {
+                    label: 'Rue* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'Nom de la voie'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+            </div>
+            <div class="address-form-line">
+                {{ form_row(form.zipCode,  {
+                    label: 'code postal* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'code'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+
+                {{ form_row(form.city,  {
+                    label: 'Ville* :',
+                    attr : {
+                        class: 'form-input',
+                        placeholder: 'Ville'
+                    },
+                    label_attr: {
+                        class: 'hidden'
+                    }
+                }) }}
+			</div>
+		</div>
+	</div>
+	<div class="user_register">
+		{{ form_row(form.codeAPE,  {
+            label: 'Code APE :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(form.codeAPI,  {
+            label: 'Code NAPI* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(form.siret,  {
+            label: 'Siret :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+		{{ form_row(form.numagri,  {
+            label: 'NUMAGRIT* :',
+            attr : {
+                class: 'form-input'
+            }
+        }) }}
+	</div>
+
+	<button type="submit" class="form-button">Enregistrer</button>
+	{{ form_end(form) }}
+    <p class="return-home"><a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a></p>
+{% endblock %}

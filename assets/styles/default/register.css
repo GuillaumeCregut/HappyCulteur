@@ -34,3 +34,9 @@
 .return-home {
     margin-top: 2rem;
 }
+
+@media screen and (max-width: 300px){
+    .address-form-line {
+        flex-direction: column;
+    }
+}

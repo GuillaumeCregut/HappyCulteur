@@ -41,6 +41,21 @@ body {
     font-size: var(--title-size);
 }
 
+.form-button {
+    background: #ae8b00;
+    padding: 5px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px 5px 5px 5px;
+    border: none;
+    outline: none;
+}
+
+.form-button:hover {
+    background-color: #debe3c;
+}
+
+
 .footer {
     margin-top: 2.5rem;
 }
