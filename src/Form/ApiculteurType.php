@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class ApiculteurType extends AbstractType
@@ -39,7 +38,9 @@ class ApiculteurType extends AbstractType
             ->add('numagri')
             ->add('name')
             ->add('firstname')
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'required' => false,
+            ])
             ->add('city')
             ->add('street')
             ->add('streetNumber', TextType::class, [
@@ -54,11 +55,6 @@ class ApiculteurType extends AbstractType
                     'style' => 'width: 7ch;',
                     
                 ],
-            ])
-            ->add('lane', ChoiceType::class, [
-                'choices' => Apiculteur::LANE_CHOICE,
-                'placeholder' => 'Selectionner.',
-                'required'    => true,
             ])
         ;
     }
