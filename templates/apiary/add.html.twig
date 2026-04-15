@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/apiary.css')}}">
+{% endblock %}
+{% block title %}Rucher{% endblock %}
+
+{% block body %}
+<h1 class="title">Ajouter un rucher</h1>
+
+{{ form_errors(form) }}
+	<p>* : champs obligatoires</p>
+	{{ form_start(form) }}
+     {{ form_row(form.isActive,  {
+            row_attr: {
+                class: 'apiary-row-class'
+            },
+            label: 'Rucher actif :',
+            attr : {
+                class: 'form-input'
+            }
+    }) }}
+    {{ form_row(form.name,  {
+            row_attr: {
+                class: 'apiary-row-class apiary-row-text'
+            },
+            label: 'Nom du rucher* :',
+            attr : {
+                class: 'form-input'
+            }
+    }) }}
+    {{ form_row(form.localisation,  {
+            row_attr: {
+                class: 'apiary-row-class apiary-row-text'
+            },
+            label: 'Localisation* :',
+            attr : {
+                class: 'form-input'
+            }
+    }) }}
+    {{ form_row(form.identification,  {
+            row_attr: {
+                class: 'apiary-row-class apiary-row-text'
+            },
+            label: 'Numéro du rucher* :',
+            attr : {
+                class: 'form-input'
+            }
+    }) }}
+    {{ form_row(form.gps,  {
+            row_attr: {
+                class: 'apiary-row-class apiary-row-text'
+            },
+            label: 'Coordonnées GPS :',
+            attr : {
+                class: 'form-input'
+            }
+    }) }}
+    {{ form_row(form.observations,  {
+            row_attr: {
+                class: 'apiary-row-class apiary-row-text'
+            },
+            label: 'Observations :',
+            attr : {
+                class: 'form-input'
+            }
+    }) }}
+
+    <button type="submit" class="form-button">Enregistrer</button>
+	{{ form_end(form) }}
+    <p class="return-home"><a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a></p>
+{% endblock %}
