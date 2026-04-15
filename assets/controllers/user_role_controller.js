@@ -14,8 +14,4 @@ export default class extends Controller {
             console.error('Failed to update user role');
         }
     }
-
-    connect() {
-        this.element.addEventListener('change', this.toggle.bind(this));
-    }
 }
