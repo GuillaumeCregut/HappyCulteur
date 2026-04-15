@@ -15,7 +15,7 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-      /*    $admin = new Apiculteur();
+          $admin = new Apiculteur();
         $admin->setFirstname('Guillaume')
             ->setName('Crégut')
             ->setLogin('gcregut')
@@ -28,13 +28,15 @@ class UserFixtures extends Fixture
             ->setCodeAPI('456789');
         $pass = $this->userPasswordHasher->hashPassword($admin, '12345678');
         $admin->setPassword($pass);
-        $manager->persist($admin);*/
+        $manager->persist($admin);
+        $this->addReference('admin', $admin);
 
         for ($i = 0; $i < 5; $i++) {
             $user = new Apiculteur();
+            $login = $faker->userName();
             $user->setFirstname($faker->firstName())
                 ->setName($faker->lastName())
-                ->setLogin($faker->userName())
+                ->setLogin($login)
                 ->setCity($faker->city())
                 ->setStreetNumber($faker->buildingNumber())
                 ->setStreet($faker->streetName())
@@ -44,6 +46,7 @@ class UserFixtures extends Fixture
                 $pass = $this->userPasswordHasher->hashPassword($user, 'password');
                 $user->setPassword($pass);
                 $manager->persist($user);
+                $this->addReference('user_' . $i, $user);
         }
         $manager->flush();
     }

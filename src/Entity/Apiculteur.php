@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ApiculteurRepository;
@@ -67,6 +69,17 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 5)]
     private ?string $zipCode = null;
+
+    /**
+     * @var Collection<int, Apiary>
+     */
+    #[ORM\OneToMany(targetEntity: Apiary::class, mappedBy: 'beekeeper')]
+    private Collection $apiaries;
+
+    public function __construct()
+    {
+        $this->apiaries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -271,6 +284,36 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setZipCode(string $zipCode): static
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Apiary>
+     */
+    public function getApiaries(): Collection
+    {
+        return $this->apiaries;
+    }
+
+    public function addApiary(Apiary $apiary): static
+    {
+        if (!$this->apiaries->contains($apiary)) {
+            $this->apiaries->add($apiary);
+            $apiary->setBeekeeper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApiary(Apiary $apiary): static
+    {
+        if ($this->apiaries->removeElement($apiary)) {
+            // set the owning side to null (unless already changed)
+            if ($apiary->getBeekeeper() === $this) {
+                $apiary->setBeekeeper(null);
+            }
+        }
 
         return $this;
     }
