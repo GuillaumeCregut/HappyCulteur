@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/apiary.css')}}">
+{% endblock %}
+{% block title %}Rucher{% endblock %}
+
+{% block body %}
+<h1 class="title">Informations rucher</h1>
+<p class="apiary-info">Apiculteur : <span class="apiary-info-detail">{{ apiary.beekeeper.firstname ~ ' ' ~ apiary.beekeeper.name }}</span></p>
+<p class="apiary-info">Nom du rucher  : <span class="apiary-info-detail">{{ apiary.name }}</span></p>
+<p class="apiary-info">Numéro du rucher  : <span class="apiary-info-detail">{{ apiary.identification }}</span></p>
+<p class="apiary-info">Activité  : <img src="{{ asset('pictures/apiaries/' ~ (apiary.isActive ? 'check' : 'mort') ~ '.png') }}" alt="{{ (apiary.isActive ? 'Actif' : 'Mort') }}"></p>
+<p class="apiary-info">Localisation  : <span class="apiary-info-detail">{{ apiary.localisation }}</span></p>
+<p class="apiary-info">Coordonnées GPS  : <span class="apiary-info-detail">{{ apiary.gps }}</span></p>
+<p class="apiary-info">Observations  : </p>
+<p class="apiary-observation">{{ apiary.observations |nl2br}}</p>
+<p class="return-home"><a href="{{ path('app_apiary_update', {id: apiary.id}) }}" class="form-button">Modifier</a></p>
+<p class="return-home"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class="form-button">Retour à l'accueil</a></p>
+{% endblock %}

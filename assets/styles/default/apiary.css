@@ -120,6 +120,26 @@
     height: auto;
 }
 
+.apiary-info-detail{
+    color: red;
+    border: 1px;
+    display: inline-block;
+    border-style: hidden;
+    padding: 3px;
+    background-color: #f8f8f7;
+    border-color: black;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.apiary-observation{
+    border: 3px;
+    width: 40%;
+    background-color: white;
+    padding: 5px;
+    border-style: inset;
+}
+
 @media screen and (max-width: 280px) {
     .apiaries-actions,
     .apiaries-hives {

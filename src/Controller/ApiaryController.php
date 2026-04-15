@@ -51,4 +51,41 @@ final class ApiaryController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/info/{id}', name: 'info')]
+    public function info(
+        #[CurrentUser] Apiculteur $user,
+        Apiary $apiary,
+    ): Response {
+        if($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw new AccessDeniedHttpException('Access denied.'); 
+        }
+        return $this->render('apiary/info.html.twig', [
+            'apiary' => $apiary
+        ]);
+    }
+
+    #[Route('/update/{id}', name: 'update')]
+    public function update(
+        #[CurrentUser] Apiculteur $user,
+        Apiary $apiary,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        if($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw new AccessDeniedHttpException('Access denied.'); 
+        }
+        $form = $this->createForm(ApiaryFormType::class, $apiary);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($apiary);
+            $em->flush();
+            return $this->redirectToRoute('app_apiary_info',['id' => $apiary->getId()]);
+        }
+        return $this->render('apiary/update.html.twig', [
+            'apiary' => $apiary,
+            'form' =>$form
+        ]);
+    }
+
 }
