@@ -11,6 +11,7 @@
 		<thead>
 			<tr class="admin-user-row">
 				<th class ="admin-user-cell user-btn-cell">Action</th>
+                <th class ="admin-user-cell user-btn-cell">Admin</th>
 				<th class ="admin-user-cell">login</th>
 				<th class ="admin-user-cell admin-user-info">Nom</th>
 				<th class ="admin-user-cell admin-user-info">Prénom</th>
@@ -23,6 +24,17 @@
                     {% if user.id != app.user.id %}
                     {{ include('admin/users/_delete.html.twig') }}
                     {% endif %}
+                    </td>
+                    <td class ="admin-user-cell">
+                    {% if user.id != app.user.id %} 
+                     <input
+                        type="checkbox"
+                        data-controller="user-role"
+                        data-user-role-url-value="{{ path('app_admin_user_toggle_role', {id: user.id}) }}"
+                        data-action="change->user-role#toggle"
+                        {% if 'ROLE_ADMIN' in user.roles %}checked{% endif %}
+                    />
+                    {% endif %} 
                     </td>
 					<td class ="admin-user-cell"> {{ user.login }}</td>
 					<td class ="admin-user-cell admin-user-info">{{ user.name }}</td>
