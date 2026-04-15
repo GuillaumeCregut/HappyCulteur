@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/apiary.css')}}">
+{% endblock %}
+{% block title %}Rucher{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion du rucher</h1>
+<p class="apiary-info">Nom : {{ apiary.name }}</p>
+<p class="apiary-info">Numéro : {{ apiary.identification }}</p>
+<p class="apiary-info">Etat : <img src="{{ asset('pictures/apiaries/' ~ (apiary.isActive ? 'check' : 'mort') ~ '.png') }}" alt="{{ (apiary.isActive ? 'Actif' : 'Mort') }}" class="apiairy-state-icon"></p>
+<section class="apiaries-container">
+	<div class="apiaries-hive-container">
+		<p class="item">Ruches</p>
+		<ul class="apiaries-hives">
+			<li>
+				<a href="">
+					<div class="apiaries-hivecard">
+						<img src="{{ asset('pictures/apiaries/rucher.png') }}" alt="rucher1" class="apiaries-hives-picture">
+						<p class="apiaries-hivecard-title">Ruche 1</p>
+					</div>
+				</a>
+			</li>
+            <li>
+				<a href="">
+					<div class="apiaries-hivecard">
+						<img src="{{ asset('pictures/hives/ruche_add.png') }}" alt="ajouter une ruche" class="apiaries-hives-picture">
+						<p class="apiaries-hivecard-title">Ajouter une ruche</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+    <hr>
+	<div class="apiaries-actions-container">
+		<p class="item">Divers</p>
+		<ul class="apiaries-actions">
+			<li>
+				<a href="">
+					<div class="apiaries-action-card">
+						<img src="{{ asset('pictures/options/information.png') }}" alt="informations" class="apiaries-action--picture">
+						<p class="apiaries-action-card-title">Informations</p>
+					</div>
+				</a>
+			</li>
+            <li>
+				<a href="">
+					<div class="apiaries-action-card">
+						<img src="{{ asset('pictures/apiaries/edit1.png') }}" alt="paramètres" class="apiaries-action-picture">
+						<p class="apiaries-action-card-title">Editions</p>
+					</div>
+				</a>
+			</li>
+            <li>
+				<a href="">
+					<div class="apiaries-action-card">
+						<img src="{{ asset('pictures/apiaries/carto.png') }}" alt="achats" class="apiaries-action-picture">
+						<p class="apiaries-action-card-title">Cartographie</p>
+					</div>
+				</a>
+			</li>
+            <li>
+				<a href="">
+					<div class="apiaries-action-card">
+						<img src="{{ asset('pictures/options/help.png') }}" alt="aide" class="apiaries-action-picture">
+						<p class="apiaries-action-card-title">Aide</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</section>
+<p class="return-home"><a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a></p>
+{% endblock %}

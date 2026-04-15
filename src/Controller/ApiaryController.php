@@ -12,11 +12,25 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/apiary', name: 'app_apiary_')]
 final class ApiaryController extends AbstractController
 {
+    #[Route('/{id}', name: 'index')]
+    public function index(
+        #[CurrentUser] Apiculteur $user,
+        Apiary $apiary,
+    ): Response {
+        if($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw new AccessDeniedHttpException('Access denied.'); 
+        }
+        return $this->render('apiary/index.html.twig', [
+            'apiary' => $apiary
+        ]);
+    }
+
     #[Route('/add', name: 'add')]
     public function add(
         #[CurrentUser] Apiculteur $user,

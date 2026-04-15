@@ -14,13 +14,127 @@
     margin-top: 1rem;
 }
 
-@media screen and (max-width: 400px){
+.apiary-info{
+    margin-top: 0.5rem;
+}
+
+.apiairy-state-icon {
+    vertical-align: middle;
+}
+
+.apiaries-container {
+    border-style: groove;
+    background-color: white;
+    border-width: 5px;
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.apiaries-container a {
+    text-decoration: none;
+    color: black;
+}
+
+.apiaries-container hr {
+    margin: auto;
+    line-height: 1;
+    width: 60%;
+}
+
+.apiaries-hive-container,
+.apiaries-actions-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.item {
+    font-size: bold;
+    color: red;
+}
+
+.apiaries-hives,
+.apiaries-actions {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.apiaries-actions {
+    margin-top: 5px;
+}
+
+.apiaries-action-card-title,
+.apiaries-hivecard-title {
+    margin-top: 5px;
+}
+
+.apiaries-hivecard-title {
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.apiaries-hivecard {
+    width: clamp(70px, 12vw, 130px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.apiaries-hivecard:hover {
+    background-color: #ccffff;
+}
+
+.apiaries-hivecard:hover .apiaries-hivecard-title {
+    font-weight: bold;
+    opacity: 1;
+}
+
+.apiaries-action-card {
+    width: clamp(70px, 12vw, 130px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.apiaries-action-card:hover {
+    background-color: #ccffff;
+}
+
+.apiaries-action-card:hover .apiaries-action-card-title {
+    font-weight: bold;
+}
+
+.apiaries-action-picture,
+.apiaries-hives-picture {
+    width: calc(100% - 10px);
+    height: auto;
+}
+
+@media screen and (max-width: 280px) {
+    .apiaries-actions,
+    .apiaries-hives {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 400px) {
     .apiary-row-text {
         display: flex;
         flex-direction: column;
     }
 
-    .apiary-row-text label{
+    .apiary-row-text label {
         margin-bottom: 5px;
     }
 }

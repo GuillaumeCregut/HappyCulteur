@@ -2,24 +2,16 @@
 	<div class="apiary-container">
 		<p class="item">Ruchers</p>
 		<ul class="apiaries">
-        {# A retirer car dynamique ensuite#}
+		{% for apiary in apiaries%}
 			<li>
-				<a href="">
+				<a href="{{ path('app_apiary_index', {id: apiary.id}) }}">
 					<div class="hivecard">
-						<img src="{{ asset('pictures/apiaries/rucher.png') }}" alt="rucher1" class="apiary-picture">
-						<p class="apiary-card-title">Rucher 1 vraiment très long</p>
+						<img src="{{ asset('pictures/apiaries/rucher' ~ (apiary.isActive ? '' : '_dead') ~ '.png') }}" alt="rucher1" class="logo rucher {{ (apiary.isActive ? '' : ' mort') }}">
+						<p class="apiary-card-title">{{ apiary.name }}</p>
 					</div>
 				</a>
 			</li>
-            <li>
-				<a href="">
-					<div class="hivecard">
-						<img src="{{ asset('pictures/apiaries/rucher_dead.png') }}" alt="rucher mort" class="apiary-picture">
-						<p class="apiary-card-title">Rucher mort</p>
-					</div>
-				</a>
-			</li>
-            {# Fin A retirer car dynamique ensuite#}
+			{% endfor %}
             <li>
 				<a href="{{ path('app_apiary_add') }}">
 					<div class="hivecard">

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Apiculteur;
 use App\Service\UserConnected;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,8 @@ final class HomeController extends AbstractController
         $value = $this->getParameter('app.site_name');
         $error = $authenticationUtils->getLastAuthenticationError();
         $user = $this->getUser();
+        /**@var Apiculteur $user */
+        $apiaries = $user->getApiaries();
         if(null !== $user) {
             $userConnected = new UserConnected($user);
             //TODO: a voir pour trouver un nom ou pas
@@ -28,6 +31,7 @@ final class HomeController extends AbstractController
             'value' => $value,
             'last_username' => $lastUsername,
             'error' => $error,
+            'apiaries' => $apiaries
         ]);
         
     }
