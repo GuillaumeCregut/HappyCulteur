@@ -14,21 +14,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[UniqueEntity(fields: ['login'], message: 'There is already an account with this login')]
 class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    const LANE = 'Allée';
-    const DEADEND = 'Impasse';
-    const AVENUE = 'Avenue';
-    const STREET = 'Rue';
-    const ROAD = 'Route';
-    const PATH = 'Voie';
-
-    const LANE_CHOICE =[
-        'allée' => self::LANE,
-        'Impasse' => self::DEADEND,
-        'Avenue' => self::AVENUE,
-        'Rue' => self::STREET,
-        'Route' => self::ROAD,
-        'Voie' => self::PATH
-    ];
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -73,7 +58,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 150)]
     private ?string $city = null;
 
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(length: 255)]
     private ?string $street = null;
 
     #[ORM\Column(length: 10)]
@@ -82,10 +67,6 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 5)]
     private ?string $zipCode = null;
-
-    #[ORM\Column(length: 100)]
-    #[Assert\Choice(choices: Apiculteur::LANE_CHOICE, message: 'Type de voie non reconnu.')]
-    private ?string $lane = null;
 
     public function getId(): ?int
     {
@@ -290,18 +271,6 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setZipCode(string $zipCode): static
     {
         $this->zipCode = $zipCode;
-
-        return $this;
-    }
-
-    public function getLane(): ?string
-    {
-        return $this->lane;
-    }
-
-    public function setLane(string $lane): static
-    {
-        $this->lane = $lane;
 
         return $this;
     }

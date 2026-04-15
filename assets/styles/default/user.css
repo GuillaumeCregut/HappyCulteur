@@ -1,0 +1,39 @@
+.user-container p {
+    margin-bottom: 1rem;
+}
+
+.adress-api {
+    margin-left : 20px;
+}
+
+.adress-api fieldset {
+    background: white;
+    width: 25%;
+    border: 3px;
+    border-style: groove;
+    padding: 10px 0px 2px 20px;
+    margin-bottom: 1rem;
+}
+
+.info_api {
+	border-radius : 5px;
+	padding : 2px;
+	font-weight : bold;
+	color : black;
+}
+
+@media screen and (max-width: 450px){
+    .adress-api fieldset legend{
+        font-size: 0.7rem;
+    }
+
+    .adress-api fieldset {
+        padding: 2px;
+    }
+
+    .form-button {
+        margin-top: 10px;
+        display: inline-block;
+    }
+}
+

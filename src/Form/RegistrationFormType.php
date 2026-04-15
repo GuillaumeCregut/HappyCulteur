@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
@@ -67,11 +66,6 @@ class RegistrationFormType extends AbstractType
                     'style' => 'width: 7ch;',
                     
                 ],
-            ])
-            ->add('lane', ChoiceType::class, [
-                'choices' => Apiculteur::LANE_CHOICE,
-                'placeholder' => 'Selectionner.',
-                'required'    => true,
             ])
         ;
     }

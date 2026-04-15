@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/user.css')}}">
+{% endblock %}
+
+{% block body %}
+<div class="user-container">
+  <h1 class="title">Information sur l'apiculteur</h1>
+	 <p>Nom : <span class="info_api">{{ app.user.name }}</span></p>
+    <p>Pr&eacute;nom : <span class="info_api">{{ app.user.firstname }}</span></p>
+    <p>login : <span class="info_api">{{ app.user.login }}</span></p>
+	<div class="adress-api">
+    <fieldset><legend>adresse : </legend>
+    <p>{{ app.user.streetNumber }} {{ app.user.street }}</p>
+    <p>{{ app.user.zipCode }} {{ app.user.city }}</p>
+	</fieldset>
+	</div>
+	<p>adresse mail : <span class="info_api">{{ app.user.email }}</span></p>
+    <p>NUMAGRI : <span class="info_api">{{ app.user.numagri }}</span></p>
+    <p>Code NAPI : <span class="info_api">{{ app.user.codeAPI }}</span></p>
+    <p>SIRET : <span class="info_api">{{ app.user.siret }}</span></p>
+    <p>Code APE : <span class="info_api">{{ app.user.codeAPE }}</span></p>
+	<p><a href="{{ path('app_user_update') }}" class="form-button">Modifier les informations</a></p>
+	<p><a href="{{ path('app_home') }}" class="form-button">Accueil</a></p>
+</div>
+
+{% endblock %}

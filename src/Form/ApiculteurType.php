@@ -5,7 +5,11 @@ namespace App\Form;
 use App\Entity\Apiculteur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class ApiculteurType extends AbstractType
 {
@@ -13,20 +17,45 @@ class ApiculteurType extends AbstractType
     {
         $builder
             ->add('login')
-            ->add('roles')
-            ->add('password')
+            ->add('plainPassword', PasswordType::class, [
+                // instead of being set onto the object directly,
+                // this is read and encoded in the controller
+                'mapped' => false,
+                'attr' => ['autocomplete' => 'new-password'],
+                'required' => false,
+                'constraints' => [
+                    new Length(
+                        min: 6,
+                        minMessage: 'Votre mot de passe doit faire {{ limit }} charactères',
+                        // max length allowed by Symfony for security reasons
+                        max: 4096,
+                    ),
+                ],
+            ])
             ->add('codeAPE')
             ->add('codeAPI')
             ->add('siret')
             ->add('numagri')
             ->add('name')
             ->add('firstname')
-            ->add('email')
+            ->add('email', EmailType::class, [
+                'required' => false,
+            ])
             ->add('city')
             ->add('street')
-            ->add('streetNumber')
-            ->add('zipCode')
-            ->add('lane')
+            ->add('streetNumber', TextType::class, [
+                'attr' => [
+                    'maxlength' => 10,
+                    'style' => 'width: 12ch;'
+                ]
+            ])
+            ->add('zipCode', TextType::class, [
+                'attr' => [
+                    'maxlength' => 10,
+                    'style' => 'width: 7ch;',
+                    
+                ],
+            ])
         ;
     }
 

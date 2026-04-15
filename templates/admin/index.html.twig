@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/admin.css')}}">
+{% endblock %}
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+<h1 class="title">Administration</h1>
+<section class="admin-container">
+	<div class="items-container">
+		<ul class="admin-list">
+		<li>
+			<a href="{{ path('app_home') }}">
+				<div class="admin-card">
+					<img src="{{ asset('pictures/admin/home.png') }}" alt="informations" class="admin-picture">
+					<p class="admin-card-title">Accueil</p>
+				</div>
+			</a>
+			</li>
+			<li>
+				<a href="{{ path('app_admin_user') }}">
+					<div class="admin-card">
+						<img src="{{ asset('pictures/admin/user.png') }}" alt="informations" class="admin-picture">
+						<p class="admin-card-title">Utilisateurs</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</section>
+
+{% endblock %}
