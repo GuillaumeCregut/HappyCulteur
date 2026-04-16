@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    {{ form_row(form.name,  {
+            row_attr: {
+                class: 'admin-rise-hive-form-row'
+            },
+            label: 'Description : ',
+            attr : {
+                class: 'admin-rise-hive-form-input'
+            }
+    }) }}
+    <button class="form-button">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

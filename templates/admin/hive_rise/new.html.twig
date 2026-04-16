@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/rise.css')}}">
+{% endblock %}
+{% block title %}Ajout d'une hausse{% endblock %}
+
+{% block body %}
+    <h1 class="title">Ajouter un nouveau type de hausse</h1>
+
+    {{ include('admin/hive_rise/_form.html.twig') }}
+
+    <p class="admin-rise-hive-btn-container"><a href="{{ path('app_admin_hive_rise_index') }}" class= "form-button">Retour à la liste</a></p>
+{% endblock %}

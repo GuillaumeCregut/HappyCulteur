@@ -57,6 +57,10 @@
     height: auto;
 }
 
+.admin-card-title {
+    text-align: center;
+}
+
 @media screen and (max-width: 280px){
     .admin-list {
         flex-direction: column;
