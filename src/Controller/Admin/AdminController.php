@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Validator\Constraints\Json;
 
 #[Route('/admin', name: 'app_admin_')]
 final class AdminController extends AbstractController
