@@ -1,0 +1,26 @@
+/* Home page */
+.admin-rise-hive-table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-rise-hive-cell {
+    padding: 5px;
+    text-align: center;
+}
+
+.admin-rise-hive-btn-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Form */
+.admin-rise-hive-form-row {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-rise-hive-form-input {
+    padding: 3px;
+    border: none;
+}
