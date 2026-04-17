@@ -4,8 +4,8 @@ namespace App\Constant;
 
 enum HistoEvent: int
 {
-    const ADD = 0;
-    const UPDATE = 1;
+    case ADD = 0;
+    case UPDATE = 1;
     
     public function label(): string
     {

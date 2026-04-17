@@ -4,10 +4,10 @@ namespace App\Constant;
 
 enum Weather: int
 {
-    const CLOUDY = 1;
-    const RAIN = 2;
-    const SNOW = 3;
-    const SUNNY = 4;
+    case CLOUDY = 1;
+    case RAIN = 2;
+    case SNOW = 3;
+    case SUNNY = 4;
 
     public function label(): string
     {
