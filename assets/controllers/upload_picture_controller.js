@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import '../styles/default/common-form.css';
+import '../styles/default/upload_file.css';
 
 export default class extends Controller {
     static targets = ['uploadPicturePreview', 'uploadPictureFileLoader', 'uploadPictureContainer']
