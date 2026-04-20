@@ -5,11 +5,10 @@ export default class extends Controller {
     static targets = ['uploadPicturePreview', 'uploadPictureFileLoader', 'uploadPictureContainer']
 
     connect() {
-        console.log('Hello World');
+        
     }
 
     changeFile() {
-        console.log('changed');
          const fileLoader = this.uploadPictureFileLoaderTarget;
          const file = fileLoader.files[0];
          if(file.type === 'image/jpeg' || file.type === 'image/png') {
