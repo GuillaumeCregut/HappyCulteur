@@ -1,0 +1,68 @@
+/* File upload style */
+
+.upload-picture-main {
+    margin-top: 1rem;
+}
+
+.upload-picture-label {
+    margin-top: 1rem;
+}
+
+input[type="file"]::file-selector-button {
+    display: none;
+}
+
+.upload-picture-container {
+    position: relative;
+    margin: 1rem 0;
+    display: flex;
+    gap: 10px;
+    width: 50%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #555;
+    color: #444;
+    cursor: pointer;
+    transition: background .2s ease-in-out, border .2s ease-in-out;
+}
+
+.upload-picture-input-container {
+    width: 80%;
+    margin: 0 auto 0 auto;
+    height: 120px;
+    border: 2px dashed #7ce565;
+    background: #e3dfd5;
+}
+
+.upload-picture-input-container:hover {
+    background: #eee;
+    border-color: #111;
+}
+
+.upload-picture-input {
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+}
+
+.upload-picture_preview-container {
+    max-width: 120px;
+    margin-left: 2rem;
+}
+
+.upload-picture-image-preview {
+    width: 100%;
+    height: auto
+}
+
+@media screen  and (max-width: 500px) {
+    .upload-picture-container{
+        width: 90%;
+        margin-left: auto;
+        margin-right:  auto;
+    }
+}
