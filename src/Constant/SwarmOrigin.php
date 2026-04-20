@@ -4,10 +4,10 @@ namespace App\Constant;
 
 enum SwarmOrigin: int
 {
-    const BUY = 0;
-    const GIVEN = 1;
-    const PICKUP = 2;
-    const SWARMING = 3;
+    case BUY = 0;
+    case GIVEN = 1;
+    case PICKUP = 2;
+    case SWARMING = 3;
 
     public function label(): string
     {

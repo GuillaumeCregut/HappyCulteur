@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\HiveKind;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class HiveKindType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('name')
+            ->add('picture',FileType::class, [
+                'mapped' => false,
+                'required' => !$options['is_edit'],
+                'constraints' => $options['is_edit'] ? [] : [
+                    new Assert\File(
+                        maxSize: '300k',
+                        extensions: ['png'],
+                        extensionsMessage: 'Veuillez télécharger un png valide',
+                    )
+                ],
+                ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => HiveKind::class,
+            'is_edit' => false
+        ]);
+    }
+}

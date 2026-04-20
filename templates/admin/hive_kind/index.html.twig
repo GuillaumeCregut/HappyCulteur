@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/kind.css')}}">
+{% endblock %}
+{% block title %}Type de ruches{% endblock %}
+
+{% block body %}
+    <h1 class= "title">Type de ruches</h1>
+<p class="admin-hive-kind-btn-container"><a href="{{ path('app_admin_hive_kind_new') }}" class= "form-button">Ajouter</a></p>
+    <table class="admin-hive-kind-table">
+        <thead>
+            <tr>
+                <th class="admin-hive-kind-cell" colspan="2">Actions</th>
+                <th class="admin-hive-kind-cell">Nom</th>
+                <th class="admin-hive-kind-cell">Images</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hive_kind in hive_kinds %}
+            <tr>
+                <td class="admin-hive-kind-cell">{{ include('admin/hive_kind/_delete_form.html.twig') }}</td>
+                 <td class="admin-hive-kind-cell">
+                    <a href="{{ path('app_admin_hive_kind_edit', {'id': hive_kind.id}) }}" class= "form-button">Modifier</a>
+                </td>
+                <td class="admin-hive-kind-cell admin-hive-kind-cell-name">{{ hive_kind.name }}</td>
+                <td class="admin-hive-kind-cell">
+                    <div class="admin-hive-kind-picture-container">
+                        <img src="{{ asset('uploads/' ~ hive_kind.picture ~ active  ~ '.png')}}" alt="icone ruche active" class="admin-hiev-kind-picture">
+                        <img src="{{ asset('uploads/' ~ hive_kind.picture ~ stock  ~ '.png')}}" alt="icone ruche stockée" class="admin-hiev-kind-picture">
+                        <img src="{{ asset('uploads/' ~ hive_kind.picture ~ dead  ~ '.png')}}" alt="icone ruche morte" class="admin-hiev-kind-picture">
+                    </div>
+                </td>
+               
+            </tr>
+        {% else %}
+            <tr>
+                <td class="admin-hive-kind-cell" colspan="4">Aucun élément trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<p class="admin-hive-kind-btn-container"><a href="{{ path('app_admin_index') }}" class="form-button">Retour à l'accueil admin</a></p>
+
+{% endblock %}

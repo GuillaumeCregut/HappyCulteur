@@ -1,0 +1,28 @@
+<div  {{ stimulus_controller('upload_picture')}} class="upload-picture-main">
+    {{ form_errors(formField) }}
+    <p class="upload-picture-label">{{ formLabel }}</p>
+    <div >
+        <div class="upload-picture-container">
+            <label
+                for="{{field_id(formField)}}"
+                 <span class="form-button">Cliquer ici</span>
+            </label>
+            ou
+            <span class="upload-picture-drop-title">Déposer des images ici</span>
+             <div class="upload-picture-input-container">
+                {{ form_widget(formField,  {
+                        attr : {
+                            class: 'upload-picture-input',
+                            'data-action': 'change->upload-picture#changeFile',
+                            'data-upload-picture-target': 'uploadPictureFileLoader'
+                        },
+                }) }}
+            </div>
+            <div class="upload-picture_preview-container" {{stimulus_target('upload_picture', 'uploadPicturePreview')}}>
+            {% if previewPath !=null %}
+                <img src="{{ previewPath }}" alt="Old picture" class="upload-picture-image-preview">
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

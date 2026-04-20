@@ -1,0 +1,14 @@
+{{ form_start(form) }}
+    {{ form_row(form.name,  {
+            row_attr: {
+                class: 'admin-hive-kind-form-row'
+            },
+            label: 'Nom : ',
+            attr : {
+                class: 'admin-hive-kind-form-input'
+            }
+    }) }}
+    <p>Le fichier doit être un png avec fond transparent.</p>
+    {{ component('PictureFileUpload', {formField: form.picture, formLabel: 'Image de la ruche', previewPath: hive_kind.picture ? asset('uploads/' ~ hive_kind.picture ~ '-actif.png') : null})}}
+    <button class="form-button">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

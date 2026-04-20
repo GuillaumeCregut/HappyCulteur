@@ -4,17 +4,17 @@ namespace App\Constant;
 
 enum HiveState: int
 {
-    const ACTIVE_HIVE = 0;
-    const DEAD_HIVE = 1;
-    const STOCK_HIVE = 2;
+    case ACTIVE_HIVE = 0;
+    case DEAD_HIVE = 1;
+    case STOCK_HIVE = 2;
 
 
     public function label(): string
     {
         return match ($this) {
-        self::ACTIVE_HIVE => '_actif',
-        self::DEAD_HIVE => '_dead',
-        self::STOCK_HIVE =>'_stock'
+        self::ACTIVE_HIVE => '-actif',
+        self::DEAD_HIVE => '-dead',
+        self::STOCK_HIVE =>'-stock'
         };
     }
 }

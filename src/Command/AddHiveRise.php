@@ -9,7 +9,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:add-hiverise', description: 'Add default rises for hives', help: 'This command add rises for hives')]
+#[AsCommand(name: 'app:add-hive-rise', description: 'Add default rises for hives', help: 'This command add rises for hives')]
 class AddHiveRise
 {
     public function __construct(private HiveRiseRepository $repo, private EntityManagerInterface $em)

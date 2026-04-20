@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/kind.css')}}">
+{% endblock %}
+{% block title %}Edition d'un type de ruche{% endblock %}
+
+{% block body %}
+    <h1 class="title">Edition d'un type de ruche</h1>
+
+    {{ include('admin/hive_kind/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <p class="admin-hive-kind-btn-container"><a href="{{ path('app_admin_hive_kind_index') }}" class="form-button">Retour</a></p>
+
+{% endblock %}
