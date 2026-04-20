@@ -17,7 +17,8 @@ class HiveKindType extends AbstractType
             ->add('name')
             ->add('picture',FileType::class, [
                 'mapped' => false,
-                'constraints' => [
+                'required' => !$options['is_edit'],
+                'constraints' => $options['is_edit'] ? [] : [
                     new Assert\File(
                         maxSize: '300k',
                         extensions: ['png'],
@@ -32,6 +33,7 @@ class HiveKindType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => HiveKind::class,
+            'is_edit' => false
         ]);
     }
 }
