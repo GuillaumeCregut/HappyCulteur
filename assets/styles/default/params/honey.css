@@ -1,0 +1,56 @@
+.param-honey-subtitle {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.param-honey-container {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    background-image: url("../images/fond.jpg");
+    border: 3px;
+    border-style: inset;
+    padding: 10px;
+    width: 25%;
+    filter: brightness(0.95);
+    max-height: 40vh;
+}
+
+.param-honey-line {
+    margin-bottom: 0.7rem;
+}
+
+.param-honey-picture {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+
+.param-honey-fieldset {
+    width: 80%;
+    padding: 10px;
+}
+
+.param-honey-field {
+    padding: 3px;
+    border: none;
+}
+
+.param-honey-btn-container {
+    margin-top: 2rem;
+}
+
+@media screen and (max-width:600px) {
+    .param-honey-container {
+        overflow-y: scroll;
+        width: 100%;
+    }
+    .param-honey-fieldset {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:380px) {
+    .param-honey-line {
+        margin-bottom: 0.8rem;
+    }
+}

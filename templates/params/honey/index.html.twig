@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/params/honey.css')}}">
+{% endblock %}
+{% block title %}Types de miel{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion des types de miel</h1>
+<p class="param-honey-subtitle">Liste des types de miels existant</p>
+<ul class="param-honey-container">
+{% for honey in honeys %}
+<li class = "param-honey-line">{{ honey.name}} <img src="{{ asset('uploads/' ~ honey.picture)}}" alt="honey picture" class="param-honey-picture"></li>
+{% else %}
+<li class = "param-honey-line">Aucune type de miel trouvé</li>
+{% endfor %}
+</ul>
+{{ form_start(form) }}
+<fieldset class="param-honey-fieldset">
+    <legend>Ajouter un type de miel</legend>
+    {{ form_row(form.name, {
+        label: 'Nom : ',
+        attr: {
+            class: 'param-honey-field'
+        }
+    }) }}
+    <div class="params-honey-file-container">
+        {{ component('PictureFileUpload', {formField: form.picture, formLabel: "Icone. Il sert pour identifier le type de miel dans les graphes :", previewPath: null})}}
+    </div>
+    <button class="form-button">Valider</button>
+</fieldset>
+{{ form_end(form) }}
+<p class="param-honey-btn-container"><a href="{{ path('app_params') }}" class="form-button">Retour aux paramètres</a></p>
+{% endblock %}
