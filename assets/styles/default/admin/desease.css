@@ -12,3 +12,15 @@
     padding: 5px;
     text-align: center;
 }
+
+/* form */
+.admin-desease-form-row {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-desease-form-input {
+    margin-bottom: 1rem;
+    padding: 3px;
+    border: none;
+}
