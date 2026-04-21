@@ -1,0 +1,78 @@
+.purchase-new-container {
+    border-style: groove;
+    padding: 10px;
+    width: 40%;
+    background-image: url("images/fond.jpg");
+    filter: brightness(0.95);
+    margin-bottom: 2rem;
+}
+
+.purchase-new-title {
+    margin-bottom: 1rem;
+    text-decoration: underline;
+}
+
+.purchase-button-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.purchase-history-title {
+    margin-top: 1rem;
+}
+
+.purchase-list-container {
+    background-image: url("images/fond.jpg");
+    filter: brightness(0.95);
+    width: 20%;
+    padding: 5px;
+}
+
+.purchase-list-item {
+    margin-bottom: 1rem;
+}
+
+.purchase-list-button{
+    background: none;
+    border: none;
+    cursor: help;
+    width: 100%;
+    text-align: start;
+    position: relative;
+}
+
+.purchase-list-btn-icon{
+    position: absolute;
+    right: 5px;
+}
+
+.purchase-list-detail{
+    margin-bottom: 0.5rem;
+    padding: 5px;
+    padding-left: 10px;
+    max-height: 120px; 
+    transition: all 0.3s ease-in-out, opacity 0.5s ease-in-out ;
+    opacity: 1;
+}
+
+/* Accordion */
+.purchase-hidden {
+     opacity: 0; 
+     max-height: 0px;
+     overflow: hidden;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Form */
+
+.purchase-form-row {
+    margin-bottom: 1rem;
+}
+
+.purchase-form-input {
+    padding: 3px;
+    border: none;
+}
