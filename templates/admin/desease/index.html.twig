@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/desease.css')}}">
+{% endblock %}
+{% block title %}Gestion des maladies{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion des maladies</h1>
+<p>Liste des maladies existantes</p>
+<p class="admin-desease-btn-container"><a href="{{ path('app_admin_desease_add') }}" class="form-button">Ajouter</a></p>
+<table class="admin-desease-table">
+    <thead>
+        <tr class="admin-desease-row">
+        <th class="admin-desease-cell" colspan="2">Actions</th>
+        <th class="admin-desease-cell">Nom</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for desease in deseases %}
+        <tr class="admin_desease_row">
+            <td class="admin-desease-cell"><a href="{{ path('app_admin_desease_update', {'id': desease.id}) }}" class="form-button">Modifier</a></td>
+            <td class="admin-desease-cell">{{ include('admin/desease/_delete_form.html.twig') }}</td>
+            <td class="admin-desease-cell">{{ desease.name }}</td>
+        </tr>
+        {% else %}
+        <tr class="admin-desease-row">
+             <td class="admin-desease-cell" colspan="3">Aucune maladie</td>
+        {% endfor %}
+    </tbody>
+</table>
+<p class="admin-desease-btn-container"><a href="{{ path('app_admin_index') }}" class= "form-button">Retour à l'accueil admin</a></p>
+{% endblock %}

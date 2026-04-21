@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/desease.css')}}">
+{% endblock %}
+{% block title %}Modifier une maladie{% endblock %}
+{% block body %}
+<h1 class="title">Modifier une maladie</h1>
+{{ include('admin/desease/_form.html.twig', {'button_label': 'Modifier'}) }}
+<p class="admin-desease-btn-container"><a href="{{ path('app_admin_desease_index') }}" class= "form-button">Retour à l'accueil admin</a></p>
+{% endblock %}

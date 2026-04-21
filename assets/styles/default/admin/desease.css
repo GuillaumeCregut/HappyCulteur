@@ -1,0 +1,26 @@
+.admin-desease-btn-container {
+    margin-top: 2rem;
+}
+
+.admin-desease-table {
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-desease-cell {
+    padding: 5px;
+    text-align: center;
+}
+
+/* form */
+.admin-desease-form-row {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-desease-form-input {
+    margin-bottom: 1rem;
+    padding: 3px;
+    border: none;
+}
