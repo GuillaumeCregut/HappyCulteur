@@ -1,3 +1,2 @@
 uploads/*
-!uploads/admin
-!uploads/admin/**
+!uploads/admin/hives/**

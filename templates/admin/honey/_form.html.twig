@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+
+ {{ form_row(form.name,  {
+            row_attr: {
+                class: 'admin-honey-form-row'
+            },
+            label: 'Nom : ',
+            attr : {
+                class: 'admin-honey-form-input'
+            }
+    }) }}
+    <p>Le fichier doit être un png avec fond transparent.</p>
+    {{ component('PictureFileUpload', {formField: form.picture, formLabel: "Icone. Il sert pour identifier le type de miel dans les graphes :", previewPath: (honey is defined and honey) ? asset('uploads/' ~ honey.picture) : null})}}
+    <button class="form-button">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

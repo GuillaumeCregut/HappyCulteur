@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/honey.css')}}">
+{% endblock %}
+
+{% block title %}Type de miel{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion des types de miel</h1>
+<p class="admin-honey-btn-container"><a href="{{ path('app_admin_honey_new') }}" class="form-button">Ajouter</a></p>
+<table class="admin-honey-table">
+    <thead>
+        <tr class="admin-honey-row">
+            <th class="admin-honey-cell" colspan="2">Action</th>
+            <th class="admin-honey-cell">Nom</th>
+            <th class="admin-honey-cell">Image</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for honey in honeys%}
+        <tr class="admin-honey-row">
+            <td class="admin-honey-cell"><a href="{{ path('app_admin_honey_update', {'id': honey.id}) }}" class="form-button">Modifier</a></td>
+            <td class="admin-honey-cell">{{ include('admin/honey/_delete_form.html.twig') }}</td>
+            <td class="admin-honey-cell">{{ honey.name }}</td>
+            <td class="admin-honey-cell"><img src="{{ asset('uploads/' ~ honey.picture)}}" alt="honey picture" class="admin-honey-picture"></td>
+        </tr>
+    {% else %}
+        <tr class="admin-honey-row">
+            <td class="admin-honey-cell" colspan="4">Aucun type de miel</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="admin-honey-btn-container"><a href="{{ path('app_admin_index') }}" class= "form-button">Retour à l'accueil admin</a></p>
+{% endblock %}

@@ -61,7 +61,7 @@ final class HomeController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path:':/params', name: 'params')]
+    #[Route(path:'/params', name: 'params')]
     #[IsGranted('ROLE_USER')]
     public function parameters(): Response
     {

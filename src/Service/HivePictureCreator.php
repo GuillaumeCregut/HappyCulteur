@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
+use App\Exception\PictureException;
 use GdImage;
-use RuntimeException;
 
 class HivePictureCreator
 {
@@ -27,7 +27,7 @@ class HivePictureCreator
         $this->reduce();
         if ($mode >= self::B_AND_WHITE) {
             if(! $this->removeColor()) {
-            throw new RuntimeException('Converting color failed');
+            throw new PictureException('Converting color failed');
             }
         }
         if ($mode === self::DEAD) {
@@ -49,7 +49,7 @@ class HivePictureCreator
         }
         $newPicture = imagescale($this->picture, 120);
         if (!$newPicture) {
-            throw new RuntimeException('Failed resizing picture');
+            throw new PictureException('Failed resizing picture');
         }
         $this->picture = $newPicture;
     }
@@ -63,7 +63,7 @@ class HivePictureCreator
     {
         $deadPicture = imagecreatefrompng($this->deadFile);
         if(! $deadPicture) {
-            throw new RuntimeException('Unable to load resource picture');
+            throw new PictureException('Unable to load resource picture');
         }
         $deadPicture = imagescale($deadPicture, 60);
         imagesavealpha($deadPicture, true);
@@ -89,10 +89,10 @@ class HivePictureCreator
                 $image = imagecreatefrompng($filename);
                 break;
             default:
-                throw new RuntimeException('Unsupported format');
+                throw new PictureException('Unsupported format');
         }
         if(! $image) {
-            throw new RuntimeException('Failed to load original picture');
+            throw new PictureException('Failed to load original picture');
         }
         $width = imagesx($image);
         $height = imagesy($image);
