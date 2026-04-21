@@ -1,0 +1,14 @@
+.admin-desease-btn-container {
+    margin-top: 2rem;
+}
+
+.admin-desease-table {
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-desease-cell {
+    padding: 5px;
+    text-align: center;
+}
