@@ -7,15 +7,29 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
- #[Route('/params/desease', name: 'app_params_desease_')]
- #[IsGranted('ROLE_USER')]
+#[Route('', name: 'app_')]
+#[IsGranted('ROLE_USER')]
 final class DeseaseController extends AbstractController
 {
-    #[Route('', name: 'index')]
-    public function index(): Response
-    {
+    #[Route('/params/desease', name: 'params_desease_index')]
+    public function index(
+        Request $request,
+        DeseaseRepository $repo,
+        EntityManagerInterface $em
+    ): Response {
+        $deseases = $repo->findBy([], ['name' => 'ASC']);
+        $newDesease = new Desease();
+        $form = $this->createForm(DeseaseType::class, $newDesease);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($newDesease);
+            $em->flush();
+            return $this->redirectToRoute('app_params_desease_index');
+        }
         return $this->render('params/desease/index.html.twig', [
-            
+            'deseases' => $deseases,
+            'form' => $form
         ]);
+    }
     }
 }
