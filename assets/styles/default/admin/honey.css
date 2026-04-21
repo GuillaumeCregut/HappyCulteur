@@ -1,0 +1,26 @@
+
+.admin-honey-btn-container {
+     margin-top: 2rem;
+}
+
+.admin-honey-table {
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-honey-cell {
+    padding: 5px;
+    text-align: center;
+}
+
+/* form */
+.admin-honey-form-row{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-honey-form-input{
+    padding: 3px;
+    border: none;
+}

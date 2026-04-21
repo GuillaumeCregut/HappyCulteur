@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/admin/honey.css')}}">
+{% endblock %}
+
+{% block title %}Edition un type de miel{% endblock %}
+
+{% block body %}
+<h1 class="title">Edition un type de miel</h1>
+{{ include('admin/honey/_form.html.twig', {'button_label': 'Modifier'}) }}
+<p class="admin-honey-btn-container"><a href="{{ path('app_admin_honey_index') }}" class= "form-button">Retour à la gestion des miels</a></p>
+{% endblock %}
