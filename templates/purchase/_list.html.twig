@@ -1,0 +1,35 @@
+<turbo-frame id="purchase-list-turbo">
+	<ul class="purchase-list-container">
+		{% for purchase in purchases%}
+			<li class="purchase-list-item" data-purchase-accordion-item>
+				<button data-action="click->purchase-accordion#toggle" class="purchase-list-button">
+					Date de l'achat :
+					{{ purchase.date|date('d/m/Y') }}
+					<svg data-purchase-accordion-target="icon" width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="purchase-list-btn-icon">
+						<path d="M6 9l6 6 6-6"/>
+					</svg>
+				</button>
+				<div data-purchase-accordion-target="panel" class="purchase-list-detail purchase-hidden">
+					<p class="purchase-detail-line">Magasin :
+						{{ purchase.provider }}</p>
+					<p class="purchase-detail-line">Montant :
+						{{ purchase.amount }}
+						euros</p>
+					<p class="purchase-detail-line">description :
+					</p>
+					<p class="purchase-detail-description">{{ purchase.description | nl2br}}</p>
+					<div class="purchase-detail-btn-container">
+                        <button class="form-button" {{ stimulus_action('purchase-accordion', 'openPopup', 'click', { 'id': purchase.id } ) }}>Modifier</button>
+                        {{ include('purchase/_delete_form.html.twig') }}
+                    </div>
+				</div>
+			</li>
+		{% else %}
+			<li>Aucun achat effectué</li>
+		{% endfor %}
+    </ul>
+    <dialog id="purchase_update_popup" {{ stimulus_target('purchase-accordion', 'popup') }} class="purchase-dialog">
+        <div class="purchase-update-form" {{ stimulus_target('purchase-accordion', 'form') }}></div>
+        <button class="purchase-popup-close-btn" commandfor="purchase_update_popup" command="close">X</button>
+    </dialog>
+</turbo-frame>

@@ -1,0 +1,42 @@
+{{ form_errors(form) }}
+<div class="purchase-form-container">
+    {{ form_start(form, {'action': path('app_purchase_edit', {'id': purchase.id}), 'method': 'POST'}) }}
+    {{ form_row(form.provider, {
+        row_attr: {
+                class: 'purchase-form-row'
+                },
+        label: 'Magasin : ',
+        attr : {
+            class: 'purchase-form-input'
+        }
+    }) }}
+    {{ form_row(form.amount, {
+        row_attr: {
+                class: 'purchase-form-row'
+            },
+            label: "Montant de l'achat : ",
+            attr : {
+                class: 'purchase-form-input'
+            }
+    }) }}
+    {{ form_row(form.date, {
+        row_attr: {
+                class: 'purchase-form-row'
+            },
+            label: "Date de l'achat: ",
+            attr : {
+                class: 'purchase-form-input'
+            }
+    }) }}
+    {{ form_row(form.description, {
+        row_attr: {
+                class: 'purchase-form-row'
+            },
+            label: 'Description : ',
+            attr : {
+                class: 'purchase-form-input'
+            }
+    }) }}
+    <button class="form-button">{{ button_label|default('Valider') }}</button>
+    {{ form_end(form) }}
+</div>

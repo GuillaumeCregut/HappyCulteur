@@ -1,0 +1,122 @@
+.purchase-new-container {
+    border-style: groove;
+    padding: 10px;
+    width: 40%;
+    background-image: url("images/fond.jpg");
+    filter: brightness(0.95);
+    margin-bottom: 2rem;
+}
+
+.purchase-new-title {
+    margin-bottom: 1rem;
+    text-decoration: underline;
+}
+
+.purchase-button-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.purchase-history-title {
+    margin-top: 1rem;
+}
+
+.purchase-list-container {
+    background-image: url("images/fond.jpg");
+    filter: brightness(0.95);
+    width: 20%;
+    padding: 5px;
+}
+
+.purchase-list-item {
+    margin-bottom: 1rem;
+}
+
+.purchase-list-button{
+    background: none;
+    border: none;
+    cursor: help;
+    width: 100%;
+    text-align: start;
+    position: relative;
+}
+
+.purchase-list-detail{
+    margin-bottom: 0.5rem;
+    padding: 5px;
+    padding-left: 10px;
+    max-height: 200px; 
+    transition: all 0.3s ease-in-out, opacity 0.5s ease-in-out ;
+    opacity: 1;
+}
+
+.purchase-detail-line{
+    margin-top: 0.5rem;
+}
+
+.purchase-detail-description{
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.purchase-dialog {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    padding: 10px;
+    transform: translate(-50%, -50%);
+    background-image: url("images/fond.jpg");
+}
+
+.purchase-popup-close-btn{
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.purchase-detail-btn-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Accordion */
+.purchase-hidden {
+     opacity: 0; 
+     max-height: 0px;
+     overflow: hidden;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Form */
+
+.purchase-form-row {
+    margin-bottom: 1rem;
+}
+
+.purchase-form-input {
+    padding: 3px;
+    border: none;
+}
+
+@media screen and (max-width: 1000px){
+    .purchase-list-container {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .purchase-new-container {
+        width: 100%;
+    }
+
+    .purchase-list-container {
+        width: 100%;
+    }
+}
