@@ -18,6 +18,5 @@ export default class extends Controller {
             this.formTarget.innerHTML = await response.text();
             this.popupTarget.showModal();
         }
-        console.log(id);
     }
 }
