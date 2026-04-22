@@ -5,39 +5,21 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-<h1 class="title">Gestion des achats</h1>
-<div class="purchase-new-container">
-<p class="purchase-new-title">Nouvel achat</p>
-	{{ include('purchase/_form.html.twig') }}
-</div>
-<p class="purchase-button-container"><a href="{{ path('app_home') }}" class= "form-button">Retour à l'accueil</a></p>
-<hr>
-<p class="purchase-history-title">Liste des achats effectués</p>
+	<h1 class="title">Gestion des achats</h1>
+	<div class="purchase-new-container">
+		<p class="purchase-new-title">Nouvel achat</p>
+		{{ include('purchase/_form.html.twig') }}
+	</div>
+	<p class="purchase-button-container">
+		<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
+	</p>
+	<hr>
+	<p class="purchase-history-title">Liste des achats effectués</p>
 
-<ul class="purchase-list-container" data-controller="purchase-accordion">
-{% for purchase in purchases%}
-	<li class="purchase-list-item" data-purchase-accordion-item>
-		<button data-action="click->purchase-accordion#toggle" class="purchase-list-button">
-		Date de l'achat : {{ purchase.date|date('d/m/Y') }} 
-		 <svg data-purchase-accordion-target="icon" 
-         width="16" height="16" 
-         viewBox="0 0 24 24" 
-         fill="none" 
-         stroke="currentColor" 
-         stroke-width="2" class="purchase-list-btn-icon">
-        <path d="M6 9l6 6 6-6"/>
-    </svg> 
-		</button>
-		<div  data-purchase-accordion-target="panel"  class="purchase-list-detail purchase-hidden">
-			<p class="purchase-detail-line">Magasin : {{ purchase.provider }}</p>
-			<p class="purchase-detail-line">Montant : {{ purchase.amount }} euros</p>
-			<p class="purchase-detail-line">description : </p>
-			{{ purchase.description | nl2br}}
+	<div data-controller="purchase-accordion">
+		{{ include('purchase/_list.html.twig') }}
 		</div>
-	</li>
-{% else %}
-<li>Aucun achat effectué</li>
-{% endfor%}
-</ul>
-<p class="purchase-button-container"><a href="{{ path('app_home') }}" class= "form-button">Retour à l'accueil</a></p>
-{% endblock %}
+		<p class="purchase-button-container">
+			<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
+		</p>
+	{% endblock %}

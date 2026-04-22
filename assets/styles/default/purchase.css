@@ -50,9 +50,37 @@
     margin-bottom: 0.5rem;
     padding: 5px;
     padding-left: 10px;
-    max-height: 120px; 
+    max-height: 200px; 
     transition: all 0.3s ease-in-out, opacity 0.5s ease-in-out ;
     opacity: 1;
+}
+
+.purchase-detail-line{
+    margin-top: 0.5rem;
+}
+
+.purchase-detail-description{
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.purchase-dialog {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    padding: 10px;
+    transform: translate(-50%, -50%);
+    background-image: url("images/fond.jpg");
+}
+
+.purchase-popup-close-btn{
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
 /* Accordion */
