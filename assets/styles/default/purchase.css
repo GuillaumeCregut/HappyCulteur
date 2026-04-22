@@ -41,11 +41,6 @@
     position: relative;
 }
 
-.purchase-list-btn-icon{
-    position: absolute;
-    right: 5px;
-}
-
 .purchase-list-detail{
     margin-bottom: 0.5rem;
     padding: 5px;
@@ -103,4 +98,20 @@
 .purchase-form-input {
     padding: 3px;
     border: none;
+}
+
+@media screen and (max-width: 1000px){
+    .purchase-list-container {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .purchase-new-container {
+        width: 100%;
+    }
+
+    .purchase-list-container {
+        width: 100%;
+    }
 }
