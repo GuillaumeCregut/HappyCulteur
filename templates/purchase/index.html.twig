@@ -15,11 +15,10 @@
 	</p>
 	<hr>
 	<p class="purchase-history-title">Liste des achats effectués</p>
-
 	<div data-controller="purchase-accordion">
 		{{ include('purchase/_list.html.twig') }}
-		</div>
-		<p class="purchase-button-container">
-			<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
-		</p>
-	{% endblock %}
+	</div>
+	<p class="purchase-button-container">
+		<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
+	</p>
+{% endblock %}

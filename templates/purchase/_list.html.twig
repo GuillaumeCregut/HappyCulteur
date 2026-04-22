@@ -26,11 +26,10 @@
 			</li>
 		{% else %}
 			<li>Aucun achat effectué</li>
-			{% endfor%}
-		</ul>
-		<dialog id="purchase_update_popup" {{ stimulus_target('purchase-accordion', 'popup') }} class="purchase-dialog">
-			<div class="purchase-update-form" {{ stimulus_target('purchase-accordion', 'form') }}></div>
-			<button class="purchase-popup-close-btn" commandfor="purchase_update_popup" command="close">X</button>
-
-		</dialog>
-	</turbo-frame>
+		{% endfor%}
+    </ul>
+    <dialog id="purchase_update_popup" {{ stimulus_target('purchase-accordion', 'popup') }} class="purchase-dialog">
+        <div class="purchase-update-form" {{ stimulus_target('purchase-accordion', 'form') }}></div>
+        <button class="purchase-popup-close-btn" commandfor="purchase_update_popup" command="close">X</button>
+    </dialog>
+</turbo-frame>
