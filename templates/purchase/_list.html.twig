@@ -18,7 +18,10 @@
 					<p class="purchase-detail-line">description :
 					</p>
 					<p class="purchase-detail-description">{{ purchase.description | nl2br}}</p>
-					<button class="form-button" {{ stimulus_action('purchase-accordion', 'openPopup', 'click', { 'id': purchase.id } ) }}>Modifier</button>
+					<div class="purchase-detail-btn-container">
+                        <button class="form-button" {{ stimulus_action('purchase-accordion', 'openPopup', 'click', { 'id': purchase.id } ) }}>Modifier</button>
+                        {{ include('purchase/_delete_form.html.twig') }}
+                    </div>
 				</div>
 			</li>
 		{% else %}

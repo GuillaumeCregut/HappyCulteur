@@ -78,6 +78,11 @@
     cursor: pointer;
 }
 
+.purchase-detail-btn-container{
+    display: flex;
+    justify-content: space-around;
+}
+
 /* Accordion */
 .purchase-hidden {
      opacity: 0; 
