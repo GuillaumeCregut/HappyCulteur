@@ -26,7 +26,6 @@ final class HomeController extends AbstractController
         /**@var Apiculteur $user */
         if($user) {
             $apiaries = $user->getApiaries();
-             //TODO: cleanup user folder
              $tools->cleanUp($user, $uploadDirectory);
         } else {
             $apiaries = [];

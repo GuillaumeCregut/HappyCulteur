@@ -13,12 +13,12 @@ class UserConnected
    
     public function createEnv(Apiculteur $user, string $uploadPath): void
     {
-
+        //TODO: Create Env
     }
 
     public function cleanUp(Apiculteur $user, string $uploadPath): void
     {
-        //Remove users datas in his directory
+        //TODO : Remove users datas in his directory
         
     }
 }
