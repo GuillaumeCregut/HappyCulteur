@@ -2,24 +2,23 @@
 
 namespace App\Service;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\Apiculteur;
 
 class UserConnected
 {
-    public function __construct(private UserInterface $user)
+    public function __construct()
     {
         
     }
    
-    public function __invoke(): array
+    public function createEnv(Apiculteur $user, string $uploadPath): void
     {
-        $this->cleanUp();
-         //Supprimer les données utilisateurs temporaires dans le répertoire
-        return [];
+
     }
 
-    private function cleanUp(): void
+    public function cleanUp(Apiculteur $user, string $uploadPath): void
     {
         //Remove users datas in his directory
+        
     }
 }

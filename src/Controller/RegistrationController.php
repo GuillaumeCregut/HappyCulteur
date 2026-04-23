@@ -3,18 +3,25 @@
 namespace App\Controller;
 
 use App\Entity\Apiculteur;
+use App\Service\UserConnected;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(
+        Request $request, 
+        UserPasswordHasherInterface $userPasswordHasher, 
+        UserConnected $tools,
+        #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory,
+        EntityManagerInterface $entityManager): Response
     {
         $user = new Apiculteur();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -29,7 +36,7 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-
+            $tools->createEnv($user, $uploadDirectory);
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_home');
