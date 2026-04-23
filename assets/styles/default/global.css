@@ -59,3 +59,9 @@ body {
 .footer {
     margin-top: 2.5rem;
 }
+
+/* Error form */
+
+.error-item{
+    color: red;
+}
