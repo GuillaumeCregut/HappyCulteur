@@ -1,13 +1,27 @@
-.apiary-edition-link-list{
+.apiary-edition-link-list {
     margin-top: 1rem;
     padding: revert;
     list-style-image: url('../pictures/print.png');
 }
 
-.apiary-edition-link{
+.apiary-edition-link {}
 
+.apiary-edition-btn-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
-.apiary-edition-btn-container{
+/* declaration */
+
+.apiary-declaration-line {
     margin-top: 1rem;
+}
+
+.apiary-declaration-highlight {
+    font-weight: bold;
+}
+
+.apiary-declaration-adress {
+    margin-left: 1rem;
+    padding-top: 0.5rem;
 }
