@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/apiary.css')}}">
+{% endblock %}
+{% block title %}Rucher : Cartographie{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion du rucher - Cartographie</h1>
+<p class="apiary-carto-line">Nom : {{ apiary.name }}</p>
+<p class="apiary-carto-line">Numéro : {{ apiary.identification }}</p>
+
+{% if apiary.lastPicture %}
+<p class="apiary-carto-line">Photo actuelle :</p>
+<div class="apiary-carto-carto-container">
+    <div class="apiary-carto-picture-container">
+    <img src="{{ asset('/uploads/'~ apiary.lastPicture) }}" alt="image du rucher" class="apiary-carto-picture">
+    </div>
+    <div class="apiary-carto-see-carto-container">
+    <a href="" class="form-button">Voir la cartographie du rucher</a>
+    </div>
+</div>
+{% endif %}
+
+<div class="apiary-carto-form-container">
+{% form_theme form 'form/custom_error.html.twig' %}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+<fieldset class="apiary-carto-fieldset">
+    <legend>Ajouter une photo du rucher</legend>
+    {{ component('PictureFileUpload', {formField: form.picture, formLabel: '', previewPath: null})}}
+    <button class="form-button">Valider</button>
+</fieldset>
+{{ form_end(form) }}
+</div>
+
+<p class="apiary-carto-btn-container"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+{% endblock %}

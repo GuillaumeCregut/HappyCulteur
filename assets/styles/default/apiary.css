@@ -14,7 +14,7 @@
     margin-top: 1rem;
 }
 
-.apiary-info{
+.apiary-info {
     margin-top: 0.5rem;
 }
 
@@ -120,7 +120,7 @@
     height: auto;
 }
 
-.apiary-info-detail{
+.apiary-info-detail {
     color: red;
     border: 1px;
     display: inline-block;
@@ -132,7 +132,7 @@
     font-weight: bold;
 }
 
-.apiary-observation{
+.apiary-observation {
     border: 3px;
     width: 40%;
     background-color: white;
@@ -140,7 +140,44 @@
     border-style: inset;
 }
 
+/* Cartography */
+
+.apiary-carto-btn-container {
+    margin-top: 2rem;
+}
+
+.apiary-carto-line {
+    margin-bottom: 1rem;
+}
+
+.apiary-carto-carto-container {
+    display: flex;
+}
+
+.apiary-carto-picture-container {
+    flex-grow: 1;
+}
+
+.apiary-carto-picture {
+    width: 650px;
+    height: auto;
+}
+
+.apiary-carto-see-carto-container {
+    flex-grow: 1;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+}
+
+.apiary-carto-fieldset {
+    width: 40%;
+    padding: 1rem;
+    margin: 1rem;
+}
+
 @media screen and (max-width: 280px) {
+
     .apiaries-actions,
     .apiaries-hives {
         flex-direction: column;
@@ -156,5 +193,18 @@
 
     .apiary-row-text label {
         margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    .apiary-carto-fieldset {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .apiary-carto-picture {
+        width: 40vw;
+        height: auto;
     }
 }
