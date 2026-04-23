@@ -88,4 +88,12 @@ final class ApiaryController extends AbstractController
         ]);
     }
 
+    #[Route('/edition/{id}', name: 'edition')]
+    public function edition(Apiary $apiary): Response
+    {
+        return $this->render('apiary/editions/index.html.twig', [
+            'apiary' => $apiary
+        ]);
+    }
+
 }
