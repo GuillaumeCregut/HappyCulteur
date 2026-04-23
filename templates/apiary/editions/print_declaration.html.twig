@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/editions/apiary.css')}}">
+{% endblock %}
+{% block title %}Déclaration rucher{% endblock %}
+
+{% block body %}
+<h1 class="title">Déclaration de rucher</h1>
+<p class="apiary-edition-btn-container">
+    <a href="{{asset('uploads/' ~ file)}}" target="_blank">
+        <img src="{{asset('pictures/pdf.png')}}" alt="pdf icon">
+        Télécharger le fichier
+    </a>
+</p>
+<p class="apiary-edition-btn-container"><a href="{{ path('app_apiary_edition', {id: apiary.id}) }}" class= "form-button">Retour aux editions</a></p>
+{% endblock %}

@@ -7,6 +7,7 @@ use App\Service\UserConnected;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -14,17 +15,20 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(AuthenticationUtils $authenticationUtils): Response
+    public function index(
+        AuthenticationUtils $authenticationUtils, 
+         #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory,
+        UserConnected $tools): Response
     {
         $value = $this->getParameter('app.site_name');
         $error = $authenticationUtils->getLastAuthenticationError();
         $user = $this->getUser();
         /**@var Apiculteur $user */
-        $apiaries = $user->getApiaries();
-        if(null !== $user) {
-            $userConnected = new UserConnected($user);
-            //TODO: a voir pour trouver un nom ou pas
-            $userConnected();
+        if($user) {
+            $apiaries = $user->getApiaries();
+             $tools->cleanUp($user, $uploadDirectory);
+        } else {
+            $apiaries = [];
         }
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();

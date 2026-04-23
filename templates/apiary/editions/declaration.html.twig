@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/editions/apiary.css')}}">
+{% endblock %}
+{% block title %}Rucher : Déclaration
+{% endblock %}
+
+{% block body %}
+	<h1 class="title">Déclaration du rucher</h1>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">Nom :
+		</span>
+		{{app.user.name}}
+	</p>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">Prénom :
+		</span>
+		{{app.user.firstname}}
+	</p>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">Adresse :
+		</span>
+	</p>
+	<div class="apiary-declaration-adress">
+		<p>{{app.user.streetNumber}}
+			{{ app.user.street }}</p>
+		<p>{{app.user.zipCode}}
+			{{app.user.city}}</p>
+	</div>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">NAPI :
+		</span>
+		{{app.user.codeAPI}}
+	</p>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">SIRET :
+		</span>
+		{{app.user.siret ? app.user.siret : '-'}}
+	</p>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">Numéro de rucher :
+		</span>
+		{{apiary.identification}}
+	</p>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">Nom du rucher:
+		</span>
+		{{apiary.name}}
+	</p>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">Localisation du rucher :
+		</span>
+		{{apiary.localisation}}
+	</p>
+	<p class="apiary-declaration-line">
+		<span class="apiary-declaration-highlight">Nombre de ruche :
+		</span>
+		{{app.user.name}}
+	</p>
+    <p class="apiary-edition-btn-container">
+    <a href="{{path('app_edition_apiary_declaration_print', {id: apiary.id}) }}">
+    <img src="{{asset('pictures/print.png')}}" alt="Imprimer le document">
+    </a>
+    </p>
+	<p class="apiary-edition-btn-container">
+		<a href="{{ path('app_apiary_edition', {id: apiary.id}) }}" class="form-button">Retour aux editions</a>
+	</p>
+{% endblock %}
