@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/hive.css')}}">
+{% endblock %}
+{% block title %}Ajout d'une ruche{% endblock %}
+
+{% block body %}
+<h1 class="title">Création d'une ruche</h1>
+<p class="hive-add-info">Ajout d'une ruche dans le rucher "{{ apiary.name }}"</p>
+{{ include('hive/_form.html.twig', {'button_label': 'Valider'}) }}
+<p class="hive-btn-container"><a href="{{ path('app_apiary_index',  {id: apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+{% endblock %}
