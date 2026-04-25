@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/hive.css')}}">
+{% endblock %}
+{% block title %}Informations ruche{% endblock %}
+
+{% block body %}
+<h1 class="title">Informations sur la ruche</h1>
+<p class="hive-info-line">Rucher : <span class="hive-info-line-value">{{ hive.apiary.name }}</span></p>
+<p class="hive-info-line">Nom de la ruche : <span class="hive-info-line-value">{{ hive.name }}</span></p>
+<p class="hive-info-line">Date début d'activité : <span class="hive-info-line-value">{{ hive.date|date('d/m/Y')}}</span></p>
+<p class="hive-info-line">Numéro de la ruche : <span class="hive-info-line-value">{{ hive.identification }}</span></p>
+<p class="hive-info-line">Type de ruche : <span class="hive-info-line-value">{{ hive.kind.name }}</span></p>
+<p class="hive-info-line">Nombre de cadres : <span class="hive-info-line-value">{{ hive.frameNumber }}</span></p>
+<p class="hive-info-line">Etat : <span class="hive-info-line-value">{{ hive.state.translate }}</span></p>
+<p class="hive-info-line">Type de hausse : <span class="hive-info-line-value">{{ hive.rise.name }}</span></p>
+<p class="hive-info-line">Nombre de hausses : <span class="hive-info-line-value">{{ hive.riseNumber }}</span></p>
+<p class="hive-info-line">Observations</p>
+<article class="hive-info-observation">
+{{ hive.observation|nl2br }}
+</article>
+<p class="hive-btn-container"><a href="{{ path('app_hive_edit', {id: hive.id}) }}" class= "form-button">Modifier</a></p>
+<p class="hive-btn-container"><a href="" class= "form-button">Générer le QR Code de la ruche</a></p>
+<p class="hive-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}
