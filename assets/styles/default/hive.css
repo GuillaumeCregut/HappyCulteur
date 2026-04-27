@@ -4,6 +4,10 @@
 }
 
 /* index page */
+.hive-home-line {
+    margin-bottom: 1rem;
+}
+
 .hive-home-container {
     border-style: groove;
     background-color: white;
@@ -91,6 +95,15 @@
 }
 
 /* Informations */
+.hive-info-main-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hive-info-lines-container{
+    width: 50%;
+}
+
 .hive-info-line {
     margin-bottom: 1rem;
     font-weight: bold;
@@ -106,5 +119,23 @@
     border-style: inset;
     background-color: #f8f8f7;
     padding: 5px;
+}
 
+.hive-info-poster {
+    width:  260px;
+    height: auto;
+}
+
+@media screen and (max-width: 700px){
+    .hive-info-main-container{
+        flex-direction: column;
+    }
+
+    .hive-info-poster-container{
+        margin-top: 1rem;
+    }
+
+    .hive-info-lines-container{
+        width: 100%;
+    }
 }

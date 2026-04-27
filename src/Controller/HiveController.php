@@ -5,14 +5,12 @@ namespace App\Controller;
 use App\Entity\Hive;
 use App\Entity\Apiary;
 use App\Form\HiveType;
-use App\Entity\HiveKind;
-use App\Entity\HiveRise;
 use App\Entity\Apiculteur;
+use App\Service\HiveProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,6 +44,8 @@ final class HiveController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $hive->setApiary($apiary);
+            $qrCode = HiveProcessor::generateQR($user, $hive);
+            $hive->setQrCode($qrCode);
             $em->persist($hive);
             $em->flush();
             return $this->redirectToRoute('app_apiary_index', ['id' => $apiary->getId()]);
@@ -76,11 +76,36 @@ final class HiveController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-            return $this->redirectToRoute('app_hive_info', ['id' => $hive->getId()]);
+            return $this->redirectToRoute('app_hive_infos', ['id' => $hive->getId()]);
         }
         return $this->render('hive/update.html.twig', [
             'hive' => $hive,
             'form' => $form
         ]);
+    }
+
+    #[Route('/{id}/qrCode', name: 'qrCode', methods: ['GET'])]
+    public function generateQrCode(
+        Hive $hive,
+        Request $request,
+        #[CurrentUser] Apiculteur $user,
+        EntityManagerInterface $em
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        if (null === $hive->getQrCode()) {
+            $qrCode = HiveProcessor::generateQR($user, $hive);
+            $hive->setQrCode($qrCode);
+            $em->flush();
+        }
+        $width  = $request->query->getInt('width', 210);
+        $fontPath = 'src'. DIRECTORY_SEPARATOR . 'tool' . DIRECTORY_SEPARATOR .'arial.ttf';
+        $font = $this->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . $fontPath;
+        $picture  = HiveProcessor::generatePoster($hive, $font, $width);
+        ob_start();
+        imagepng($picture);
+        $imageData = ob_get_clean();
+        return new Response($imageData, 200, [
+        'Content-Type' => 'image/png',
+    ]);
     }
 }
