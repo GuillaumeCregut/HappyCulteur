@@ -108,4 +108,12 @@ final class HiveController extends AbstractController
         'Content-Type' => 'image/png',
     ]);
     }
+
+     #[Route('/{id}/carto', name: 'carto', methods: ['GET'])]
+     public function carto(Hive $hive): Response
+     {
+        return $this->render('hive/carto.html.twig', [
+            'hive' => $hive,
+        ]);
+     }
 }
