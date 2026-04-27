@@ -9,6 +9,7 @@ use App\Constant\HiveState;
 use App\Entity\Apiary;
 use App\Entity\HiveKind;
 use App\Entity\HiveRise;
+use App\Service\HiveProcessor;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -31,6 +32,8 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
                 ->setObservation($faker->paragraph());
             $apiary = $this->getReference('apiary_admin_' .  $faker->numberBetween(0, 4), Apiary::class);
             $hive->setApiary($apiary);
+            $user = $apiary->getBeekeeper();
+            $hive->setQrCode(HiveProcessor::generateQR($user, $hive));
             $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4),HiveKind::class);
             $hive->setKind($kind);
             $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12),HiveRise::class);
@@ -51,6 +54,8 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
                 ->setObservation($faker->paragraph());
             $apiary = $this->getReference('apiary_' .  $faker->numberBetween(0, 19), Apiary::class);
             $hive->setApiary($apiary);
+            $user = $apiary->getBeekeeper();
+            $hive->setQrCode(HiveProcessor::generateQR($user, $hive));
             $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4),HiveKind::class);
             $hive->setKind($kind);
             $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12),HiveRise::class);
