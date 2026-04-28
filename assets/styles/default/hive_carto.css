@@ -6,7 +6,12 @@
     border: 1px solid black;
 }
 
-.hive-carto-command-container {}
+.hive-carto-command-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2rem;
+}
 
 .hive-carto-button-grid {
     display: grid;
@@ -48,26 +53,21 @@
 }
 
 /* Button */
-.hive-carto-btn-up{
-
+.hive-carto-btn-move{
+    height: 65px;
+    width: 65px;
+    border-radius: 50%;
 }
 
-.hive-carto-btn-left{
+@media screen and (max-width: 1000px) {
+    .hive-carto-command-container {
+        width: 100%;
+    }
 
-}
-
-.hive-carto-btn-zoom-in{
-
-}
-
-.hive-carto-btn-zoom-out{
-
-}
-
-.hive-carto-btn-right{
-
-}
-
-.hive-carto-btn-down{
-
+    .hive-carto-canvas-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
 }
