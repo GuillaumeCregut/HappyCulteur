@@ -114,6 +114,7 @@ final class HiveController extends AbstractController
      #[Route('/{id}/carto', name: 'carto', methods: ['GET'])]
      public function carto(Hive $hive): Response
      {
+        $this->denyAccessUnlessGranted('own', $hive);
         return $this->render('hive/carto.html.twig', [
             'hive' => $hive,
         ]);
@@ -127,6 +128,7 @@ final class HiveController extends AbstractController
         CsrfTokenManagerInterface $csrf,
         ): Response
      {
+        $this->denyAccessUnlessGranted('own', $hive);
         $token = $request->headers->get('X-CSRF-Token');
         if(!$csrf->isTokenValid(new CsrfToken('save_coords', $token))) {
             return $this->json(['error'=>'Invalid CSRF token'], 403);
