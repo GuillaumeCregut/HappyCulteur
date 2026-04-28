@@ -30,8 +30,8 @@ class Swarm
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $capturePlace = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $QueenAge = null;
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $QueenAge = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $QueenOrigin = null;
@@ -108,12 +108,12 @@ class Swarm
         return $this;
     }
 
-    public function getQueenAge(): ?int
+    public function getQueenAge(): ?\DateTimeImmutable
     {
         return $this->QueenAge;
     }
 
-    public function setQueenAge(?int $QueenAge): static
+    public function setQueenAge(?\DateTimeImmutable $QueenAge): static
     {
         $this->QueenAge = $QueenAge;
 

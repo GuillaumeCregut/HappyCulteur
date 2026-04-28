@@ -22,10 +22,12 @@ class SwarmFixtures extends Fixture implements DependentFixtureInterface
             $swarm = new Swarm();
             $date = $faker->date();
             $swarmDate = new DateTimeImmutable($date);
+            $date2 =  $faker->dateTimeBetween('-3 years', '-1 month');
+            $queenAge = DateTimeImmutable::createFromMutable($date2);
             $swarm->setName("EssaimAdmin-{$i}")
                 ->setDate($swarmDate)
                 ->setCapturePlace($faker->city())
-                ->setQueenAge($faker->randomDigit())
+                ->setQueenAge($queenAge)
                 ->setQueenOrigin($faker->sentence(3))
                 ->setOrigin($this->randomOrigin())
                 ->setSpecy($faker->word());
@@ -42,10 +44,12 @@ class SwarmFixtures extends Fixture implements DependentFixtureInterface
             $swarm = new Swarm();
             $date = $faker->date();
             $swarmDate = new DateTimeImmutable($date);
+            $date2 =  $faker->dateTimeBetween('-3 years', '-1 month');
+            $queenAge = DateTimeImmutable::createFromMutable($date2);
             $swarm->setName("EssaimAdmin-{$i}")
                 ->setDate($swarmDate)
                 ->setCapturePlace($faker->city())
-                ->setQueenAge($faker->randomDigit())
+                ->setQueenAge($queenAge)
                 ->setQueenOrigin($faker->sentence(3))
                 ->setOrigin($this->randomOrigin())
                 ->setSpecy($faker->word());
