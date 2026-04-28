@@ -16,7 +16,6 @@ export default class Apiary {
         this.hives = [];
     }
 
-
     drawApiary(context)
     {
         context.drawImage(this.image, 0, 0);

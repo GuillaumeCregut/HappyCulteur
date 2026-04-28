@@ -60,13 +60,11 @@ class HiveType extends AbstractType
                 'class' => HiveKind::class,
                 'choice_label' => 'name',
                 'placeholder' => false,
-                //'choice_value' => 'id', 
                 'required' => true,
             ])
             ->add('rise', EntityType::class, [
                 'class' => HiveRise::class,
-                'choice_label' => 'name',
-                //'choice_value' => 'id', 
+                'choice_label' => 'name', 
                 'placeholder' => false,
                 'required' => true,
             ])

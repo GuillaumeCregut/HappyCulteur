@@ -12,10 +12,9 @@ export default class Hive {
         } else {
             this.zoom = parseInt(z);
         }
-        //Ajout pour voir apiary
+        
         if (this.zoom != 0) {
-            //On test le niveau de zoom et on l'applique
-            if (this.zoom < 0) //Zoom out
+            if (this.zoom < 0) 
             {
                 let step = Math.abs(this.zoom);
                 this.width = Math.round(this.width / step);
@@ -26,7 +25,7 @@ export default class Hive {
                 this.height = Math.round(this.height * step);;
             }
         }
-        //Fin ajout
+        
         this.image = new Image();
         this.ready = new Promise((resolve, reject) => {
             this.image.onload = () => {
@@ -41,7 +40,6 @@ export default class Hive {
 
     drawHive(context) {
         context.drawImage(this.image, this.x, this.y, this.width, this.height);
-        //Dessine le label
         let labelWidth = 50;
         let xlabel = this.x + (this.width - labelWidth) / 2;
         let ylabel = this.y + this.height + 5;
@@ -54,19 +52,17 @@ export default class Hive {
         context.fillStyle = 'white';
         context.fillText(this.name, (xlabel + 5), (ylabel + 12));
     }
+
     zoomIn(context, step) {
-        //On redessine la ruche en fonction de critère zoom
         let OldX = this.x;
         let OldY = this.y;
         this.width = Math.round(this.width * step);
         this.height = Math.round(this.height * step);
         this.zoom = this.zoom + step;
         context.drawImage(this.image, OldX, OldY, this.width, this.height);
-
     }
 
     zoomOut(context, step) {
-        //On redessine la ruche en fonction de critère zoom
         let OldX = this.x;
         let OldY = this.y;
         this.width = Math.round(this.width / step);
@@ -125,6 +121,5 @@ export default class Hive {
         this.x = nextX;
         this.y = nextY;
         return true;
-        //On deplace la ruche
     }
 }
