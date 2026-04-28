@@ -6,7 +6,7 @@
 			<li>
 				<a href="{{ path('app_apiary_index', {id: apiary.id}) }}">
 					<div class="hivecard">
-						<img src="{{ asset('pictures/apiaries/rucher' ~ (apiary.isActive ? '' : '_dead') ~ '.png') }}" alt="rucher1" class="logo rucher {{ (apiary.isActive ? '' : ' mort') }}">
+						<img src="{{ asset('pictures/apiaries/rucher' ~ (apiary.isActive ? '' : '_dead') ~ '.png') }}" alt="rucher1" class="apiary-picture">
 						<p class="apiary-card-title">{{ apiary.name }}</p>
 					</div>
 				</a>

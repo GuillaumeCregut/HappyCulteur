@@ -13,16 +13,18 @@
 	<div class="apiaries-hive-container">
 		<p class="item">Ruches</p>
 		<ul class="apiaries-hives">
+			{% for hive in apiary.hives %}
 			<li>
-				<a href="">
+				<a href="{{ path('app_hive_index',{id: hive.id}) }}">
 					<div class="apiaries-hivecard">
-						<img src="{{ asset('pictures/apiaries/rucher.png') }}" alt="rucher1" class="apiaries-hives-picture">
-						<p class="apiaries-hivecard-title">Ruche 1</p>
+						<img src="{{ asset('uploads/' ~ hive.kind.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
+						<p class="apiaries-hivecard-title">{{ hive.name }}</p>
 					</div>
 				</a>
 			</li>
+			{% endfor %}
             <li>
-				<a href="">
+				<a href=" {{ path('app_hive_add',{id: apiary.id}) }}">
 					<div class="apiaries-hivecard">
 						<img src="{{ asset('pictures/hives/ruche_add.png') }}" alt="ajouter une ruche" class="apiaries-hives-picture">
 						<p class="apiaries-hivecard-title">Ajouter une ruche</p>

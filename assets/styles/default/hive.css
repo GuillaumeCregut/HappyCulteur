@@ -1,0 +1,153 @@
+/* global page */
+.hive-btn-container {
+    margin-top: 1rem;
+}
+
+/* index page */
+.hive-home-line {
+    margin-bottom: 1rem;
+}
+
+.hive-home-container {
+    border-style: groove;
+    background-color: white;
+    border-width: 5px;
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hive-home-container a {
+    text-decoration: none;
+    color: black;
+}
+
+.hive-home-detail-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.hive-home-item {
+    font-size: bold;
+    color: red;
+}
+
+.hive-home-detail-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.hive-home-card {
+    width: clamp(70px, 12vw, 130px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.hive-home-card:hover {
+    background-color: #ccffff;
+}
+
+.hive-home-card:hover .hive-home-card-title {
+    font-weight: bold;
+}
+
+.hive-home-card-title {
+    margin-top: 5px;
+}
+
+.hive-home-card-picture {
+    width: calc(100% - 10px);
+    height: auto;
+}
+
+/* Add page */
+.hive-add-info {
+    margin-bottom: 1rem;
+}
+
+/* form */
+.hive-form-reminder {
+    margin-top: 2rem;
+}
+
+.hive-form-container {
+    padding-left: 1rem;
+}
+
+.hive-form-row {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hive-form-input {
+    border: none;
+    padding: 3px;
+
+}
+
+/* Informations */
+.hive-info-main-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hive-info-lines-container {
+    width: 50%;
+}
+
+.hive-info-line {
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.hive-info-line-value {
+    font-weight: initial;
+}
+
+.hive-info-observation {
+    border: 3px;
+    width: 40%;
+    border-style: inset;
+    background-color: #f8f8f7;
+    padding: 5px;
+}
+
+.hive-info-poster {
+    width: 260px;
+    height: auto;
+}
+
+/* carto */
+.hive-carto-line {
+    margin-top: 1rem;
+}
+
+.hive-carto-container {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 700px) {
+    .hive-info-main-container {
+        flex-direction: column;
+    }
+
+    .hive-info-poster-container {
+        margin-top: 1rem;
+    }
+
+    .hive-info-lines-container {
+        width: 100%;
+    }
+}

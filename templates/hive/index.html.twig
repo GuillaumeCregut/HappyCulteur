@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/hive.css')}}">
+{% endblock %}
+{% block title %}Gestion de la ruche{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion de la ruche</h1>
+<p class="hive-home-line">Rucher : {{hive.apiary.name}}</p>
+<p class="hive-home-line">Nom : {{hive.name}}</p>
+<p class="hive-home-line">Numéro : {{hive.identification}}</p>
+<p class="hive-home-line">Type de ruche : {{hive.kind.name}}</p>
+<p class="hive-home-line">Type de ruche : 
+<img src="{{ asset('uploads/' ~ hive.kind.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="hive-home-picture">
+</p>
+
+<section class="hive-home-container">
+	<div class="hive-home-detail-container">
+		<p class="hive-home-item">Informations</p>
+		<ul class="hive-home-detail-list">
+			<li>
+				<a href="">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/options/swarm.png') }}" alt="icon {{ hive.name }}" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Essaim</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="{{ path('app_hive_infos', {id: hive.id}) }}">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/options/information.png') }}" alt="informations" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Informations</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/options/visite.png') }}" alt="Visites" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Visite</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/admin/honey.png') }}" alt="Recoltes" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Récoltes</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/options/stats.png') }}" alt="Statistiques" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Stats</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="{{ path('app_hive_carto', {id: hive.id}) }}">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/apiaries/carto.png') }}" alt="cartographie" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Cartographie</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/options/help.png') }}" alt="aide" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Aide</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</section>
+<p class="hive-btn-container"><a href="{{ path('app_apiary_index', {id: hive.apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+{% endblock %}

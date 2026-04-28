@@ -1,0 +1,100 @@
+{% form_theme form 'form/custom_error.html.twig' %}
+
+
+<div class="hive-form-container">
+<p class="hive-form-reminder">* : Champs obligatoires</p>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+        {{ form_row(form.name,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Nom de la ruche* : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+        {{ form_row(form.identification,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Numéro de la ruche* : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+        {{ form_row(form.frameNumber,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Nombre de cadres* : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+         {{ form_row(form.rise,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Type de hausse* : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+        {{ form_row(form.riseNumber,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Nombre de hausse* : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+        {{ form_row(form.date,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: "Date de début d'activité : ",
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+        {{ form_row(form.kind,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Type de ruche* : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+        {{ form_row(form.state,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Etat* : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+         {{ form_row(form.observation,  {
+                    row_attr: {
+                        class: 'hive-form-row'
+                    },
+                    label: 'Observation : ',
+                    attr : {
+                        class: 'hive-form-input'
+                    }
+            })
+        }}
+        <button class="form-button">{{ button_label|default('Valider') }}</button>
+    {{ form_end(form) }}
+</div>

@@ -29,7 +29,7 @@ final class ApiaryController extends AbstractController
         Apiary $apiary,
     ): Response {
         if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw new AccessDeniedHttpException('Access denied.');
+            throw $this->createAccessDeniedException();
         }
         return $this->render('apiary/index.html.twig', [
             'apiary' => $apiary
@@ -63,7 +63,7 @@ final class ApiaryController extends AbstractController
         Apiary $apiary,
     ): Response {
         if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw new AccessDeniedHttpException('Access denied.');
+            throw $this->createAccessDeniedException();
         }
         return $this->render('apiary/info.html.twig', [
             'apiary' => $apiary
@@ -78,7 +78,7 @@ final class ApiaryController extends AbstractController
         EntityManagerInterface $em
     ): Response {
         if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw new AccessDeniedHttpException('Access denied.');
+            throw $this->createAccessDeniedException();
         }
         $form = $this->createForm(ApiaryFormType::class, $apiary);
         $form->handleRequest($request);
@@ -117,11 +117,11 @@ final class ApiaryController extends AbstractController
             /**@var UploadedFile $hivePicture */
             $picture = $form->get('picture')->getData();
             $role = (string) $user->getId();
-            $filePath= $this->handleFile($apiary->getIdentification(), $uploadDirectory, $role, $slugger, false, $uploader, $picture);
+            $filePath = $this->handleFile($apiary->getIdentification(), $uploadDirectory, $role, $slugger, false, $uploader, $picture);
             $apiary->setLastPicture($filePath);
             $em->persist($apiary);
             $em->flush();
-            return $this->redirectToRoute('app_apiary_cartography', ['id'=>$apiary->getId()]);
+            return $this->redirectToRoute('app_apiary_cartography', ['id' => $apiary->getId()]);
         }
         return $this->render('apiary/carto.html.twig', [
             'apiary' => $apiary,

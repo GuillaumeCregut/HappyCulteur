@@ -17,4 +17,13 @@ enum HiveState: int
         self::STOCK_HIVE =>'-stock'
         };
     }
+
+    public function translate(): string
+    {
+        return match ($this) {
+        self::ACTIVE_HIVE => 'Active',
+        self::DEAD_HIVE => 'Morte',
+        self::STOCK_HIVE =>'Re stockée'
+        };
+    }
 }
