@@ -4,7 +4,7 @@ import Apiary from '../scripts/apiary.js';
 import { DIRECTION } from '../scripts/constants.js';
 
 export default class extends Controller {
-    static targets = ["canvas", "message"];
+    static targets = ["canvas", "message", "uninitialized"];
 
     static values = {
         x: Number,
@@ -20,6 +20,11 @@ export default class extends Controller {
     async connect() {
         this.canvas = this.canvasTarget;
         this.ctx = this.canvasTarget.getContext("2d");
+        console.log(this.pathValue);
+        if(this.pathValue ==='/uploads/') {
+            this.uninitializedTarget.classList.remove('hive-carto-message-hidden');
+            return;
+        }
         this.apiary = new Apiary(this.pathValue);
         this.hive = new Hive(this.hivePictureValue, this.xValue, this.yValue, this.scaleValue, this.nameValue);
         await this.apiary.ready;

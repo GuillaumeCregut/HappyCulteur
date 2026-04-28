@@ -26,6 +26,10 @@
     <canvas class="hive-carto-canvas"
      {{ stimulus_target('hive-carto', 'canvas') }}
      >Votre navigateur ne supporte pas le canvas</canvas>
+     <p 
+     class="hive-carto-message-error hive-carto-message-hidden"
+     {{ stimulus_target('hive-carto', 'uninitialized') }}
+     >Cartographie du rucher non initialisée. Veuillez le faire</p>
     </div>
     <div class="hive-carto-command-container">
         <div class="hive-carto-button-grid">
