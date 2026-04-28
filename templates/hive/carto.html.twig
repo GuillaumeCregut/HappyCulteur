@@ -2,7 +2,7 @@
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{asset('styles/default/hive.css')}}">
 	<link rel="stylesheet" href="{{asset('styles/default/hive_carto.css')}}">
-{% endblock %}
+{% endblock %} 
 {% block title %}Ajout d'une ruche{% endblock %}
 
 {% block body %}
@@ -12,13 +12,15 @@
 <p class="hive-carto-line">Nom de la ruche : "{{ hive.name }}"</p>
 <section class="hive-carto-container"
 {{ stimulus_controller('hive-carto', {
-x:hive.coordX, 
-y: hive.coordY, 
-scale: hive.coordZ, 
-name: hive.name, 
-hivePicture: asset('/pictures/hives/ruche_carto.png'),
-path: asset('/uploads/'~ hive.apiary.lastPicture), 
-id: hive.id
+    x:hive.coordX, 
+    y: hive.coordY, 
+    scale: hive.coordZ, 
+    name: hive.name, 
+    hivePicture: asset('/pictures/hives/ruche_carto.png'),
+    path: asset('/uploads/'~ hive.apiary.lastPicture),
+    url: path('app_hive_carto_save',{id:hive.id}),
+    csrf: csrf_token('save_coords'), 
+    id: hive.id
 }) }}>
     <div class="hive-carto-canvas-container">
     <canvas class="hive-carto-canvas"
@@ -45,6 +47,11 @@ id: hive.id
             <div class="hive-carto-btn-container hive-carto-button-down-container">
                 <button class="hive-carto-btn-down hive-carto-btn-move"{{ stimulus_action('hive-carto', 'moveDown') }}>Bas</button>
             </div>
+            <div class="hive-carto-btn-container hive-carto-button-save-container">
+                <button class="form-button"{{ stimulus_action('hive-carto', 'save') }}>Enregistrer</button>
+                <p {{ stimulus_target('hive-carto', 'message') }}></p>
+            </div>
+
         </div>
     </div>
 </section>

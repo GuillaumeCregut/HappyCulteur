@@ -17,11 +17,11 @@ export default class Hive {
             //On test le niveau de zoom et on l'applique
             if (this.zoom < 0) //Zoom out
             {
-                step = Math.abs(this.zoom);
+                let step = Math.abs(this.zoom);
                 this.width = Math.round(this.width / step);
                 this.height = Math.round(this.height / step);
             } else {
-                step = this.zoom;
+                let step = this.zoom;
                 this.width = Math.round(this.width * step);
                 this.height = Math.round(this.height * step);;
             }

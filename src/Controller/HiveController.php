@@ -15,6 +15,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/hive', name: 'app_hive_')]
@@ -115,5 +117,25 @@ final class HiveController extends AbstractController
         return $this->render('hive/carto.html.twig', [
             'hive' => $hive,
         ]);
+     }
+
+     #[Route('/{id}/carto/save', name: 'carto_save', methods: ['POST'])]
+     public function cartoSave(
+        Hive $hive,
+        Request $request,
+        EntityManagerInterface $em,
+        CsrfTokenManagerInterface $csrf,
+        ): Response
+     {
+        $token = $request->headers->get('X-CSRF-Token');
+        if(!$csrf->isTokenValid(new CsrfToken('save_coords', $token))) {
+            return $this->json(['error'=>'Invalid CSRF token'], 403);
+        }
+        $data = json_decode($request->getContent(), true);
+        $hive->setCoordX($data['x'])
+            ->setCoordY($data['y'])
+            ->setCoordZ($data['z']);
+        $em->flush();
+        return $this->json(['success' => true]);
      }
 }
