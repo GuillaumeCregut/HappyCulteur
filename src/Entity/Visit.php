@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Constant\Weather;
-use App\Repository\VisitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\VisitRepository;
@@ -24,7 +23,7 @@ class Visit
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column(type: 'integer', enumType: Weather::class)]
-    private ?int $weather = null;
+    private ?Weather $weather = null;
 
     #[ORM\Column]
     private ?bool $isDisease = null;
@@ -83,12 +82,12 @@ class Visit
         return $this;
     }
 
-    public function getWeather(): ?int
+    public function getWeather(): ?Weather
     {
         return $this->weather;
     }
 
-    public function setWeather(int $weather): static
+    public function setWeather(Weather $weather): static
     {
         $this->weather = $weather;
 
