@@ -6,7 +6,12 @@ use App\Constant\Weather;
 use App\Repository\VisitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VisitRepository;
+use App\Validator\ValidVisitDisease;
+use App\Validator\ValidVisitFeed;
 
+#[ValidVisitDisease]
+#[ValidVisitFeed]
 #[ORM\Entity(repositoryClass: VisitRepository::class)]
 class Visit
 {
