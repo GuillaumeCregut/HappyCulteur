@@ -1,0 +1,65 @@
+/* Global */
+.swarm-btn-container {
+    margin-top: 1rem;
+}
+
+/* Homepage */
+.swarm-index-info-line {
+    margin-bottom: 1rem;
+}
+
+/* form */
+.swarm-form-row{
+    margin-bottom: 1rem;
+}
+
+.swarm-form-input{
+    padding: 3px;
+    border: none;
+}
+
+/* translate */
+.swarm-translate-line{
+    margin-bottom: 1rem;
+}
+
+/* form translate */
+.swarm-form-translate-fieldset{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0 1rem 1rem;
+    gap: 4rem;
+}
+
+.swarm-form-translate-row{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.swarm-form-translate-input{
+    padding: 3px;
+    max-width: max-content;
+}
+
+.swarm-form-translate-line{
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.swarm-form-translate-warning-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swarm-form-translate-warning{
+    color :red;
+    
+}
+
+@media screen and (max-width: 980px) {
+    .swarm-form-translate-fieldset{
+        gap: 1rem;
+    }
+}

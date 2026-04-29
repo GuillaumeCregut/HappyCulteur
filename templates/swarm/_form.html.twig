@@ -1,0 +1,84 @@
+{{ form_start(form) }}
+<div class="swarm-form-errors">
+{{ form_errors(form) }}
+</div>
+<div class="swarm-form-container">
+    {{ form_row(form.name,  {
+                row_attr: {
+                    class: 'swarm-form-row'
+                },
+                label: "Nom de l'essaim* : ",
+                attr : {
+                    class: 'swarm-form-input'
+                }
+        })
+    }}
+
+    {{ form_row(form.specy,  {
+                row_attr: {
+                    class: 'swarm-form-row'
+                },
+                label: "Espèce : ",
+                attr : {
+                    class: 'swarm-form-input'
+                }
+        })
+    }}
+
+    {{ form_row(form.date,  {
+                row_attr: {
+                    class: 'swarm-form-row'
+                },
+                label: "Date de mise en ruche* : ",
+                attr : {
+                    class: 'swarm-form-input'
+                }
+        })
+    }}
+
+    {{ form_row(form.capturePlace,  {
+                row_attr: {
+                    class: 'swarm-form-row'
+                },
+                label: "Lieu de capture : ",
+                attr : {
+                    class: 'swarm-form-input'
+                }
+        })
+    }}
+
+    {{ form_row(form.queenAge,  {
+                row_attr: {
+                    class: 'swarm-form-row'
+                },
+                label: "Date de naissance de la reine : ",
+                attr : {
+                    class: 'swarm-form-input'
+                }
+        })
+    }}
+
+    {{ form_row(form.queenOrigin,  {
+                row_attr: {
+                    class: 'swarm-form-row'
+                },
+                label: "Origine de la reine : ",
+                attr : {
+                    class: 'swarm-form-input'
+                }
+        })
+    }}
+
+    {{ form_row(form.origin,  {
+                row_attr: {
+                    class: 'swarm-form-row'
+                },
+                label: "Origine de l'essaim* : ",
+                attr : {
+                    class: 'swarm-form-input'
+                }
+        })
+    }}
+<button class="form-button">{{ button_label|default('Valider') }}</button>
+</div>
+{{ form_end(form) }}
