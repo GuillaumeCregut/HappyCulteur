@@ -138,6 +138,19 @@
     flex-wrap: wrap;
 }
 
+/* Translate */
+.hive-form-translate-line{
+    margin-bottom: 1rem;
+}
+
+.hive-form-translate-row{
+    margin-bottom: 1rem;
+}
+
+.hive-form-translate-input {
+    padding: 3px;
+}
+
 @media screen and (max-width: 700px) {
     .hive-info-main-container {
         flex-direction: column;

@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Dto\ApiaryDto;
 use App\Entity\Hive;
 use App\Entity\Apiary;
 use App\Form\HiveType;
 use App\Entity\Apiculteur;
+use App\Form\HiveTransferType;
+use App\Repository\ApiaryRepository;
 use App\Service\HiveProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,6 +70,40 @@ final class HiveController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/translate', name: 'translate', methods: ['GET', 'POST'])]
+    public function translate(
+        Hive $hive,
+        EntityManagerInterface $em,
+        #[CurrentUser] Apiculteur $user,
+        ApiaryRepository $repo,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $apiaries = $repo->findByBeekeeper($user);
+        $dtos = [];
+        foreach($apiaries as $apiary) {
+            if($hive->getApiary() !== $apiary) {
+                $dtos[] = new ApiaryDto($apiary->getId(), $apiary->getName());
+            }
+        }
+        $form = $this->createForm(HiveTransferType::class, null, ['dtos' =>  $dtos]);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $newId = $form->get('apiaryList')->getNormData();
+            $newApiary = $repo->findOneBy(['id' => $newId]);
+            $hive->setApiary($newApiary);
+            $hive->setCoordX(null);
+            $hive->setCoordY(null);
+            $hive->setCoordZ(null);
+            $em->flush();
+            return $this->redirectToRoute('app_hive_index', ['id' => $hive->getId()]);
+        }
+        return $this->render('hive/translate.html.twig', [
+            'hive' => $hive,
+            'form' => $form
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function update(
         Hive $hive,
@@ -100,38 +137,37 @@ final class HiveController extends AbstractController
             $em->flush();
         }
         $width  = $request->query->getInt('width', 210);
-        $fontPath = 'src'. DIRECTORY_SEPARATOR . 'tool' . DIRECTORY_SEPARATOR .'arial.ttf';
+        $fontPath = 'src' . DIRECTORY_SEPARATOR . 'tool' . DIRECTORY_SEPARATOR . 'arial.ttf';
         $font = $this->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . $fontPath;
         $picture  = HiveProcessor::generatePoster($hive, $font, $width);
         ob_start();
         imagepng($picture);
         $imageData = ob_get_clean();
         return new Response($imageData, 200, [
-        'Content-Type' => 'image/png',
-    ]);
+            'Content-Type' => 'image/png',
+        ]);
     }
 
-     #[Route('/{id}/carto', name: 'carto', methods: ['GET'])]
-     public function carto(Hive $hive): Response
-     {
+    #[Route('/{id}/carto', name: 'carto', methods: ['GET'])]
+    public function carto(Hive $hive): Response
+    {
         $this->denyAccessUnlessGranted('own', $hive);
         return $this->render('hive/carto.html.twig', [
             'hive' => $hive,
         ]);
-     }
+    }
 
-     #[Route('/{id}/carto/save', name: 'carto_save', methods: ['POST'])]
-     public function cartoSave(
+    #[Route('/{id}/carto/save', name: 'carto_save', methods: ['POST'])]
+    public function cartoSave(
         Hive $hive,
         Request $request,
         EntityManagerInterface $em,
         CsrfTokenManagerInterface $csrf,
-        ): Response
-     {
+    ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
         $token = $request->headers->get('X-CSRF-Token');
-        if(!$csrf->isTokenValid(new CsrfToken('save_coords', $token))) {
-            return $this->json(['error'=>'Invalid CSRF token'], 403);
+        if (!$csrf->isTokenValid(new CsrfToken('save_coords', $token))) {
+            return $this->json(['error' => 'Invalid CSRF token'], 403);
         }
         $data = json_decode($request->getContent(), true);
         $hive->setCoordX($data['x'])
@@ -139,5 +175,5 @@ final class HiveController extends AbstractController
             ->setCoordZ($data['z']);
         $em->flush();
         return $this->json(['success' => true]);
-     }
+    }
 }
