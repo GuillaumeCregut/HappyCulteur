@@ -59,7 +59,7 @@ class Hive
     #[ORM\ManyToOne(inversedBy: 'hives')]
     private ?HiveRise $rise = null;
 
-    #[ORM\OneToOne(mappedBy: 'hive', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'hive', cascade: ['persist'])]
     private ?Swarm $swarm = null;
 
     public function getId(): ?int

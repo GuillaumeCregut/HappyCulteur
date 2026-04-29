@@ -36,7 +36,7 @@ class Swarm
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $queenOrigin = null;
 
-    #[ORM\OneToOne(inversedBy: 'swarm', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'swarm', cascade: ['persist'])]
     private ?Hive $hive = null;
 
     #[ORM\ManyToOne(inversedBy: 'swarms')]
@@ -139,15 +139,7 @@ class Swarm
 
     public function setHive(?Hive $hive): static
     {
-        if((null !== $this->hive) && ($hive !== $this->hive)) {
-            $this->hive->setSwarm(null);
-        }
-
         $this->hive = $hive;
-        
-        if((null !== $hive) && ($this !== $hive->getSwarm())){
-            $hive->setSwarm($this);
-        }
         return $this;
     }
 
