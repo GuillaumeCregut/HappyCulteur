@@ -30,9 +30,7 @@ final class SwarmController extends AbstractController
         Request $request,
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
-
         if (null === $hive->getSwarm()) {
-            /* */
             $swarms = $repo->findByBeekeeper($user);
             $dtos = [];
             foreach ($swarms as $swarmItem) {
@@ -54,7 +52,6 @@ final class SwarmController extends AbstractController
                 $em->flush();
                 return $this->redirectToRoute('app_swarm_index', ['id' => $hive->getId()]);
             }
-            /* */
             return $this->render("swarm/index_empty.html.twig", [
                 'hive' => $hive,
                 'form' => $form
@@ -72,6 +69,7 @@ final class SwarmController extends AbstractController
         Hive $hive,
         #[CurrentUser] Apiculteur $user,
     ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
         $swarm = new Swarm();
         $form = $this->createForm(SwarmType::class, $swarm);
         $form->handleRequest($request);
@@ -97,6 +95,7 @@ final class SwarmController extends AbstractController
         Request $request,
         Swarm $swarm,
     ): Response {
+        $this->denyAccessUnlessGranted('own', $swarm);
         $id = $swarm->getHive()->getId();
         if ($this->isCsrfTokenValid('delete' . $swarm->getId(), $request->getPayload()->getString('_token'))) {
             $em->remove($swarm);
