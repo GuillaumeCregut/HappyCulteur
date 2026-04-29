@@ -19,9 +19,11 @@
 		<p class="hive-home-item">Informations</p>
 		<ul class="hive-home-detail-list">
 			<li>
-				<a href="">
+				<a href="{{ path('app_swarm_index', {id: hive.id}) }}">
 					<div class="hive-home-card">
-						<img src="{{ asset('pictures/options/swarm.png') }}" alt="icon {{ hive.name }}" class="hive-home-card-picture">
+						<img src="{{ asset( hive.swarm 
+						? 'pictures/options/swarm.png'
+						: 'pictures/options/noswarm.png') }}" alt="icone essaim" class="hive-home-card-picture">
 						<p class="hive-home-card-title">Essaim</p>
 					</div>
 				</a>
