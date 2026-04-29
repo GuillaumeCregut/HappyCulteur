@@ -1,0 +1,60 @@
+/* Global */
+.visit-btn-container{
+    margin-top: 1rem;
+}
+/* Add page */
+.visit-add-line{
+    margin-bottom: 1rem;
+}
+
+.visit-form-fieldset{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 10px;
+    background-color: #e0e0e0;
+    width: 45%;
+    margin-left: 1rem;
+}
+
+.visit-form-errors{
+    margin: 1rem 0 1rem 0;
+}
+
+.visit-form-row{
+    margin-bottom: 1rem;
+}
+
+
+.visit-form-input{
+    border: none;
+    padding: 3px;
+}
+
+.visit-form-multifield{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.visit-form-relative {
+    position: relative;
+    display: flex;
+}
+.visit-form-hidden-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.visit-form-error-row{
+    color: red;
+    margin-left: 1rem;
+}
+
+@media screen and (max-width:1024px) {
+    .visit-form-fieldset{
+        width: 80%;
+    }
+}

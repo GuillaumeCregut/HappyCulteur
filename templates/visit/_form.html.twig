@@ -1,0 +1,171 @@
+{{ form_start(form) }}
+    <div class="visit-form-errors">
+        {{ form_errors(form) }}
+    </div>
+    <div class="visit-form-container">
+        {{ form_row(form.date,  {
+                    row_attr: {
+                        class: 'visit-form-row'
+                    },
+                    label: 'Date de la visite* : ',
+                    attr : {
+                        class: 'visit-form-input'
+                    }
+            })
+        }}
+        
+        <fieldset class="visit-form-fieldset">
+            <legend>Observations</legend>
+            {{ form_row(form.weather,  {
+                        row_attr: {
+                            class: 'visit-form-row'
+                        },
+                        label: 'Météo* : ',
+                        attr : {
+                            class: 'visit-form-input'
+                        }
+                })
+            }}
+
+            {{ form_row(form.hygrometry,  {
+                        row_attr: {
+                            class: 'visit-form-row'
+                        },
+                        label: 'hygrometrie : ',
+                        attr : {
+                            class: 'visit-form-input'
+                        }
+                })
+            }}
+
+            {{ form_row(form.temperature,  {
+                        row_attr: {
+                            class: 'visit-form-row'
+                        },
+                        label: 'Température extérieure : ',
+                        attr : {
+                            class: 'visit-form-input'
+                        }
+                })
+            }}
+
+            {{ form_row(form.weight,  {
+                        row_attr: {
+                            class: 'visit-form-row'
+                        },
+                        label: 'Poids : ',
+                        attr : {
+                            class: 'visit-form-input'
+                        }
+                })
+            }}
+        </fieldset>
+        <fieldset class="visit-form-fieldset">
+        <legend>Essaim</legend>
+           {{ form_row(form.behaviour,  {
+                        row_attr: {
+                            class: 'visit-form-row'
+                        },
+                        label: "Comportement de l'essaim : ",
+                        attr : {
+                            class: 'visit-form-input'
+                        }
+                })
+            }}
+
+             {{ form_row(form.population,  {
+                        row_attr: {
+                            class: 'visit-form-row'
+                        },
+                        label: "Population : ",
+                        attr : {
+                            class: 'visit-form-input'
+                        }
+                })
+            }}
+            <div class="visit-form-multifield">
+                 <div class="visit-form-row">
+                    {{ form_widget(form.isDisease, attr : {
+                            class: 'visit-form-input'
+                        },)
+                    }}
+                    {{ form_label(form.isDisease,'Maladie : ' )}}
+                    
+                </div>
+                <div class="visit-form-row visit-form-relative">
+                    {{ form_label(form.disease,'Maladie : ', {
+                         label_attr:{class: 'visit-form-hidden-label'}
+                    } )}}
+                    {{ form_widget(form.disease, attr : {
+                            class: 'visit-form-input'
+                        },)
+                    }}
+                    {% if form_errors(form.disease) is not empty %}
+                    <div class="visit-form-error-row">
+                        {{ form_errors(form.disease) }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="visit-form-row">
+                {{ form_widget(form.isQueenVisible, attr : {
+                        class: 'visit-form-input'
+                    },) }}
+                {{ form_label(form.isQueenVisible,'Reine visible' )}}
+            </div>
+        </fieldset>
+        <fieldset class="visit-form-fieldset">
+            <legend>Général</legend>   
+            <div class="visit-form-multifield">
+                <div class="visit-form-row">
+                    {{ form_widget(form.isFeeded, attr : {
+                                class: 'visit-form-input'
+                            },) }}
+                     {{ form_label(form.isFeeded,'Nourrissage : ' )}}
+                 </div>
+
+                 <div class="visit-form-row visit-form-relative">
+                    {{ form_label(form.feeding,'Nourrissage : ', {
+                         label_attr:{class: 'visit-form-hidden-label'}
+                    } )}}
+                    {{ form_widget(form.feeding, attr : {
+                            class: 'visit-form-input'
+                        },)
+                    }}
+                    {% if form_errors(form.feeding) is not empty %}
+                    <div class="visit-form-error-row">
+                        {{ form_errors(form.feeding) }}
+                    </div>
+                    {% endif %}
+                </div>
+                {# {{ form_row(form.feeding,  {
+                            row_attr: {
+                                class: 'visit-form-row visit-form-relative'
+                            },
+                            label: "Nourrissage : ",
+                            attr : {
+                                class: 'visit-form-input'
+                            },
+                            label_attr: { class: 'visit-form-hidden-label' }
+                    })
+                }} #}
+            </div>
+            <div class="visit-form-row">
+                {{ form_widget(form.isWorksToDo) }}
+                {{ form_label(form.isWorksToDo,'Travaux à réaliser' )}}
+            </div>
+
+            {{ form_row(form.notes,  {
+                        row_attr: {
+                            class: 'visit-form-row'
+                        },
+                        label: "Notes : ",
+                        attr : {
+                            class: 'visit-form-input'
+                        }
+                })
+            }}
+        </fieldset>
+        <button class="form-button">{{ button_label|default('Valider') }}</button>
+    </div>
+{{ form_end(form) }}
