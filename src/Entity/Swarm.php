@@ -31,10 +31,10 @@ class Swarm
     private ?string $capturePlace = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $QueenAge = null;
+    private ?\DateTimeImmutable $queenAge = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    private ?string $QueenOrigin = null;
+    private ?string $queenOrigin = null;
 
     #[ORM\OneToOne(inversedBy: 'swarm', cascade: ['persist', 'remove'])]
     private ?Hive $hive = null;
@@ -110,24 +110,24 @@ class Swarm
 
     public function getQueenAge(): ?\DateTimeImmutable
     {
-        return $this->QueenAge;
+        return $this->queenAge;
     }
 
-    public function setQueenAge(?\DateTimeImmutable $QueenAge): static
+    public function setQueenAge(?\DateTimeImmutable $queenAge): static
     {
-        $this->QueenAge = $QueenAge;
+        $this->queenAge = $queenAge;
 
         return $this;
     }
 
     public function getQueenOrigin(): ?string
     {
-        return $this->QueenOrigin;
+        return $this->queenOrigin;
     }
 
     public function setQueenOrigin(?string $QueenOrigin): static
     {
-        $this->QueenOrigin = $QueenOrigin;
+        $this->queenOrigin = $QueenOrigin;
 
         return $this;
     }
@@ -139,8 +139,15 @@ class Swarm
 
     public function setHive(?Hive $hive): static
     {
-        $this->hive = $hive;
+        if((null !== $this->hive) && ($hive !== $this->hive)) {
+            $this->hive->setSwarm(null);
+        }
 
+        $this->hive = $hive;
+        
+        if((null !== $hive) && ($this !== $hive->getSwarm())){
+            $hive->setSwarm($this);
+        }
         return $this;
     }
 
@@ -154,5 +161,15 @@ class Swarm
         $this->beekeeper = $beekeeper;
 
         return $this;
+    }
+
+    public function getQueenAgeInMonths(): ?int
+    {
+        if(null === $this->queenAge) {
+            return null;
+        }
+        $now = new \DateTimeImmutable();
+        $diff = $this->queenAge->diff($now);
+        return ($diff->y * 12) + $diff->m;
     }
 }
