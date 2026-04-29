@@ -29,7 +29,7 @@
 		</a>	
 	</div>
 </main>
-<p class="hive-btn-container"><a href="" class= "form-button" target="_blank">Transférer la ruche</a></p>
-<p class="hive-btn-container"><a href="{{ path('app_hive_edit', {id: hive.id, width: 260}) }}" class= "form-button">Modifier</a></p>
-<p class="hive-btn-container"><a href="{{ path('app_hive_index', {id: hive.id, width: 410}) }}" class= "form-button">Retour à la ruche</a></p>
+<p class="hive-btn-container"><a href="{{ path('app_hive_translate', {id: hive.id}) }}" class= "form-button">Transférer la ruche</a></p>
+<p class="hive-btn-container"><a href="{{ path('app_hive_edit', {id: hive.id}) }}" class= "form-button">Modifier</a></p>
+<p class="hive-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
 {% endblock %}
