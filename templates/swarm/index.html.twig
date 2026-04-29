@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/swarm.css')}}">
+{% endblock %}
+{% block title %}Gestion des essaims{% endblock %}
+
+{% block body %}
+<h1 class="title">Essaim de la ruche</h1>
+<p class="swarm-index-info-line">Ruche : {{ hive.name }}</p>
+<p class="swarm-index-info-line">nom de l'essaim : {{ hive.swarm.name }}</p>
+<p class="swarm-index-info-line">Espèce : {{ hive.swarm.specy|default('-') }}</p>
+<p class="swarm-index-info-line">Date de mise en ruche : {{ hive.swarm.date is null
+? '-'
+: hive.swarm.date |date('d/m/Y') }}</p>
+<p class="swarm-index-info-line">Lieu de capture : {{ hive.swarm.capturePlace|default('-') }}</p>
+<p class="swarm-index-info-line">Age de la reine (mois) : {{ hive.swarm.queenAgeInMonths|default('-') }}</p>
+<p class="swarm-index-info-line">Origine de la reine : {{ hive.swarm.queenOrigin|default('-') }}</p>
+<p class="swarm-index-info-line">Origine de l'essaim : {{ hive.swarm.origin.label }}</p>
+<p class="swarm-btn-container"><a href="{{ path('app_swarm_edit', {id: hive.swarm.id}) }}" class= "form-button">Modfier</a></p>
+<p class="swarm-btn-container">{{ include('swarm/_delete_form.html.twig') }}</p>
+<p class="swarm-btn-container"><a href="{{ path('app_swarm_translate', {id: hive.swarm.id}) }}" class= "form-button">Affecter un autre essaim à cette ruche</a></p>
+<p class="swarm-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}

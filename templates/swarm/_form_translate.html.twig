@@ -1,0 +1,23 @@
+<fieldset class="swarm-form-translate-fieldset">
+    <legend>Réaffecter un essaim à une ruche</legend>
+    <div class="swarm-form-translate-form-container">
+        <p class="swarm-form-translate-line">Liste des essaims existants et leur affectation</p>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.swarmList,  {
+                    row_attr: {
+                        class: 'swarm-form-translate-row'
+                    },
+                    label: "Choisir l'essaim à réaffecter",
+                    attr : {
+                        class: 'swarm-form-translate-input'
+                    }
+            })
+        }}
+        <button class="form-button">re affecter</button>
+        {{ form_end(form) }}
+    </div>
+    <div class="swarm-form-translate-warning-container">
+    <p class="swarm-form-translate-warning">Attention, une réaffectation d'un essaim vide la ruche précédemment affectée !</p>
+    </div>
+</fieldset>
