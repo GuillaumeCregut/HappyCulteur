@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Apiculteur;
 use App\Entity\Swarm;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,6 +15,16 @@ class SwarmRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Swarm::class);
+    }
+
+    public function findByBeekeeper(Apiculteur $beekeeper): array
+    {
+        return $this->createQueryBuilder('s')
+            ->Where('s.beekeeper = :beekeeper')
+            ->setParameter('beekeeper', $beekeeper)
+            ->orderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
