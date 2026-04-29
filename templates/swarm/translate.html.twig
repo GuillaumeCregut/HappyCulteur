@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/swarm.css')}}">
+{% endblock %}
+{% block title %}Gestion des essaims{% endblock %}
+
+{% block body %}
+<h1 class="title">Affecter un  nouvel essaim</h1>
+<p class="swarm-translate-line">Ruche : {{ swarm.hive.name}}</p>
+<p class="swarm-translate-line">Essaim actuel : {{ swarm.name}}</p>
+{{ include('swarm/_form_translate.html.twig') }}
+<p class="swarm-btn-container"><a href="{{ path('app_swarm_index', {id: hiveId}) }}" class= "form-button">Retour à l'essaim</a></p>
+{% endblock %}

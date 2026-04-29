@@ -73,6 +73,10 @@
     color: red;
 }
 
+.hive-carto-message-hidden{
+    display: none;
+}
+
 /* Button */
 .hive-carto-btn-move {
     height: 65px;

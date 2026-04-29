@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/swarm.css')}}">
+{% endblock %}
+{% block title %}Gestion des essaims{% endblock %}
+
+{% block body %}
+<h1 class="title">Modification de l'essaim</h1>
+{{ include('swarm/_form.html.twig', {'button_label': 'Valider'}) }}
+<p class="swarm-btn-container"><a href="{{ path('app_swarm_index', {id: hive.id}) }}" class= "form-button">Retour à l'essaim</a></p>
+{% endblock %}

@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_swarm_delete', {'id': hive.swarm.id}) }}" onsubmit="return confirm('Voulez vous supprimer cet essaim ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ hive.swarm.id) }}">
+    <button class="form-button">Supprimer</button>
+</form>

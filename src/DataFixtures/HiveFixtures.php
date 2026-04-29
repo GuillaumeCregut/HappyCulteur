@@ -21,11 +21,11 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         for($i = 0; $i<5; $i++) {
             $date = $faker->date();
-            $Hivedate = new DateTimeImmutable($date);
+            $hiveDate = new DateTimeImmutable($date);
             $hive = new Hive();
             $hive->setName("Ruche {$i}")
                 ->setIdentification($faker->bothify('???###'))
-                ->setDate($Hivedate)
+                ->setDate($hiveDate)
                 ->setState($this->randomState())
                 ->setRiseNumber($faker->numberBetween(0,9))
                 ->setFrameNumber($faker->numberBetween(1,12))
@@ -38,16 +38,17 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
             $hive->setKind($kind);
             $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12),HiveRise::class);
             $hive->setRise($rise);
+            $this->addReference('hive_admin_' . $i, $hive);
             $manager->persist($hive);
         }
 
         for($i = 0; $i<50; $i++) {
             $date = $faker->date();
-            $Hivedate = new DateTimeImmutable($date);
+            $hiveDate = new DateTimeImmutable($date);
             $hive = new Hive();
             $hive->setName("Ruche {$i}")
                 ->setIdentification($faker->bothify('???###'))
-                ->setDate($Hivedate)
+                ->setDate($hiveDate)
                 ->setState($this->randomState())
                 ->setRiseNumber($faker->numberBetween(0,9))
                 ->setFrameNumber($faker->numberBetween(1,12))
@@ -60,6 +61,7 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
             $hive->setKind($kind);
             $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12),HiveRise::class);
             $hive->setRise($rise);
+            $this->addReference('hive_' . $i, $hive);
             $manager->persist($hive);
         }
 

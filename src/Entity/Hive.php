@@ -59,6 +59,9 @@ class Hive
     #[ORM\ManyToOne(inversedBy: 'hives')]
     private ?HiveRise $rise = null;
 
+    #[ORM\OneToOne(mappedBy: 'hive', cascade: ['persist'])]
+    private ?Swarm $swarm = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -228,6 +231,28 @@ class Hive
     public function setRise(?HiveRise $rise): static
     {
         $this->rise = $rise;
+
+        return $this;
+    }
+
+    public function getSwarm(): ?Swarm
+    {
+        return $this->swarm;
+    }
+
+    public function setSwarm(?Swarm $swarm): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($swarm === null && $this->swarm !== null) {
+            $this->swarm->setHive(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($swarm !== null && $swarm->getHive() !== $this) {
+            $swarm->setHive($this);
+        }
+
+        $this->swarm = $swarm;
 
         return $this;
     }
