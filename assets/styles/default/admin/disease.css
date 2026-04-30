@@ -1,25 +1,25 @@
-.admin-desease-btn-container {
+.admin-disease-btn-container {
     margin-top: 2rem;
 }
 
-.admin-desease-table {
+.admin-disease-table {
     margin-top: 1rem;
     margin-left: auto;
     margin-right: auto;
 }
 
-.admin-desease-cell {
+.admin-disease-cell {
     padding: 5px;
     text-align: center;
 }
 
 /* form */
-.admin-desease-form-row {
+.admin-disease-form-row {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
-.admin-desease-form-input {
+.admin-disease-form-input {
     margin-bottom: 1rem;
     padding: 3px;
     border: none;

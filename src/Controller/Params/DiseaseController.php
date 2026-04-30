@@ -16,31 +16,31 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 #[Route('', name: 'app_')]
 #[IsGranted('ROLE_USER')]
-final class DeseaseController extends AbstractController
+final class DiseaseController extends AbstractController
 {
-    #[Route('/params/desease', name: 'params_desease_index')]
+    #[Route('/params/disease', name: 'params_disease_index')]
     public function index(
         Request $request,
         DeseaseRepository $repo,
         EntityManagerInterface $em
     ): Response {
-        $deseases = $repo->findBy([], ['name' => 'ASC']);
-        $newDesease = new Desease();
-        $form = $this->createForm(DeseaseType::class, $newDesease);
+        $diseases = $repo->findBy([], ['name' => 'ASC']);
+        $newDisease = new Desease();
+        $form = $this->createForm(DeseaseType::class, $newDisease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($newDesease);
+            $em->persist($newDisease);
             $em->flush();
-            return $this->redirectToRoute('app_params_desease_index');
+            return $this->redirectToRoute('app_params_disease_index');
         }
-        return $this->render('params/desease/index.html.twig', [
-            'deseases' => $deseases,
+        return $this->render('params/disease/index.html.twig', [
+            'diseases' => $diseases,
             'form' => $form
         ]);
     }
 
 
-    #[Route('/param/desease/ajax', name: 'param_disease_add', methods: ['GET', 'POST'])]
+    #[Route('/param/disease/ajax', name: 'param_disease_add', methods: ['GET', 'POST'])]
     public function addAjax(
         Request $request,
         EntityManagerInterface $em
@@ -48,15 +48,15 @@ final class DeseaseController extends AbstractController
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException('Only for ajax call');
         }
-        $newDesease = new Desease();
-        $form = $this->createForm(DeseaseType::class, $newDesease);
+        $newDisease = new Desease();
+        $form = $this->createForm(DeseaseType::class, $newDisease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($newDesease);
+            $em->persist($newDisease);
             $em->flush();
             return $this->json([
-                'id'   => $newDesease->getId(),
-                'name' => $newDesease->getName(),
+                'id'   => $newDisease->getId(),
+                'name' => $newDisease->getName(),
             ]);
         }
         return $this->render('visit/_form_add_disease.html.twig', [
@@ -66,65 +66,65 @@ final class DeseaseController extends AbstractController
 
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/desease', name: 'admin_desease_index')]
-    public function adminDesease(DeseaseRepository $repo): Response
+    #[Route('/admin/disease', name: 'admin_disease_index')]
+    public function adminDisease(DeseaseRepository $repo): Response
     {
-        $deseases = $repo->findBy([], ['name' => 'ASC']);
-        return $this->render('admin/desease/index.html.twig', [
-            'deseases' => $deseases,
+        $diseases = $repo->findBy([], ['name' => 'ASC']);
+        return $this->render('admin/disease/index.html.twig', [
+            'diseases' => $diseases,
         ]);
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/desease/new', name: 'admin_desease_add', methods: ['GET', 'POST'])]
+    #[Route('/admin/disease/new', name: 'admin_disease_add', methods: ['GET', 'POST'])]
     public function add(
         Request $request,
         EntityManagerInterface $em,
     ): Response {
-        $desease = new Desease();
-        $form = $this->createForm(DeseaseType::class, $desease);
+        $disease = new Desease();
+        $form = $this->createForm(DeseaseType::class, $disease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($desease);
+            $em->persist($disease);
             $em->flush();
-            return $this->redirectToRoute('app_admin_desease_index');
+            return $this->redirectToRoute('app_admin_disease_index');
         }
-        return $this->render('admin/desease/new.html.twig', [
+        return $this->render('admin/disease/new.html.twig', [
             'form' => $form,
         ]);
     }
 
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/desease/{id}/edit', name: 'admin_desease_update', methods: ['GET', 'POST'])]
+    #[Route('/admin/disease/{id}/edit', name: 'admin_disease_update', methods: ['GET', 'POST'])]
     public function update(
         Request $request,
-        Desease $desease,
+        Desease $disease,
         EntityManagerInterface $em,
     ): Response {
-        $form = $this->createForm(DeseaseType::class, $desease);
+        $form = $this->createForm(DeseaseType::class, $disease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($desease);
+            $em->persist($disease);
             $em->flush();
-            return $this->redirectToRoute('app_admin_desease_index');
+            return $this->redirectToRoute('app_admin_disease_index');
         }
-        return $this->render('admin/desease/edit.html.twig', [
+        return $this->render('admin/disease/edit.html.twig', [
             'form' => $form,
         ]);
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/desease/{id}', name: 'admin_desease_delete', methods: ['POST'])]
+    #[Route('/admin/disease/{id}', name: 'admin_disease_delete', methods: ['POST'])]
     public function delete(
         Request $request,
-        Desease $desease,
+        Desease $disease,
         EntityManagerInterface $em,
     ): Response {
-        if ($this->isCsrfTokenValid('delete' . $desease->getId(), $request->getPayload()->getString('_token'))) {
-            $em->remove($desease);
+        if ($this->isCsrfTokenValid('delete' . $disease->getId(), $request->getPayload()->getString('_token'))) {
+            $em->remove($disease);
             $em->flush();
         }
-        return $this->redirectToRoute('app_admin_desease_index');
+        return $this->redirectToRoute('app_admin_disease_index');
     }
 }

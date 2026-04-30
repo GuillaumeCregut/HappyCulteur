@@ -1,31 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{asset('styles/default/params/desease.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/params/disease.css')}}">
 {% endblock %}
 {% block title %}Maladies{% endblock %}
 
 {% block body %}
 <h1 class="title">Gestion des maladies</h1>
 <p>Liste des maladies existantes</p>
-<ul class="param-desease-container">
-{% for desease in deseases %}
-<li class = "param-desease-line">{{ desease.name}}</li>
+<ul class="param-disease-container">
+{% for disease in diseases %}
+<li class = "param-disease-line">{{ disease.name}}</li>
 {% else %}
-<li class = "param-desease-line">Aucune maladie trouvée</li>
+<li class = "param-disease-line">Aucune maladie trouvée</li>
 {% endfor %}
 </ul>
 {{ form_start(form) }}
-<fieldset class="param-desease-fieldset">
+<fieldset class="param-disease-fieldset">
     <legend>Ajouter une maladie</legend>
     {{ form_row(form.name, {
         label: 'Nom : ',
         attr: {
-            class: 'param-desease-field'
+            class: 'param-disease-field'
         }
     }) }}
     <button class="form-button">Valider</button>
 </fieldset>
 {{ form_end(form) }}
-<p class="param-desease-btn-container"><a href="{{ path('app_params') }}" class="form-button">Retour aux paramètres</a></p>
+<p class="param-disease-btn-container"><a href="{{ path('app_params') }}" class="form-button">Retour aux paramètres</a></p>
 {% endblock %}
