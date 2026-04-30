@@ -1,3 +1,6 @@
+<div   {{ stimulus_controller('visit-disease', {
+            url: path('app_param_disease_add')
+        }) }}>
 {{ form_start(form) }}
     <div class="visit-form-errors">
         {{ form_errors(form) }}
@@ -83,28 +86,38 @@
                         }
                 })
             }}
-            <div class="visit-form-multifield">
-                 <div class="visit-form-row">
-                    {{ form_widget(form.isDisease, attr : {
-                            class: 'visit-form-input'
-                        },)
-                    }}
-                    {{ form_label(form.isDisease,'Maladie : ' )}}
-                    
-                </div>
-                <div class="visit-form-row visit-form-relative">
-                    {{ form_label(form.disease,'Maladie : ', {
-                         label_attr:{class: 'visit-form-hidden-label'}
-                    } )}}
-                    {{ form_widget(form.disease, attr : {
-                            class: 'visit-form-input'
-                        },)
-                    }}
-                    {% if form_errors(form.disease) is not empty %}
-                    <div class="visit-form-error-row">
-                        {{ form_errors(form.disease) }}
+            <div class="visit-form-disease-container">
+                <div class="visit-form-multifield">
+                    <div class="visit-form-row">
+                        {{ form_widget(form.isDisease, {attr : {
+                                class: 'visit-form-input'
+                            }},)
+                        }}
+                        {{ form_label(form.isDisease,'Maladie : ' )}}
                     </div>
-                    {% endif %}
+                    <div class="visit-form-row visit-form-relative">
+                        {{ form_label(form.disease,'Maladie : ', {
+                            label_attr:{class: 'visit-form-hidden-label'}
+                        } )}}
+                        {{ form_widget(form.disease, {attr: {
+                                class: 'visit-form-input',
+                                'data-visit-disease-target': 'select' 
+                            }},)
+                        }}
+                        {% if form_errors(form.disease) is not empty %}
+                        <div class="visit-form-error-row">
+                            {{ form_errors(form.disease) }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="visit-form-disease-add-container">
+                    <button
+                    type="button"
+                    class="form-button"
+                     {{ stimulus_action('visit-disease', 'open') }}
+                    >+ Ajouter une maladie
+                    </button>
                 </div>
             </div>
             <div class="visit-form-row">
@@ -118,9 +131,9 @@
             <legend>Général</legend>   
             <div class="visit-form-multifield">
                 <div class="visit-form-row">
-                    {{ form_widget(form.isFeeded, attr : {
+                    {{ form_widget(form.isFeeded, {attr : {
                                 class: 'visit-form-input'
-                            },) }}
+                            }},) }}
                      {{ form_label(form.isFeeded,'Nourrissage : ' )}}
                  </div>
 
@@ -128,9 +141,9 @@
                     {{ form_label(form.feeding,'Nourrissage : ', {
                          label_attr:{class: 'visit-form-hidden-label'}
                     } )}}
-                    {{ form_widget(form.feeding, attr : {
+                    {{ form_widget(form.feeding, {attr : {
                             class: 'visit-form-input'
-                        },)
+                        }},)
                     }}
                     {% if form_errors(form.feeding) is not empty %}
                     <div class="visit-form-error-row">
@@ -138,17 +151,6 @@
                     </div>
                     {% endif %}
                 </div>
-                {# {{ form_row(form.feeding,  {
-                            row_attr: {
-                                class: 'visit-form-row visit-form-relative'
-                            },
-                            label: "Nourrissage : ",
-                            attr : {
-                                class: 'visit-form-input'
-                            },
-                            label_attr: { class: 'visit-form-hidden-label' }
-                    })
-                }} #}
             </div>
             <div class="visit-form-row">
                 {{ form_widget(form.isWorksToDo) }}
@@ -169,3 +171,15 @@
         <button class="form-button">{{ button_label|default('Valider') }}</button>
     </div>
 {{ form_end(form) }}
+ <dialog class="visit-disease-dialog" {{ stimulus_target('visit-disease', 'dialog') }}>
+    <p class="visit-disease-dialog-line">Ajouter une maladie</p>
+    <div class="visit-disease-dialog-container" {{ stimulus_target('visit-disease', 'container') }}>
+    </div>
+    <button
+    aria-label="Fermer" 
+    class="visit-disease-dialog-close" 
+    {{ stimulus_action('visit-disease', 'close') }}>
+        X
+    </button>
+</dialog>
+</div>

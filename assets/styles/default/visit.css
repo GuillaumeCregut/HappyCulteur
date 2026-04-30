@@ -53,6 +53,43 @@
     margin-left: 1rem;
 }
 
+.visit-form-disease-container{
+    margin-bottom: 1rem;
+}
+
+.visit-disease-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    background-image: url("images/fond.jpg");
+}
+
+
+.visit-disease-dialog-line{
+    margin-bottom: 1rem;
+}
+
+.visit-disease-dialog-close{
+    background: none;
+    border: none;
+    color: white;
+    background-color: red;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 @media screen and (max-width:1024px) {
     .visit-form-fieldset{
         width: 80%;
