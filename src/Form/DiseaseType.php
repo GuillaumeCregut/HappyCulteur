@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Desease;
+use App\Entity\Disease;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DeseaseType extends AbstractType
+class DiseaseType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -19,7 +19,7 @@ class DeseaseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Desease::class,
+            'data_class' => Disease::class,
         ]);
     }
 }

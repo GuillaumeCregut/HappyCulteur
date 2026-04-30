@@ -63,7 +63,7 @@ class Visit
     private ?Hive $hive = null;
 
     #[ORM\ManyToOne]
-    private ?Desease $disease = null;
+    private ?Disease $disease = null;
 
     public function getId(): ?int
     {
@@ -238,12 +238,12 @@ class Visit
         return $this;
     }
 
-    public function getDisease(): ?Desease
+    public function getDisease(): ?Disease
     {
         return $this->disease;
     }
 
-    public function setDisease(?Desease $disease): static
+    public function setDisease(?Disease $disease): static
     {
         $this->disease = $disease;
 

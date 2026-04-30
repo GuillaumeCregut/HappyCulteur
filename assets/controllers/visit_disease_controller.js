@@ -29,7 +29,7 @@ export default class extends Controller {
         if (response.ok) {
             const disease = await response.json();
             const option = new Option(disease.name, disease.id, true, true);
-            this.hasSelectTarget.add(option);
+            this.selectTarget.add(option);
             this.close();
         }
     }

@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\DeseaseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DiseaseRepository;
 
-#[ORM\Entity(repositoryClass: DeseaseRepository::class)]
-class Desease
+#[ORM\Entity(repositoryClass: DiseaseRepository::class)]
+class Disease
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

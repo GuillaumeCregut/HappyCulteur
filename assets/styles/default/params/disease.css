@@ -1,4 +1,4 @@
-.param-desease-container {
+.param-disease-container {
     margin-bottom: 1rem;
     margin-top: 1rem;
     background-image: url("../images/fond.jpg");
@@ -9,31 +9,31 @@
     filter: brightness(0.95); 
 }
 
-.param-desease-line {
+.param-disease-line {
     margin-bottom: 0.7rem;
 }
 
-.param-desease-fieldset {
+.param-disease-fieldset {
     padding: 10px;
     width: 25%;
 }
 
-.param-desease-field {
+.param-disease-field {
     margin-bottom: 1rem;
     padding: 3px;
     border: none;
 }
 
-.param-desease-btn-container {
+.param-disease-btn-container {
     margin-top: 1rem;
 }
 
 @media screen and (max-width: 600px) {
-    .param-desease-fieldset {
+    .param-disease-fieldset {
         width: 100%;
     }
 
-    .param-desease-container{
+    .param-disease-container{
         width: 100%;
     }
 }
