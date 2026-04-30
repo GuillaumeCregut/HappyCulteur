@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+
 
 #[Route('', name: 'app_')]
 #[IsGranted('ROLE_USER')]
@@ -36,6 +38,33 @@ final class DeseaseController extends AbstractController
             'form' => $form
         ]);
     }
+
+
+    #[Route('/param/desease/ajax', name: 'param_disease_add', methods: ['GET', 'POST'])]
+    public function addAjax(
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        dump($request->isXmlHttpRequest()); 
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException('Only for ajax call');
+        }
+        $newDesease = new Desease();
+        $form = $this->createForm(DeseaseType::class, $newDesease);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($newDesease);
+            $em->flush();
+            return $this->json([
+                'id'   => $newDesease->getId(),
+                'name' => $newDesease->getName(),
+            ]);
+        }
+        return $this->render('visit/_form_add_disease.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/desease', name: 'admin_desease_index')]
