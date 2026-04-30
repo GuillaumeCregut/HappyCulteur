@@ -3,7 +3,7 @@
 namespace App\Controller\Params;
 
 use App\Entity\Desease;
-use App\Form\DeseaseType;
+use App\Form\DiseaseType;
 use App\Repository\DeseaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ final class DiseaseController extends AbstractController
     ): Response {
         $diseases = $repo->findBy([], ['name' => 'ASC']);
         $newDisease = new Desease();
-        $form = $this->createForm(DeseaseType::class, $newDisease);
+        $form = $this->createForm(DiseaseType::class, $newDisease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($newDisease);
@@ -49,7 +49,7 @@ final class DiseaseController extends AbstractController
             throw new BadRequestHttpException('Only for ajax call');
         }
         $newDisease = new Desease();
-        $form = $this->createForm(DeseaseType::class, $newDisease);
+        $form = $this->createForm(DiseaseType::class, $newDisease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($newDisease);
@@ -82,7 +82,7 @@ final class DiseaseController extends AbstractController
         EntityManagerInterface $em,
     ): Response {
         $disease = new Desease();
-        $form = $this->createForm(DeseaseType::class, $disease);
+        $form = $this->createForm(DiseaseType::class, $disease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($disease);
@@ -102,7 +102,7 @@ final class DiseaseController extends AbstractController
         Desease $disease,
         EntityManagerInterface $em,
     ): Response {
-        $form = $this->createForm(DeseaseType::class, $disease);
+        $form = $this->createForm(DiseaseType::class, $disease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($disease);
