@@ -20,7 +20,6 @@ class HoneyAjaxType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Honey::class,
-            'is_edit' => true
         ]);
     }
 }
