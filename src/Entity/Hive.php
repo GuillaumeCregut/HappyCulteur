@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Constant\HiveState;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\HiveRepository;
@@ -61,6 +63,17 @@ class Hive
 
     #[ORM\OneToOne(mappedBy: 'hive', cascade: ['persist'])]
     private ?Swarm $swarm = null;
+
+    /**
+     * @var Collection<int, Visit>
+     */
+    #[ORM\OneToMany(targetEntity: Visit::class, mappedBy: 'hive')]
+    private Collection $visits;
+
+    public function __construct()
+    {
+        $this->visits = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -253,6 +266,36 @@ class Hive
         }
 
         $this->swarm = $swarm;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Visit>
+     */
+    public function getVisits(): Collection
+    {
+        return $this->visits;
+    }
+
+    public function addVisit(Visit $visit): static
+    {
+        if (!$this->visits->contains($visit)) {
+            $this->visits->add($visit);
+            $visit->setHive($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisit(Visit $visit): static
+    {
+        if ($this->visits->removeElement($visit)) {
+            // set the owning side to null (unless already changed)
+            if ($visit->getHive() === $this) {
+                $visit->setHive(null);
+            }
+        }
 
         return $this;
     }
