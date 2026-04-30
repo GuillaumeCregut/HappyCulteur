@@ -88,11 +88,18 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Swarm::class, mappedBy: 'beekeeper')]
     private Collection $swarms;
 
+    /**
+     * @var Collection<int, Harvest>
+     */
+    #[ORM\OneToMany(targetEntity: Harvest::class, mappedBy: 'beekeeper', orphanRemoval: true)]
+    private Collection $harvests;
+
     public function __construct()
     {
         $this->apiaries = new ArrayCollection();
         $this->purchases = new ArrayCollection();
         $this->swarms = new ArrayCollection();
+        $this->harvests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -386,6 +393,36 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($swarm->getBeekeeper() === $this) {
                 $swarm->setBeekeeper(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Harvest>
+     */
+    public function getHarvests(): Collection
+    {
+        return $this->harvests;
+    }
+
+    public function addHarvest(Harvest $harvest): static
+    {
+        if (!$this->harvests->contains($harvest)) {
+            $this->harvests->add($harvest);
+            $harvest->setBeekeeper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHarvest(Harvest $harvest): static
+    {
+        if ($this->harvests->removeElement($harvest)) {
+            // set the owning side to null (unless already changed)
+            if ($harvest->getBeekeeper() === $this) {
+                $harvest->setBeekeeper(null);
             }
         }
 
