@@ -1,0 +1,53 @@
+<div class="harvest-form-container" {{ stimulus_controller('harvest-honey', {
+            url: path('app_param_honey_ajax')
+        }) }}>
+    {{ form_start(form) }}
+    <div class="harvest-form-errors">
+        {{ form_errors(form) }}
+    </div>
+    {{ form_row(form.date,  {
+            row_attr: {
+                class: 'harvest-form-row'
+            },
+            label: 'Date de la récolte : ',
+            attr : {
+                class: 'harvest-form-input'
+            }
+    }) }}
+
+    {{ form_row(form.honeyKind,  {
+            row_attr: {
+                class: 'harvest-form-row'
+            },
+            label: 'Type de miel : ',
+            attr : {
+                class: 'harvest-form-input',
+                'data-harvest-honey-target': 'select'
+            }
+    }) }}
+    <p class="harvest-form-row">
+        <button type="button" class="form-button" {{ stimulus_action('harvest-honey', 'open') }}>Ajouter un type de miel</button>
+    </p>
+    {{ form_row(form.weight,  {
+            row_attr: {
+                class: 'harvest-form-row'
+            },
+            label: 'Poids récolté : ',
+            attr : {
+                class: 'harvest-form-input'
+            }
+    }) }}
+     <button class="form-button">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_end(form) }}
+    <dialog class="harvest-honey-dialog" {{ stimulus_target('harvest-honey', 'dialog') }}>
+        <p class="harvest-honey-dialog-line">Ajouter Type de miel</p>
+        <div class="harvest-honey-dialog-container" {{ stimulus_target('harvest-honey', 'container') }}>
+        </div>
+        <button
+        aria-label="Fermer" 
+        class="harvest-honey-dialog-close" 
+        {{ stimulus_action('harvest-honey', 'close') }}>
+            X
+        </button>
+    </dialog>
+</div>

@@ -1,0 +1,40 @@
+.flash-container {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    transition: opacity .5s ease;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    border-color: #a3cfbb;
+    color: #0a3622;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border-color: #f1aeb5;
+    color: #58151c;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffe96c;
+    color: #664d03;
+}
+
+.alert-info {
+    background-color: #cfe2ff;
+    border-color: #9ec5fe;
+    color: #052c65;
+}

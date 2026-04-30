@@ -36,6 +36,7 @@ final class VisitController extends AbstractController
             $visit->setHive($hive);
             $em->persist($visit);
             $em->flush();
+            $this->addFlash('success', 'Visite enregistrée avec succès');
             return $this->redirectToRoute('app_hive_index', ['id' => $hive->getId()]);
         }
         return $this->render('visit/add.html.twig', [

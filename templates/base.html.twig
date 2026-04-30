@@ -8,6 +8,7 @@
 			{% endblock %}
 		</title>
 		<link rel="stylesheet" href="{{asset('styles/default/global.css')}}">
+		<link rel="stylesheet" href="{{asset('styles/default/flashes.css')}}">
 		<link rel="icon" type="image/x-icon" href="{{ asset('pictures/favicon.png') }}"> {% block stylesheets %}{% endblock %}
 
 		{% block javascripts %}
@@ -24,5 +25,15 @@
 		<p>Gestion rucher Version
 			{{version}}</p>
 		<p>(c)2017 - 2026 Editiel 98</p>
+	</div>
+	<div class="flash-container">
+	{% for type, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="alert alert-{{ type }}"
+				{{ stimulus_controller('flash') }}>
+				<div>{{ message }}</div>
+			</div>
+		{% endfor %}
+	{% endfor %}
 	</div>
 </html>

@@ -70,9 +70,16 @@ class Hive
     #[ORM\OneToMany(targetEntity: Visit::class, mappedBy: 'hive')]
     private Collection $visits;
 
+    /**
+     * @var Collection<int, Harvest>
+     */
+    #[ORM\OneToMany(targetEntity: Harvest::class, mappedBy: 'hive')]
+    private Collection $harvests;
+
     public function __construct()
     {
         $this->visits = new ArrayCollection();
+        $this->harvests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,6 +301,36 @@ class Hive
             // set the owning side to null (unless already changed)
             if ($visit->getHive() === $this) {
                 $visit->setHive(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Harvest>
+     */
+    public function getHarvests(): Collection
+    {
+        return $this->harvests;
+    }
+
+    public function addHarvest(Harvest $harvest): static
+    {
+        if (!$this->harvests->contains($harvest)) {
+            $this->harvests->add($harvest);
+            $harvest->setHive($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHarvest(Harvest $harvest): static
+    {
+        if ($this->harvests->removeElement($harvest)) {
+            // set the owning side to null (unless already changed)
+            if ($harvest->getHive() === $this) {
+                $harvest->setHive(null);
             }
         }
 

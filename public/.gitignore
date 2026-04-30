@@ -1,2 +1,7 @@
 uploads/*
+!/uploads/admin/
+/uploads/admin/*
 !uploads/admin/hives/**
+!/uploads/admin/honeys/
+/uploads/admin/honeys/*
+!/uploads/admin/honeys/default.png
