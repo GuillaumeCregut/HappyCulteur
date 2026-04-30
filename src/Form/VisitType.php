@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Visit;
-use App\Entity\Desease;
+use App\Entity\Disease;
 use App\Constant\Weather;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,7 +37,7 @@ class VisitType extends AbstractType
             ->add('behaviour')
             ->add('notes')
             ->add('disease', EntityType::class, [
-                'class' => Desease::class,
+                'class' => Disease::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Choisir',
                 'required' => false,

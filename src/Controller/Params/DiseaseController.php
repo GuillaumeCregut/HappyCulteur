@@ -2,9 +2,9 @@
 
 namespace App\Controller\Params;
 
-use App\Entity\Desease;
+use App\Entity\Disease;
 use App\Form\DiseaseType;
-use App\Repository\DeseaseRepository;
+use App\Repository\DiseaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +21,11 @@ final class DiseaseController extends AbstractController
     #[Route('/params/disease', name: 'params_disease_index')]
     public function index(
         Request $request,
-        DeseaseRepository $repo,
+        DiseaseRepository $repo,
         EntityManagerInterface $em
     ): Response {
         $diseases = $repo->findBy([], ['name' => 'ASC']);
-        $newDisease = new Desease();
+        $newDisease = new Disease();
         $form = $this->createForm(DiseaseType::class, $newDisease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -48,7 +48,7 @@ final class DiseaseController extends AbstractController
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException('Only for ajax call');
         }
-        $newDisease = new Desease();
+        $newDisease = new Disease();
         $form = $this->createForm(DiseaseType::class, $newDisease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -67,7 +67,7 @@ final class DiseaseController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/disease', name: 'admin_disease_index')]
-    public function adminDisease(DeseaseRepository $repo): Response
+    public function adminDisease(DiseaseRepository $repo): Response
     {
         $diseases = $repo->findBy([], ['name' => 'ASC']);
         return $this->render('admin/disease/index.html.twig', [
@@ -81,7 +81,7 @@ final class DiseaseController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
     ): Response {
-        $disease = new Desease();
+        $disease = new Disease();
         $form = $this->createForm(DiseaseType::class, $disease);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -99,7 +99,7 @@ final class DiseaseController extends AbstractController
     #[Route('/admin/disease/{id}/edit', name: 'admin_disease_update', methods: ['GET', 'POST'])]
     public function update(
         Request $request,
-        Desease $disease,
+        Disease $disease,
         EntityManagerInterface $em,
     ): Response {
         $form = $this->createForm(DiseaseType::class, $disease);
@@ -118,7 +118,7 @@ final class DiseaseController extends AbstractController
     #[Route('/admin/disease/{id}', name: 'admin_disease_delete', methods: ['POST'])]
     public function delete(
         Request $request,
-        Desease $disease,
+        Disease $disease,
         EntityManagerInterface $em,
     ): Response {
         if ($this->isCsrfTokenValid('delete' . $disease->getId(), $request->getPayload()->getString('_token'))) {
