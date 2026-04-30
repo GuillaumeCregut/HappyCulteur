@@ -1,0 +1,58 @@
+/* Global */
+.haverst-button-container{
+margin-top: 1rem;
+}
+
+
+/* add */
+.harvest-add-line{
+margin-bottom: 1rem;
+}
+
+/* form */
+.harvest-form-container{
+margin: 1rem 0 1rem 1rem;
+}
+
+.harvest-form-row {
+margin-bottom: 1rem;
+}
+
+.harvest-form-input {
+    border: none;
+    padding: 3px;
+}
+
+
+/* Dialog box */
+.harvest-honey-dialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    background-image: url("images/fond.jpg");
+}
+
+.harvest-honey-dialog-line{
+    margin-bottom: 1rem;
+}
+
+.harvest-honey-dialog-close{
+    background: none;
+    border: none;
+    color: white;
+    background-color: red;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+}

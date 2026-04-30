@@ -21,6 +21,7 @@ class HarvestType extends AbstractType
             ->add('honeyKind', EntityType::class, [
                 'class' => Honey::class,
                 'choice_label' => 'name',
+                'placeholder' => 'Choisir'
             ])
         ;
     }

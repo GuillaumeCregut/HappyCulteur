@@ -1,0 +1,15 @@
+{{ form_start(form, {
+    action: path('app_param_honey_ajax'),
+    attr: {'data-turbo': 'false'}
+}) }}
+    {{ form_row(form.name,  {
+            row_attr: {
+                class: 'harvest-form-row'
+            },
+            label: 'Nom : ',
+            attr : {
+                class: 'harvest-form-input'
+            }
+    }) }}
+<button class="form-button">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

@@ -2,14 +2,15 @@
 
 namespace App\Controller\Params;
 
+use Exception;
 use App\Entity\Honey;
-use App\Exception\PictureException;
 use App\Form\HoneyType;
 use App\Service\Uploader;
-use App\Repository\HoneyRepository;
 use App\Service\PictureFormator;
+use App\Exception\PictureException;
+use App\Form\HoneyAjaxType;
+use App\Repository\HoneyRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 #[Route('', name: 'app_')]
 #[IsGranted('ROLE_USER')]
@@ -134,6 +136,33 @@ final class HoneyController extends AbstractController
             $em->flush();
         }
         return $this->redirectToRoute('app_admin_honey_index');
+    }
+
+    #[Route(path: 'param/honey/ajax', name: 'param_honey_ajax', methods: ['GET', 'POST'])]
+    public function addAjax(
+        Request $request,
+        EntityManagerInterface $em,
+
+    ): Response{
+         if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException('Only for ajax call');
+        }
+        $honey = new Honey();
+        $form = $this->createForm(HoneyAjaxType::class, $honey);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $honey->setPicture('admin/honeys/default.png');
+            $em->persist($honey);
+            $em->flush();
+             return $this->json([
+                'id'   => $honey->getId(),
+                'name' => $honey->getName(),
+            ]);
+        }
+         return $this->render('harvest/_form_add_honey.html.twig', [
+            'form' => $form,
+        ]);
+         
     }
 
     private function handleFile(string $filename, string $rootPath,  bool $remove, ?UploadedFile $file = null): ?string

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/harvest.css')}}">
+{% endblock %}
+{% block title %}Ajout d'une récolte{% endblock %}
+
+{% block body %}
+<h1 class="title">Ajout d'une récolte</h1>
+<p class="harvest-add-line">Nom de la ruche: {{ hive.name }}</p>
+{{ include('harvest/_form.html.twig', {'button_label': 'Valider'}) }}
+<p class="haverst-button-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}
