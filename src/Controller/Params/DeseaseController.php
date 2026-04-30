@@ -44,8 +44,7 @@ final class DeseaseController extends AbstractController
     public function addAjax(
         Request $request,
         EntityManagerInterface $em
-    ): Response {
-        dump($request->isXmlHttpRequest()); 
+    ): Response { 
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException('Only for ajax call');
         }
