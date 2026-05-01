@@ -72,10 +72,10 @@ final class DataLoggerController extends AbstractController
             $signature = $this->getParameter('app.datalogger.signature');
             $config->version = $version;
             $config->signature = $signature;
-            $file = $maker->makeConfig($hive, $config, $uploadDirectory, $user);    
+            $file = $maker->makeConfig($hive, $config, $uploadDirectory, $user);
             $hive->setDataloggerName($file);
             $em->flush();
-            return $this->redirectToRoute('app_datalogger_hive',['id' => $hive->getId()]);
+            return $this->redirectToRoute('app_datalogger_hive', ['id' => $hive->getId()]);
         }
         return $this->render('data_logger/hive_add_datalogger.html.twig', [
             'hive' => $hive,
@@ -92,9 +92,24 @@ final class DataLoggerController extends AbstractController
         #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
+        $configFile = $hive->getDataloggerName();
+        if (null === $configFile) {
+            $this->createNotFoundException("La ruche n'a pas de datalogger");
+        }
+        $config = $maker->loadConfig($hive, $uploadDirectory);
+        $form =  $this->createForm(DataLoggerCreateType::class, $config);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $version = $this->getParameter('app.datalogger.version');
+            $signature = $this->getParameter('app.datalogger.signature');
+            $config->version = $version;
+            $config->signature = $signature;
+            $maker->makeConfig($hive, $config, $uploadDirectory, $user);
+            return $this->redirectToRoute('app_datalogger_hive', ['id' => $hive->getId()]);
+        }
         return $this->render('data_logger/update.html.twig', [
             'hive' => $hive,
-           // 'form' => $form
+            'form' => $form
         ]);
     }
 

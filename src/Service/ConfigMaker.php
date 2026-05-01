@@ -47,4 +47,18 @@ class ConfigMaker
         }
         return $returnpath;
     }
+
+    public function loadConfig(Hive $hive, string $path): DataloggerConfigDto
+    {
+        $config = $hive->getDataloggerName();
+        $fullPath = $path .$config;
+        if(!file_exists($fullPath)) {
+            throw new DataloggerFileException('Config file not found');
+        }
+        $json = file_get_contents($fullPath);
+        $decoded = json_decode($json, true);
+        $configFromFile = $decoded['config'];
+        $dto = DataloggerConfigDto::fromArray($configFromFile);
+        return $dto;
+    }
 }

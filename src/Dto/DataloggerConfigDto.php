@@ -20,4 +20,15 @@ class DataloggerConfigDto
     public bool $weight = false;
     public string $signature ='';
     public int $version = 0;
+
+    public static function fromArray(array $data): self
+    {
+        $dto = new self();
+        foreach($data as $key => $value) {
+            if(property_exists($dto, $key)) {
+                $dto->$key = $value;
+            }
+        }
+        return $dto;
+    }
 }
