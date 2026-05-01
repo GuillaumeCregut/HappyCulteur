@@ -11,6 +11,7 @@
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.3",
         "fpdf/fpdf": "^1.86.1",
+        "guillaumecregut/filewriter": "^1.0",
         "phpdocumentor/reflection-docblock": "^6.0.3",
         "phpstan/phpdoc-parser": "^2.3.2",
         "symfony/asset": "8.0.*",
@@ -49,6 +50,13 @@
         "twig/extra-bundle": "^2.12|^3.24",
         "twig/twig": "^2.12|^3.24"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/guillaumecregut/FileWriter"
+        }
+
+    ],
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
