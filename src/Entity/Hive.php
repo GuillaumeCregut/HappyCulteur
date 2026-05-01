@@ -79,6 +79,9 @@ class Hive
     #[ORM\OneToOne(mappedBy: 'hive', cascade: ['persist',])]
     private ?Datalogger $datalogger = null;
 
+    #[ORM\Column()]
+    private ?bool $hasDatalogger = null;
+
     public function __construct()
     {
         $this->visits = new ArrayCollection();
@@ -353,6 +356,18 @@ class Hive
         }
 
         $this->datalogger = $datalogger;
+
+        return $this;
+    }
+
+    public function hasDatalogger(): ?bool
+    {
+        return $this->hasDatalogger;
+    }
+
+    public function setHasDatalogger(?bool $hasDatalogger): static
+    {
+        $this->hasDatalogger = $hasDatalogger;
 
         return $this;
     }
