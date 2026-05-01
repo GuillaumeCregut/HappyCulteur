@@ -22,6 +22,8 @@ class ConfigMaker
         $config['hive'] = $hive->getName();
         $config['hiveId'] = $hive->getIdentification();
         $template = [];
+        $template['hive'] = 'string';
+        $template['hiveId'] = 'string';
         if($dto->extHygro) {
             $template['extHygro'] = 'int';
         }
