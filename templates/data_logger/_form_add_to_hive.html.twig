@@ -1,0 +1,44 @@
+<div class="data-form-container">
+     {{ form_start(form) }}
+    <div class="data-form-errors">
+        {{ form_errors(form) }}
+    </div>
+    <p class="data-form-line">Configuration du datalogger</p>
+    <p class="data-form-line">Indiquez la fréquence de relevés. 1 signifie 1 relevé toutes les heures, 24 signifie un relevé toutes les 24 heures.</p>
+    {{ form_row(form.frequency,  {
+                row_attr: {
+                    class: 'data-form-row'
+                },
+                label: "Fréquence des relevés par jour : ",
+                attr : {
+                    class: 'data-form-input'
+                }
+        })
+    }}
+    <p class="data-form-line">Capteurs présents : </p>
+    <div class="data-form-sensors">
+        <div class="data-form-row">
+            {{ form_widget(form.extTemp) }}
+            {{ form_label(form.extTemp,'Température extérieure' )}}
+        </div>
+        <div class="data-form-row">
+            {{ form_widget(form.intTemp) }}
+            {{ form_label(form.intTemp,'Température intérieure' )}}
+        </div>
+        <div class="data-form-row">
+            {{ form_widget(form.extHygro) }}
+            {{ form_label(form.intTemp,'Hygrométrie extérieure' )}}
+        </div>
+
+        <div class="data-form-row">
+            {{ form_widget(form.intHygro)}}
+            {{ form_label(form.intTemp,'Hygrométrie intérieure' )}}
+        </div>
+        <div class="data-form-row">
+            {{ form_widget(form.weight) }}
+            {{ form_label(form.intTemp,'Poids' )}}
+        </div>
+    </div>
+    <button class="form-button">{{ button_label|default('Valider') }}</button>
+    {{ form_end(form) }}
+</div>

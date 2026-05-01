@@ -2,3 +2,35 @@
 .data-btn-container{
     margin-top: 1rem;
 }
+
+.data-add-line{
+    margin-bottom: 1rem;
+}
+
+/* Index page */
+.data-line{
+    margin-bottom: 1rem;
+}
+
+/* from */
+.data-form-container{
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.data-form-line{
+    margin-bottom: 1rem;
+}
+
+.data-form-sensors{
+    margin-left: 1rem;
+}
+
+.data-form-row{
+    margin-bottom: 1rem;
+}
+
+.data-form-input{
+    border: none;
+    padding: 3px;
+}
