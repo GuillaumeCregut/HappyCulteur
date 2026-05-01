@@ -76,6 +76,9 @@ class Hive
     #[ORM\OneToMany(targetEntity: Harvest::class, mappedBy: 'hive')]
     private Collection $harvests;
 
+    #[ORM\OneToOne(mappedBy: 'hive', cascade: ['persist',])]
+    private ?Datalogger $datalogger = null;
+
     public function __construct()
     {
         $this->visits = new ArrayCollection();
@@ -333,6 +336,23 @@ class Hive
                 $harvest->setHive(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDatalogger(): ?Datalogger
+    {
+        return $this->datalogger;
+    }
+
+    public function setDatalogger(Datalogger $datalogger): static
+    {
+        // set the owning side of the relation if necessary
+        if ($datalogger->getHive() !== $this) {
+            $datalogger->setHive($this);
+        }
+
+        $this->datalogger = $datalogger;
 
         return $this;
     }
