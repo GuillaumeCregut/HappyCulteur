@@ -10,5 +10,6 @@
 <p class="data-line">Cliquer <a href="{{ asset('uploads/' ~ hive.dataloggerName) }}" download>Ici</a> pour télécharger le fichier qu'il suffit de placer sur une carte SD, qui sera mise en place dans le coffret électronique.</p>
 <p class="data-line">Pour fonctionner correctement, le fichier doit garder le nom de config.json.</p>
 <p class="data-btn-container"><a href="{{ path('app_datalogger_update_hive', {id: hive.id}) }}" class= "form-button">Modifier la configuration du datalogger</a></p>
+<p class="data-btn-container"><a href="{{ path('app_datalogger_load', {id: hive.id}) }}" class= "form-button">Importer des mesures</a></p>
 <p class="data-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
 {% endblock %}
