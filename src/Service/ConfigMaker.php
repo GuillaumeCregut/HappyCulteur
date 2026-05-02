@@ -20,6 +20,7 @@ class ConfigMaker
         $returnpath = str_replace($path,'',$fullPath);
         $config = (array) $dto;
         $config['hive'] = $hive->getName();
+        $config['identification'] = $hive->getIdentification(); //TODO: Change this
         $config['hiveId'] = $hive->getIdentification();
         $template = [];
         $template['hive'] = 'string';
@@ -60,6 +61,9 @@ class ConfigMaker
         }
         $json = file_get_contents($fullPath);
         $decoded = json_decode($json, true);
+        if(!is_array($decoded)) {
+            throw new DataloggerFileException('invalid config format');
+        }
         $configFromFile = $decoded['config'];
         $dto = DataloggerConfigDto::fromArray($configFromFile);
         return $dto;
