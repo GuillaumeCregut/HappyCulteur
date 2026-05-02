@@ -34,7 +34,7 @@ class Datalogger
     #[ORM\Column(nullable: true)]
     private ?int $intHygro = null;
 
-    #[ORM\OneToOne(inversedBy: 'datalogger', cascade: ['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'datalogger', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     private ?Hive $hive = null;
 

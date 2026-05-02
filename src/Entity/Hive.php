@@ -76,8 +76,8 @@ class Hive
     #[ORM\OneToMany(targetEntity: Harvest::class, mappedBy: 'hive')]
     private Collection $harvests;
 
-    #[ORM\OneToOne(mappedBy: 'hive', cascade: ['persist',])]
-    private ?Datalogger $datalogger = null;
+    #[ORM\OneToMany(targetEntity:Datalogger::class, mappedBy: 'hive')]
+    private Collection $datalogger;
 
     #[ORM\Column(nullable: true)]
     private ?string $dataLoggerName = null;
@@ -343,22 +343,34 @@ class Hive
         return $this;
     }
 
-    public function getDatalogger(): ?Datalogger
+    public function getDatalogger(): ?Collection
     {
         return $this->datalogger;
     }
 
-    public function setDatalogger(Datalogger $datalogger): static
+    public function addDatalogger(Datalogger $datalogger): static
     {
         // set the owning side of the relation if necessary
-        if ($datalogger->getHive() !== $this) {
+        if (!$this->datalogger->contains($datalogger)) {
+            $this->datalogger->add($datalogger);
             $datalogger->setHive($this);
         }
 
-        $this->datalogger = $datalogger;
+        return $this;
+    }
+
+    public function removeDatalogger(Datalogger $datalogger): static
+    {
+        if ($this->datalogger->removeElement($datalogger)) {
+            // set the owning side to null (unless already changed)
+            if ($datalogger->getHive() === $this) {
+                $datalogger->setHive(null);
+            }
+        }
 
         return $this;
     }
+
 
     public function getDataloggerName(): ?string
     {
@@ -370,5 +382,10 @@ class Hive
         $this->dataLoggerName = $dataLoggerName;
 
         return $this;
+    }
+
+    public function getOwner(): ?Apiculteur
+    {
+        return $this->apiary->getBeekeeper();
     }
 }
