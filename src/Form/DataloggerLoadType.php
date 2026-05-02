@@ -13,7 +13,7 @@ class DataloggerLoadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('file',FileType::class, [
+            ->add('file', FileType::class, [
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
@@ -21,10 +21,16 @@ class DataloggerLoadType extends AbstractType
                         maxSize: '2048k',
                         extensions: ['bin'],
                         extensionsMessage: 'Veuillez télécharger un bin valide',
+                        mimeTypes: [
+                            'application/octet-stream',
+                            'application/macbinary',
+                            'application/x-binary',
+                            'application/x-macbinary',
+                        ],
+                        mimeTypesMessage: 'Le fichier doit être un fichier binaire (.bin)',
                     )
                 ],
-                ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
