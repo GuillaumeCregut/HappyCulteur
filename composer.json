@@ -11,6 +11,7 @@
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.3",
         "fpdf/fpdf": "^1.86.1",
+        "guillaumecregut/filewriter": "^1.1.1",
         "phpdocumentor/reflection-docblock": "^6.0.3",
         "phpstan/phpdoc-parser": "^2.3.2",
         "symfony/asset": "8.0.*",
@@ -45,10 +46,17 @@
         "symfony/web-link": "8.0.*",
         "symfony/yaml": "8.0.*",
         "symfonycasts/verify-email-bundle": "^1.18",
-        "tecnickcom/tc-lib-barcode": "^2.4",
+        "tecnickcom/tc-lib-barcode": "^2.4.39",
         "twig/extra-bundle": "^2.12|^3.24",
         "twig/twig": "^2.12|^3.24"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/guillaumecregut/FileWriter"
+        }
+
+    ],
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
@@ -105,7 +113,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.3.1",
         "fakerphp/faker": "^1.24.1",
-        "phpunit/phpunit": "^13.1.7",
+        "phpunit/phpunit": "^13.1.8",
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",
         "symfony/debug-bundle": "8.0.*",

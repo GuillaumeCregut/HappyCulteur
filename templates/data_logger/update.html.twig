@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/datalogger.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Modification de la configuration du datalogger</h1>
+<p class="data-line">Ruche : {{ hive.name }}</p>
+{{ include('data_logger/_form_add_to_hive.html.twig') }}
+<p class="data-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}

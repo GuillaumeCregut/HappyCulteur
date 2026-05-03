@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/datalogger.css')}}">
+{% endblock %}
+{% block title %}Datalogger{% endblock %}
+
+{% block body %}
+<h1 class="title">Datalogger</h1>
+<p class="data-add-line">Le datalogger est un appareil électronique qui se place au niveau de la ruche et qui permet, grâce à des capteurs autour et dans la ruche de mesurer différentes informations.</p>
+<p class="data-add-line">Vous devez indiquer la fréquence de relevé, ainsi que les capteurs qui seront raccordés.</p>
+<p class="data-add-line">En validant, vous aller télécharger un fichier qu'il suffit de placer sur une carte SD, qui sera mise en place dans le coffret électronique.</p>
+{{ include('data_logger/_form_add_to_hive.html.twig') }}
+<p class="data-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}
