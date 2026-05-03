@@ -45,41 +45,13 @@ class GenerateLogger
             $nbSamples = (int) $this->io->ask('Entrez le nombre de mesures simulées');
         }
         $samples = $this->generateDatas($config, $nbSamples, $hive);
-       
+
         $header = [
             'version' => (int)$config['version'],
             'signature' => $config['signature']
         ];
         $this->writeSamples($samples, $header, $folder, $hive);
         return Command::SUCCESS;
-    }
-
-    private function writeSamples(array $samples, array $header, string $folder, Hive $hive): void
-    {
-        $this->io->text('Ecriture du fichier de données de mesures');
-        $path = $this->projectDir . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
-        $basePath = PathMaker::makeDataloggerFilePath($hive->getOwner()->getId(), $hive->getId(), $path);
-        if(!is_dir($basePath)) {
-            mkdir($basePath, 0777, true);
-        }
-        $filename = $hive->getIdentification() . '.bin';
-        $filePath = $basePath . $filename;
-        $fileWriter = new FileWriter($filePath, $header);
-        $fileWriter->writeBinaryFile($samples);
-        if(file_exists($filePath)) {
-            $this->io->text("Fichier de configuration créé ici : {$filePath}");
-        }
-    }
-
-    private function generateDatas(array $config, int $nbSamples, Hive $hive): array
-    {
-        $this->io->text('Genération des données de mesures');
-        $samples = [];
-        for ($i = 0; $i < $nbSamples; $i++) {
-            $sample = $this->generateSample($config, $hive);
-            $samples[] = $sample;
-        }
-        return $samples;
     }
 
     private function selectHive(): ?Hive
@@ -146,8 +118,36 @@ class GenerateLogger
         }
         $path .= DIRECTORY_SEPARATOR;
         $fileConfig = $this->maker->makeConfig($hive, $dto, $path, $user);
-        if(file_exists("{$path}{$fileConfig}")) {
+        if (file_exists("{$path}{$fileConfig}")) {
             $this->io->text("Fichier de configuration créé ici : {$path}{$fileConfig}");
+        }
+    }
+
+    private function generateDatas(array $config, int $nbSamples, Hive $hive): array
+    {
+        $this->io->text('Genération des données de mesures');
+        $samples = [];
+        for ($i = 0; $i < $nbSamples; $i++) {
+            $sample = $this->generateSample($config, $hive);
+            $samples[] = $sample;
+        }
+        return $samples;
+    }
+
+    private function writeSamples(array $samples, array $header, string $folder, Hive $hive): void
+    {
+        $this->io->text('Ecriture du fichier de données de mesures');
+        $path = $this->projectDir . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
+        $basePath = PathMaker::makeDataloggerFilePath($hive->getOwner()->getId(), $hive->getId(), $path);
+        if (!is_dir($basePath)) {
+            mkdir($basePath, 0777, true);
+        }
+        $filename = $hive->getIdentification() . '.bin';
+        $filePath = $basePath . $filename;
+        $fileWriter = new FileWriter($filePath, $header);
+        $fileWriter->writeBinaryFile($samples);
+        if (file_exists($filePath)) {
+            $this->io->text("Fichier de configuration créé ici : {$filePath}");
         }
     }
 
