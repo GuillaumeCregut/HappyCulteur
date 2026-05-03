@@ -16,19 +16,19 @@ class DataloggerLoadFile
     public function isFileValid(File $file, int $version, string $signature): array
     {
         $ok = [];
-        //Load config file from hive
+        
         $header = [
             'signature' => $signature,
             'version' => $version
         ];
-        //Get signature, version and Hive Id from data file
+        
         $filePath = $file->getPathname();
         try {
             $fileHeaders = FileWriter::readHeaderFile($filePath, $header);
         } catch (Exception $e) {
             throw new DataloggerFileException($e->getMessage());
         }
-        //Check all
+        
         if ($signature !== $fileHeaders['signature']) {
             $ok[] = "Signature invalide";
         }
