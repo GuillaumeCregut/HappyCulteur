@@ -16,6 +16,14 @@ class HiveRepository extends ServiceEntityRepository
         parent::__construct($registry, Hive::class);
     }
 
+    public function findWithDatalogger()
+    {
+         return $this->createQueryBuilder('h')
+        ->where('h.dataLoggerName IS NOT NULL')
+        ->getQuery()
+        ->getResult();
+    }
+
     //    /**
     //     * @return Hive[] Returns an array of Hive objects
     //     */
