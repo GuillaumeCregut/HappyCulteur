@@ -46,7 +46,7 @@ class SwarmFixtures extends Fixture implements DependentFixtureInterface
             $swarmDate = new DateTimeImmutable($date);
             $date2 =  $faker->dateTimeBetween('-3 years', '-1 month');
             $queenAge = DateTimeImmutable::createFromMutable($date2);
-            $swarm->setName("EssaimAdmin-{$i}")
+            $swarm->setName("Essaim-{$i}")
                 ->setDate($swarmDate)
                 ->setCapturePlace($faker->city())
                 ->setQueenAge($queenAge)
