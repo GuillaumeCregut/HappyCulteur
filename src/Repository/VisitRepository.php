@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Hive;
 use App\Entity\Visit;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Visit>
@@ -14,6 +16,25 @@ class VisitRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Visit::class);
+    }
+
+    public function findByhiveAndDates(
+        Hive $hive, 
+        DateTimeImmutable $endDate,
+        ?DateTimeImmutable $startDate = null,
+    ): array {
+        $query =  $this->createQueryBuilder('v')
+            ->where('v.hive = :hive')
+            ->andWhere('v.date <= :endDate')
+            ->setParameter('hive', $hive)
+            ->setParameter('endDate', $endDate)
+            ->orderBy('v.date', 'ASC');
+        if(null !== $startDate) {
+            $query->andWhere('v.date<= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+        return $query->getQuery()
+            ->getResult();
     }
 
     //    /**
