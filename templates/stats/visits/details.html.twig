@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/stats/visit.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Historique des visites de la ruche</h1>
+<p class="stats-line">Ruche : {{ hive.name }}</p>
+<p class="stats-line">Recherche du {{ startDate}} au {{ endDate}} </p>
+<ul class="stats-visit-container">
+{% for visit in visits %}
+    <li class="stats-visit-item">
+        <details>
+            <summary class="stats-visit-summary">Date de la visite : {{ visit.date | date('d/m/Y')}}</summary>
+            <div class="stats-visit-item-body stats-visit-width">
+                <fieldset class="stats-visit-item-infos">
+                    <legend>Informations sur la ruche </legend>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Comportement de l'essaim</span> : {{ visit.behaviour ?? '-'}}</p>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Etat de la population</span> : {{ visit.population ?? '-' }}</p>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Maladie</span> : {{ visit.isDisease ? 'Oui : ' ~ visit.disease.name : 'Non' }}</p>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Reine visible</span> : {{ visit.isQueenVisible ? 'Oui' : 'Non' }}</p>
+                   
+                </fieldset>
+                <fieldset class="stats-visit-item-infos">
+                    <legend>Mesures effectuées :</legend>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Température</span> : {{ visit.temperature ?? '-' }}</p>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Climat</span> :  {{visit.weather.label}}</p>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Hygrométrie</span> : {{ visit.hygrometry ?? '-' }}</p>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Poids</span> :  {{ visit.weight ?? '-' }}</p>
+                </fieldset>
+                <fieldset class="stats-visit-item-infos">
+                    <legend>Actions effectuées :</legend>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Nourrissage </span> :  {{ visit.isFeeded ? 'Oui : ' ~ visit.feeding : 'Non' }}</p>
+                    <p class="stats-visit-item-line"><span class="stats-visit-definition">Travaux à prévoir</span> :  {{ visit.isWorksToDo ? 'Oui' : 'Non' }}</p>
+                </fieldset>
+                <p>Notes : </p>
+                <p class="stats-visit-notes">{{ visit.notes | nl2br }}</p>
+            </div>
+        </details>  
+    </li>
+{% else %}
+<li>Aucune visite enregistrée pour cette ruche</li>
+{% endfor %}
+</ul>
+
+<p class="stats-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}

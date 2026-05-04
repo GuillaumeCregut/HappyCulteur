@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Suivis des visites</h1>
+<p class="stats-line">Ruche : {{ hive.name }}</p>
+<p class="stats-line">Recherche des visites</p>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+     <twig:StatsDates 
+     startDate="{{ form.startDate}}"
+     endDate="{{ form.endDate}}"
+     typePage="visites"
+     />
+{{ form_end(form) }}
+
+<p class="stats-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}

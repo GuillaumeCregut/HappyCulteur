@@ -1,0 +1,53 @@
+.stats-visit-container {
+    margin: 1rem 0 1rem 0.5rem;
+    padding: 10px;
+}
+
+.stats-visit-width {
+    width: min(600px, 90%);
+}
+
+.stats-visit-item {
+    margin-top: 1rem;
+}
+
+.stats-visit-summary {
+    list-style-type: revert;
+    padding-bottom: 0.5rem;
+}
+
+.stats-visit-view-btn {
+    margin-left: 0.5rem;
+}
+
+.stats-visit-item-body {
+    display: flex;
+    flex-direction: column;
+    border-style: inset;
+    border-width: 3px;
+    border-radius: 5px;
+    padding-left: 1rem;
+    padding: 1rem;
+    gap: 10px;
+}
+
+.stats-visit-item-infos {
+    padding: 0.5rem;
+}
+
+.stats-visit-item-line {
+    margin-bottom: 0.5rem;
+}
+
+.stats-visit-definition {
+    text-decoration: underline;
+    color: red;
+}
+
+.stats-visit-notes {
+    background-color: #efefef;
+    border-style: inset;
+    padding: 10px;
+    border-width: 2px;
+
+}
