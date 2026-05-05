@@ -7,6 +7,7 @@ use App\Service\Uploader;
 use App\Entity\Apiculteur;
 use App\Form\ApiaryFormType;
 use App\Form\ApiaryPictureType;
+use App\Tool\PathMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/apiary', name: 'app_apiary_')]
@@ -116,8 +116,8 @@ final class ApiaryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /**@var UploadedFile $hivePicture */
             $picture = $form->get('picture')->getData();
-            $role = (string) $user->getId();
-            $filePath = $this->handleFile($apiary->getIdentification(), $uploadDirectory, $role, $slugger, false, $uploader, $picture);
+            $relativePath = PathMaker::makeCartoApiaryPath($user, $apiary, $uploadDirectory);
+            $filePath = $this->handlefile($apiary->getIdentification(), $relativePath, $uploadDirectory, $slugger, false, $uploader, $picture);
             $apiary->setLastPicture($filePath);
             $em->persist($apiary);
             $em->flush();
@@ -129,25 +129,36 @@ final class ApiaryController extends AbstractController
         ]);
     }
 
-
-    private function handleFile(
+    /**
+     * Will update or remove cartography file 
+     * If remove, return null else return relative path and filename with exetension
+     *
+     * @param string $filename
+     * @param string $relativePath
+     * @param string $rootPath
+     * @param SluggerInterface $slugger
+     * @param boolean $remove
+     * @param Uploader $uploader
+     * @param UploadedFile|null $file
+     * @return string|null
+     */
+    private function handlefile(
         string $filename,
+        string $relativePath,
         string $rootPath,
-        string $role,
         SluggerInterface $slugger,
         bool $remove,
         Uploader $uploader,
         ?UploadedFile $file = null
-    ): ?string {
-        if ($remove) {
+    ) : ?string {
+         if ($remove) {
             $picturePath = $rootPath . $filename;
             unlink($picturePath);
             return null;
         }
-        $singleFilename = $slugger->slug($filename)->lower()->toString();
-        $filename = $singleFilename;
-        $resultFilename = $uploader->storeFile($file, $role, 'carto', $filename);
-        $newFilename = pathinfo($resultFilename, PATHINFO_BASENAME);
-        return $role . DIRECTORY_SEPARATOR . 'carto' . DIRECTORY_SEPARATOR . $newFilename;
+        $filename = $slugger->slug($filename)->lower()->toString();
+        $fullPath = $rootPath . $relativePath;
+        $resultFilename = $uploader->storeFile($file, $fullPath, $filename);
+        return $relativePath . $resultFilename;
     }
 }

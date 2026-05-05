@@ -8,6 +8,7 @@ use App\Form\HiveKindType;
 use App\Repository\HiveKindRepository;
 use App\Service\HivePictureCreator;
 use App\Service\Uploader;
+use App\Tool\PathMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +52,8 @@ final class HiveKindController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /**@var UploadedFile $hivePicture */
             $hivePicture = $form->get('picture')->getData();
-            $filename = $this->handleFile($hiveKind->getName(), $uploadDirectory, false, $hivePicture);
+            $relativePath = PathMaker::makeAdminHivesFolder($uploadDirectory);
+            $filename = $this->handleFile($hiveKind->getName(), $relativePath, $uploadDirectory, false, $hivePicture);
             $hiveKind->setPicture($filename);
             $entityManager->persist($hiveKind);
             $entityManager->flush();
@@ -79,11 +81,12 @@ final class HiveKindController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hivePicture = $form->get('picture')->getData();
-            if(null !== $hivePicture) {
-                $filename = $this->handleFile($hiveKind->getName(), $uploadDirectory, false, $hivePicture);
+            if (null !== $hivePicture) {
+                $relativePath = PathMaker::makeAdminHivesFolder($uploadDirectory);
+                $filename = $this->handleFile($hiveKind->getName(), $relativePath, $uploadDirectory, false, $hivePicture);
                 $hiveKind->setPicture($filename);
             }
-            $entityManager->flush(); 
+            $entityManager->flush();
             return $this->redirectToRoute('app_admin_hive_kind_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -101,7 +104,7 @@ final class HiveKindController extends AbstractController
         #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory
     ): Response {
         if ($this->isCsrfTokenValid('delete' . $hiveKind->getId(), $request->getPayload()->getString('_token'))) {
-            $this->handleFile($hiveKind->getPicture(), $uploadDirectory, true);
+            $this->handleFile($hiveKind->getPicture(), '', $uploadDirectory, true);
             $entityManager->remove($hiveKind);
             $entityManager->flush();
         }
@@ -109,8 +112,13 @@ final class HiveKindController extends AbstractController
         return $this->redirectToRoute('app_admin_hive_kind_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function handleFile(string $filename, string $rootPath,  bool $remove, ?UploadedFile $file = null): ?string
-    {
+    private function handleFile(
+        string $filename,
+        string $relativePath,
+        string $rootPath,
+        bool $remove,
+        ?UploadedFile $file = null
+    ): ?string {
         if ($remove) {
             $picturePath = $rootPath . DIRECTORY_SEPARATOR . $filename;
             $files = [
@@ -118,24 +126,20 @@ final class HiveKindController extends AbstractController
                 $picturePath . HiveState::STOCK_HIVE->label() . '.png',
                 $picturePath . HiveState::DEAD_HIVE->label() . '.png'
             ];
-            foreach ($files as $file) {
-                unlink($file);
+            foreach ($files as $filePicture) {
+                unlink($filePicture);
             }
             return null;
         }
-        $singleFilename = $this->slugger->slug($filename)->lower()->toString();
-        $filename = $singleFilename . HiveState::ACTIVE_HIVE->label();
+        $baseFileName =  $this->slugger->slug($filename)->lower()->toString();
+        $filename = $baseFileName . HiveState::ACTIVE_HIVE->label();
         $ext =  $file->guessExtension();
-        $resultFilename = $this->uploader->storeFile($file, 'admin', 'hives', $filename);
-
-        $destinationPath = $rootPath . 'admin' . DIRECTORY_SEPARATOR . 'hives' . DIRECTORY_SEPARATOR;
-        $stockFilename =  $singleFilename . HiveState::STOCK_HIVE->label() . '.' . $ext;
-        $this->pictureCreator->convert($rootPath . DIRECTORY_SEPARATOR . $resultFilename,  $destinationPath . $stockFilename, HivePictureCreator::B_AND_WHITE);
-
-        $deadFilename =  $singleFilename . HiveState::DEAD_HIVE->label() . '.' . $ext;
-        $this->pictureCreator->convert($rootPath . DIRECTORY_SEPARATOR . $resultFilename,  $destinationPath . $deadFilename, HivePictureCreator::DEAD);
-
-        $fullFile = 'admin' . DIRECTORY_SEPARATOR . 'hives' . DIRECTORY_SEPARATOR . $singleFilename;
-        return $fullFile;
+        $fullPath = $rootPath . $relativePath;
+        $resultFilename = $this->uploader->storeFile($file, $fullPath, $filename);
+        $stockFilename =  $baseFileName . HiveState::STOCK_HIVE->label() . '.' . $ext;
+        $this->pictureCreator->convert($fullPath . $resultFilename,  $fullPath . $stockFilename, HivePictureCreator::B_AND_WHITE);
+        $deadFilename =  $baseFileName . HiveState::DEAD_HIVE->label() . '.' . $ext;
+        $this->pictureCreator->convert($fullPath . $resultFilename,  $fullPath . $deadFilename, HivePictureCreator::DEAD);
+        return $relativePath . $baseFileName;
     }
 }

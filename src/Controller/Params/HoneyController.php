@@ -10,6 +10,7 @@ use App\Service\PictureFormator;
 use App\Exception\PictureException;
 use App\Form\HoneyAjaxType;
 use App\Repository\HoneyRepository;
+use App\Tool\PathMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +43,8 @@ final class HoneyController extends AbstractController
             /**@var UploadedFile $hivePicture */
             $picture = $form->get('picture')->getData();
             if (null !== $picture) {
-                $picturePath = $this->handleFile($newHoney->getName(), $uploadDirectory, false, $picture);
+                $relativePath = PathMaker::makeHoneyFolder($uploadDirectory);
+                $picturePath = $this->handleFile($newHoney->getName(), $relativePath, $uploadDirectory, false, $picture);
                 $newHoney->setPicture($picturePath);
             }
             $em->persist($newHoney);
@@ -79,7 +81,8 @@ final class HoneyController extends AbstractController
             /**@var UploadedFile $hivePicture */
             $picture = $form->get('picture')->getData();
             if (null !== $picture) {
-                $picturePath = $this->handleFile($honey->getName(), $uploadDirectory, false, $picture);
+                $relativePath = PathMaker::makeHoneyFolder($uploadDirectory);
+                $picturePath = $this->handleFile($honey->getName(), $relativePath, $uploadDirectory, false, $picture);
                 $honey->setPicture($picturePath);
             }
             $em->persist($honey);
@@ -105,7 +108,8 @@ final class HoneyController extends AbstractController
             /**@var UploadedFile $hivePicture */
             $picture = $form->get('picture')->getData();
             if (null !== $picture) {
-                $picturePath = $this->handleFile($honey->getName(), $uploadDirectory, false, $picture);
+                $relativePath = PathMaker::makeHoneyFolder($uploadDirectory);
+                $picturePath = $this->handleFile($honey->getName(), $relativePath, $uploadDirectory, false, $picture);
                 $honey->setPicture($picturePath);
             }
             $em->persist($honey);
@@ -129,8 +133,8 @@ final class HoneyController extends AbstractController
     ): Response {
         if ($this->isCsrfTokenValid('delete' . $honey->getId(), $request->getPayload()->getString('_token'))) {
             $path = $honey->getPicture();
-            if(null !== $path) {
-                $this->handleFile($path, $uploadDirectory, true);
+            if (null !== $path) {
+                $this->handleFile($path, '', $uploadDirectory, true);
             }
             $em->remove($honey);
             $em->flush();
@@ -143,48 +147,61 @@ final class HoneyController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
 
-    ): Response{
-         if (!$request->isXmlHttpRequest()) {
+    ): Response {
+        if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException('Only for ajax call');
         }
         $honey = new Honey();
         $form = $this->createForm(HoneyAjaxType::class, $honey);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $honey->setPicture('admin/honeys/default.png');
             $em->persist($honey);
             $em->flush();
-             return $this->json([
+            return $this->json([
                 'id'   => $honey->getId(),
                 'name' => $honey->getName(),
             ]);
         }
-         return $this->render('harvest/_form_add_honey.html.twig', [
+        return $this->render('harvest/_form_add_honey.html.twig', [
             'form' => $form,
         ]);
-         
     }
 
-    private function handleFile(string $filename, string $rootPath,  bool $remove, ?UploadedFile $file = null): ?string
-    {
+    /**
+     * Will remove, add or update picture lingked to honey
+     * Return relative path and filename
+     * @param string $filename
+     * @param string $relativePath
+     * @param string $rootPath
+     * @param boolean $remove
+     * @param UploadedFile|null $file
+     * @return string|null relative path and filename
+     */
+    private function handleFile(
+        string $filename,
+        string $relativePath,
+        string $rootPath,
+        bool $remove,
+        ?UploadedFile $file = null
+    ): ?string {
         if ($remove) {
             $picturePath = $rootPath . $filename;
             unlink($picturePath);
             return null;
         }
-        $singleFilename = $this->slugger->slug($filename)->lower()->toString();
-        $filename = $singleFilename;
-
-        $resultFilename = $this->uploader->storeFile($file, 'admin', 'honeys', $filename);
+        $filename = $this->slugger->slug($filename)->lower()->toString();
+        $fullPath = $rootPath . $relativePath;
+        $resultFilename = $this->uploader->storeFile($file, $fullPath, $filename);
+        $picturePath = $fullPath . $resultFilename;
         try {
-            $result = PictureFormator::format($rootPath . $resultFilename, PictureFormator::TO_PNG, 20, 20);
+            $result = PictureFormator::format($picturePath, PictureFormator::TO_PNG, 20, 20);
             if (!$result) {
                 throw new Exception("Conversion file failed");
             }
         } catch (PictureException $e) {
             throw new Exception("Conversion file failed :{$e->getMessage()}");
         }
-        $newFilename = pathinfo($result, PATHINFO_BASENAME);
-        return 'admin' . DIRECTORY_SEPARATOR . 'honeys' . DIRECTORY_SEPARATOR . $newFilename;
+        return $relativePath . $resultFilename;
     }
 }
