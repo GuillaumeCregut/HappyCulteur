@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Constant\UserFolder;
 use App\Entity\Apiary;
 use App\Entity\Apiculteur;
 use App\Service\ApiaryDeclaration;
+use App\Tool\PathMaker;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -22,7 +22,7 @@ final class EditionController extends AbstractController
     public function __construct(
         private SluggerInterface $slugger,
         #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory
-    ){
+    ) {
         $this->uploadDirectory = $uploadDirectory;
     }
 
@@ -41,13 +41,13 @@ final class EditionController extends AbstractController
         #[CurrentUser] Apiculteur $user,
     ): Response {
         $declaration->createdoc($user, $apiary);
-        $userPath = $user->getId() . DIRECTORY_SEPARATOR;
-        $userPath .= UserFolder::DOCUMENTS;
+        $relativePath = PathMaker::makeApiaryDeclarationPath($user, $this->uploadDirectory);
+        $userPath = $this->uploadDirectory . $relativePath;
         $filename = "declaration_{$apiary->getIdentification()}.pdf";
-        $declaration->save($this->uploadDirectory . $userPath, $filename);
-         return $this->render('apiary/editions/print_declaration.html.twig', [
-            'apiary' => $apiary, 
-            'file' => $userPath . $filename
+        $declaration->save($userPath, $filename);
+        return $this->render('apiary/editions/print_declaration.html.twig', [
+            'apiary' => $apiary,
+            'file' => $relativePath . $filename
         ]);
     }
 }

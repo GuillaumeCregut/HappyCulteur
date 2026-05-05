@@ -138,10 +138,7 @@ class GenerateLogger
     {
         $this->io->text('Ecriture du fichier de données de mesures');
         $path = $this->projectDir . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
-        $basePath = PathMaker::makeDataloggerFilePath($hive->getOwner()->getId(), $hive->getId(), $path);
-        if (!is_dir($basePath)) {
-            mkdir($basePath, 0777, true);
-        }
+        $basePath = PathMaker::makeDataloggerFilePath($hive->getOwner(), $hive, $path);
         $filename = $hive->getIdentification() . '.bin';
         $filePath = $basePath . $filename;
         $fileWriter = new FileWriter($filePath, $header);

@@ -46,7 +46,8 @@ class Visits
 
     private function buildPdf(array $visits, Hive $hive, DateTimeImmutable $start, DateTimeImmutable $end, string $basePath): string
     {
-        $path = PathMaker::makeUserHiveStatPath($hive->getOwner()->getId(), $hive->getId(), 'visits', $basePath);
+        $relativePath = PathMaker::makeUserHiveStatPath($hive->getOwner(), $hive, 'visits', $basePath);
+        $path = $basePath . $relativePath;
         $filename = $hive->getIdentification() . '.pdf';
         $filePath = $path . $filename;
         $this->pdf->setAuthor('Editiel98');
@@ -74,6 +75,6 @@ class Visits
         } catch (Exception $e) {
             throw new RuntimeException('Error generating visit pdf file : ' . $e->getMessage());
         }
-        return str_replace($basePath, '', $filePath);
+        return $relativePath . $filename;
     }
 }

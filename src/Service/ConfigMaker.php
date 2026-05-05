@@ -10,14 +10,12 @@ use App\Tool\PathMaker;
 
 class ConfigMaker
 {
-    public function makeConfig(Hive $hive, DataloggerConfigDto $dto, string $path, Apiculteur $user): string
+    public function makeConfig(Hive $hive, DataloggerConfigDto $dto, string $basePath, Apiculteur $user): string
     {
-        $fullPath = PathMaker::makeDataloggerConfigPath($user->getId(), $hive->getId(), $path);
-        if(!is_dir($fullPath)) {
-            mkdir($fullPath, 0644, true);
-        }
-        $fullPath .= 'config.json';
-        $returnpath = str_replace($path,'',$fullPath);
+        $relativePath = PathMaker::makeDataloggerConfigPath($user, $hive, $basePath);
+        $filename = 'config.json';
+        $fullPath = $basePath . $relativePath;
+        $fullPath .= $filename;
         $config = (array) $dto;
         $config['hive'] = $hive->getName();
         $config['identification'] = $hive->getIdentification(); //TODO: Change this
@@ -26,42 +24,42 @@ class ConfigMaker
         $template['hive'] = 'string';
         $template['hiveId'] = 'string';
         $template['time'] = 'string';
-        if($dto->extHygro) {
+        if ($dto->extHygro) {
             $template['extHygro'] = 'int';
         }
-        if($dto->intHygro) {
+        if ($dto->intHygro) {
             $template['intHygro'] = 'int';
         }
-        if($dto->intTemp) {
+        if ($dto->intTemp) {
             $template['intTemp'] = 'float';
         }
-        if($dto->extTemp) {
+        if ($dto->extTemp) {
             $template['extTemp'] = 'float';
         }
-        if($dto->weight) {
+        if ($dto->weight) {
             $template['weight'] = 'float';
         }
         $content = [
-            'config' =>$config,
-            'template'=>$template
+            'config' => $config,
+            'template' => $template
         ];
         $encoded = json_encode($content);
-        if(!file_put_contents($fullPath,$encoded)) {
+        if (!file_put_contents($fullPath, $encoded)) {
             throw new DataloggerFileException('Config file not written');
         }
-        return $returnpath;
+        return $relativePath . $filename;
     }
 
     public function loadConfig(Hive $hive, string $path): DataloggerConfigDto
     {
         $config = $hive->getDataloggerName();
-        $fullPath = $path .$config;
-        if(!file_exists($fullPath)) {
+        $fullPath = $path . $config;
+        if (!file_exists($fullPath)) {
             throw new DataloggerFileException('Config file not found');
         }
         $json = file_get_contents($fullPath);
         $decoded = json_decode($json, true);
-        if(!is_array($decoded)) {
+        if (!is_array($decoded)) {
             throw new DataloggerFileException('invalid config format');
         }
         $configFromFile = $decoded['config'];

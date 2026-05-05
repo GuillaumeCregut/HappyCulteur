@@ -13,28 +13,32 @@ class Uploader
         private string $rootPath,
     ) {}
 
+    /**
+     * Will move the uploaded file to the defined directory
+     *
+     * @param UploadedFile $file
+     * @param string $path absolute path of the folder to store file
+     * @param string|null $filename the whished filename
+     * @return string the file name with extension
+     */
     public function storeFile(
         UploadedFile $file,
-        string $role,
-        string $documentType,
-        ?string $filename,
-        ?string $subFolder = null
+        string $path,
+        ?string $filename
     ): string {
-        $baseFolder = $role . DIRECTORY_SEPARATOR . $documentType;
-        $baseFolder .= $subFolder ? DIRECTORY_SEPARATOR . $subFolder : '';
         if (null === $filename) {
             $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         }
         $extension = $file->guessExtension();
-        $slugName = $this->slugify($filename);
-        $fullFolder = $this->rootPath . DIRECTORY_SEPARATOR . $baseFolder;
+        $destinationName = $this->slugify($filename)  . '.' . $extension;
+        
         try {
-            $file->move($this->rootPath . DIRECTORY_SEPARATOR . $baseFolder, $slugName . '.' . $extension);
-        } catch(FileException $e) {
-
+            $file->move($path, $destinationName);
+        } catch (FileException $e) {
+            throw new FileException($e->getMessage());
         }
-        $baseFolder .= DIRECTORY_SEPARATOR . $slugName . '.' . $extension;
-        return $baseFolder;
+
+        return $destinationName;
     }
 
     private function slugify(string $name): string

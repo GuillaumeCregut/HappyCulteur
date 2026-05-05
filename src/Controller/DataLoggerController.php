@@ -149,7 +149,7 @@ final class DataLoggerController extends AbstractController
                     'form' => $form
                 ]);
             }
-            $path = PathMaker::makeDataloggerFilePath($user->getId(), $hive->getId(), $uploadDirectory);
+            $path = PathMaker::makeDataloggerFilePath($user, $hive, $uploadDirectory);
             $newFilename = $hive->getIdentification() . '.bin';
             $newFile = $datas->move($path, $newFilename);
             $datas = $loader->loadDatas($newFile->getPathname(), $hive, $uploadDirectory, $user);
