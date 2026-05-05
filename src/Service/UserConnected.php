@@ -19,6 +19,13 @@ class UserConnected
     public function cleanUp(Apiculteur $user, string $uploadPath): void
     {
         //TODO : Remove users datas in his directory
+        /*
+            clean :
+                - Documents
+                - Dataloggers datas
+                - Stats 
+
+        */
         
     }
 }
