@@ -62,7 +62,7 @@ class Visit
     #[ORM\JoinColumn(nullable: false)]
     private ?Hive $hive = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(fetch:'EAGER')]
     private ?Disease $disease = null;
 
     public function getId(): ?int

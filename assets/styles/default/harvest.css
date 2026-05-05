@@ -31,7 +31,7 @@ margin-bottom: 1rem;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 10px;
-    background-image: url("images/fond.jpg");
+    background-image: url("pictures/fond.jpg");
 }
 
 .harvest-honey-dialog-line{

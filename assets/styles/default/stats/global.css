@@ -1,0 +1,29 @@
+.stats-line{
+    margin-bottom: 1rem;
+}
+
+.stats-btn-container {
+    margin-top: 2rem;
+}
+
+.stats-link-list {
+    list-style-image: url('../pictures/print.png');
+    padding: revert;
+}
+
+/* form */
+.stats-form-line{
+margin-bottom: 1rem;
+}
+
+.stats-form-date-search{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.stats-form-input{
+    border: none;
+    padding: 3px;
+}

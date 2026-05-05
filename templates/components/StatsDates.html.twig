@@ -1,0 +1,25 @@
+<div class ="stats-form-component">
+    <p class="stats-form-line">Selectionner les dates de recherche : </p>
+    <div class="stats-form-date-search">
+        {{ form_row(startDate,  {
+                row_attr: {
+                    class: 'stats-form-row'
+                },
+                label: 'Du  : ',
+                attr : {
+                    class: 'stats-form-input'
+                }
+        }) }}
+        {{ form_row(endDate,   {
+                row_attr: {
+                    class: 'stats-form-row'
+                },
+                label: 'Au : ',
+                attr : {
+                    class: 'stats-form-input'
+                }
+        }) }}
+    </div>
+    <p class="stats-form-line">Si les champs sont vides, toutes les {{ typePage }} seront affichées. Si une des dates n'est pas mentionnée, alors ce sera la valeur par défaut (la plus ancienne ou la plus récente suivant le cas)</p>
+    <button class="form-button">Rechercher</button>
+</div>
