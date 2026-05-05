@@ -12,6 +12,7 @@
         "doctrine/orm": "^3.6.3",
         "fpdf/fpdf": "^1.86.1",
         "guillaumecregut/filewriter": "^1.1.1",
+        "mitoteam/jpgraph": "^10.5",
         "phpdocumentor/reflection-docblock": "^6.0.3",
         "phpstan/phpdoc-parser": "^2.3.2",
         "symfony/asset": "8.0.*",
