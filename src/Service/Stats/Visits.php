@@ -9,6 +9,7 @@ use App\Tool\EditielPdf;
 use App\Repository\VisitRepository;
 use App\Tool\PathMaker;
 use Exception;
+use RuntimeException;
 
 class Visits
 {
@@ -59,7 +60,6 @@ class Visits
         $this->pdf->ln(10);  //saut de 10mm
         $i = 0;
         $Max = count($visits);
-       // dd($this->pdf);
         /**@var Visit $visit */
         foreach ($visits as $visit) {
             $this->pdf->displayVisit($visit);
@@ -70,9 +70,9 @@ class Visits
         }
         try {
 
-            $this->pdf->Output('F', $filePath); //TODO: Modify to send to file
+            $this->pdf->Output('F', $filePath); 
         } catch (Exception $e) {
-            dd($e->getMessage());
+            throw new RuntimeException('Error generating visit pdf file : ' . $e->getMessage());
         }
         return str_replace($basePath, '', $filePath);
     }
