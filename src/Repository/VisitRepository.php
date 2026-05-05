@@ -30,7 +30,7 @@ class VisitRepository extends ServiceEntityRepository
             ->setParameter('endDate', $endDate)
             ->orderBy('v.date', 'ASC');
         if(null !== $startDate) {
-            $query->andWhere('v.date<= :startDate')
+            $query->andWhere('v.date>= :startDate')
                 ->setParameter('startDate', $startDate);
         }
         return $query->getQuery()
