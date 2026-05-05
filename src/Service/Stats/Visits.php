@@ -42,4 +42,38 @@ class Visits
         }
         return $result;
     }
+
+    private function buildPdf(array $visits, Hive $hive, DateTimeImmutable $start, DateTimeImmutable $end, string $basePath): string
+    {
+        $path = PathMaker::makeUserHiveStatPath($hive->getOwner()->getId(), $hive->getId(), 'visits', $basePath);
+        $filename = $hive->getIdentification() . '.pdf';
+        $filePath = $path . $filename;
+        $this->pdf->setAuthor('Editiel98');
+        $this->pdf->setCreator('Gestion Rucher');
+        $this->pdf->SetTitle(html_entity_decode("Historique des visites de la ruche {$hive->getName()}"));
+        $this->pdf->setDocTitle("Historique des visites de la ruche {$hive->getName()}");
+        $this->pdf->addPage();
+        $this->pdf->SetFont('Arial', '', 10);
+        $this->pdf->SetTextColor(0, 0, 0);
+        $this->pdf->cellCenter("Du {$start->format('d/m/Y')} au {$end->format('d/m/Y')}");
+        $this->pdf->ln(10);  //saut de 10mm
+        $i = 0;
+        $Max = count($visits);
+       // dd($this->pdf);
+        /**@var Visit $visit */
+        foreach ($visits as $visit) {
+            $this->pdf->displayVisit($visit);
+            $i++;
+            if ($i < $Max) {
+                $this->pdf->addPage();
+            }
+        }
+        try {
+
+            $this->pdf->Output('F', $filePath); //TODO: Modify to send to file
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+        return str_replace($basePath, '', $filePath);
+    }
 }
