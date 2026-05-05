@@ -9,20 +9,21 @@ use App\Entity\Apiculteur;
 class PathMaker
 {
     /**
-     * Will create and return the absolute path where to store datalogger config file
+     * Will create and return the relative path where to store datalogger config file
      * 
      * @param Apiculteur $user 
      * @param Hive $hive
      * @param string $basePath : path to upload directory
-     * @return string return the whole path with the trailing DIRECTORY SEPARATOR
+     * @return string return the realtive path with the trailing DIRECTORY SEPARATOR
      */
     public static function makeDataloggerConfigPath(Apiculteur $user, Hive $hive, string $basePath): string
     {
-        $fullPath = $basePath . $user->getId() . DIRECTORY_SEPARATOR;
-        $fullPath .= 'datalogger' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
-        $fullPath .= $hive->getId() . DIRECTORY_SEPARATOR;
+        $path =  $user->getId() . DIRECTORY_SEPARATOR;
+        $path .= 'datalogger' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+        $path .= $hive->getId() . DIRECTORY_SEPARATOR;
+        $fullPath = $basePath . $path;
         self::makeFolder($fullPath);
-        return $fullPath;
+        return $path;
     }
 
     /**
@@ -43,21 +44,22 @@ class PathMaker
     }
 
     /**
-     *  Will create and return the absolute path where to store hive statistic files
+     *  Will create and return the relative path where to store hive statistic files
      *
      * @param Apiculteur $user
      * @param Hive $hive
      * @param string $typeDoc
      * @param string $basePath
-     * @return string return the whole path with the trailing DIRECTORY SEPARATOR
+     * @return string return the relative path with the trailing DIRECTORY SEPARATOR
      */
     public static function makeUserHiveStatPath(Apiculteur $user, Hive $hive, string $typeDoc, string $basePath): string
     {
-        $fullPath = $basePath . $user->getId() . DIRECTORY_SEPARATOR;
-        $fullPath .= 'stats' . DIRECTORY_SEPARATOR . $typeDoc . DIRECTORY_SEPARATOR;
-        $fullPath .= $hive->getId() . DIRECTORY_SEPARATOR;
+        $path = $basePath . $user->getId() . DIRECTORY_SEPARATOR;
+        $path .= 'stats' . DIRECTORY_SEPARATOR . $typeDoc . DIRECTORY_SEPARATOR;
+        $path .= $hive->getId() . DIRECTORY_SEPARATOR;
+        $fullPath = $basePath . $path;
         self::makeFolder($fullPath);
-        return $fullPath;
+        return $path;
     }
 
     /**
@@ -127,8 +129,8 @@ class PathMaker
 
     private static function makeFolder(string $fullPath): void
     {
-         if (!is_dir($fullPath)) {
-            mkdir($fullPath, 0766, true);
+        if (!is_dir($fullPath)) {
+            mkdir($fullPath, 0744, true);
         }
     }
 }
