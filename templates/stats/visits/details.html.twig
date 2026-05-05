@@ -8,12 +8,15 @@
 {% block body %}
 <h1 class="title">Historique des visites de la ruche</h1>
 <p class="stats-line">Ruche : {{ hive.name }}</p>
-<p class="stats-line">Recherche du {{ startDate}} au {{ endDate}} </p>
+<p class="stats-line">Recherche du {{ startDate}} au {{ endDate }} </p>
+{% if doc %}
+<p class="stats-line"><a href="{{ asset('uploads/')~doc }}" download><img src="{{ asset('pictures/print.png') }}" alt="imprimer" class="stat-visit-print-picture"></a></p>
+{% endif %}
 <ul class="stats-visit-container">
 {% for visit in visits %}
     <li class="stats-visit-item">
-        <details>
-            <summary class="stats-visit-summary">Date de la visite : {{ visit.date | date('d/m/Y')}}</summary>
+        <details class="stats-visit-width">
+            <summary class="stats-visit-summary  stats-visit-width">Date de la visite : {{ visit.date | date('d/m/Y')}}</summary>
             <div class="stats-visit-item-body stats-visit-width">
                 <fieldset class="stats-visit-item-infos">
                     <legend>Informations sur la ruche </legend>
@@ -45,5 +48,5 @@
 {% endfor %}
 </ul>
 
-<p class="stats-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+<p class="stats-btn-container"><a href="{{ path('app_stats_visits_search', {id: hive.id}) }}" class= "form-button">Retour à la recherche</a></p>
 {% endblock %}
