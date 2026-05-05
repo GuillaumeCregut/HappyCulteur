@@ -20,3 +20,5 @@
 ###< symfony/asset-mapper ###
 notes.txt
 /datas
+/storage/*
+!/storage/.gitkeep
