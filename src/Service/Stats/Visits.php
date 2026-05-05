@@ -57,7 +57,7 @@ class Visits
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->SetTextColor(0, 0, 0);
         $this->pdf->cellCenter("Du {$start->format('d/m/Y')} au {$end->format('d/m/Y')}");
-        $this->pdf->ln(10);  //saut de 10mm
+        $this->pdf->ln(10);  
         $i = 0;
         $Max = count($visits);
         /**@var Visit $visit */
