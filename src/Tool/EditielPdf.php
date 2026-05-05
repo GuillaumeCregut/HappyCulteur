@@ -2,6 +2,7 @@
 
 namespace App\Tool;
 
+use App\Entity\Visit;
 use Fpdf\Fpdf;
 
 class EditielPdf extends Fpdf
@@ -159,31 +160,12 @@ class EditielPdf extends Fpdf
         $this->ln(6);
     }
 
-    public function displayVisit(array $visit): void
+    public function displayVisit(Visit $visit): void
     {
-        //TODO: transform visit to object or entity 
-        /*
-		[Date_V] => 01/02/2017
-            [Numero] => 0
-            [Comportement] => Cool
-            [Population] => Faible
-            [Maladie] => Oui :
-            [NomMaladie] => Varoa
-            [ReineVisible] => Oui
-            [Poids] => 12 kg
-            [Temperature] => 15°C
-            [Climat] => beau temps
-            [Hygro] => 10%
-            [Nourrissage] => Non effectué
-            [Type_Nourrissage] => 
-            [Travaux] => non
-            [Notes] => Aucunes
-			*/
-
         $this->SetFont('Arial', '', 10);
         $dateWitdh = $this->GetStringWidth('Date de la visite : ');
         $this->addCell($dateWitdh, 0, 'Date de la visite : ', 0, 0);
-        $this->addCell(0, 0, $visit['Date_V']);
+        $this->addCell(0, 0, $visit->getDate()->format('d/m/Y'));
         $this->ln(10);
 
         $this->addCell(10);
@@ -196,7 +178,7 @@ class EditielPdf extends Fpdf
         $this->addCell(15);
         $this->addCell($width, 0, "Comportement de l'essaim");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['Comportement']);
+        $this->addCell(0, 0, ' : ' . $visit->getBehaviour() ?? '-');
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
@@ -204,25 +186,27 @@ class EditielPdf extends Fpdf
         $this->addCell(15);
         $this->addCell($width, 0, "Etat de la population");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['Population']);
+        $this->addCell(0, 0, ' : ' . $visit->getPopulation() ?? '-');
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
-        $width = $this->GetStringWidth("Maladie");
+        $width = $this->GetStringWidth("Maladie : ");
         $this->addCell(15);
-        $this->addCell($width, 0, "Maladie");
+        $this->addCell($width, 0, "Maladie :");
         $this->SetFont('Arial', '', 10);
-        $width = $this->GetStringWidth(' : ' . $visit['Maladie'] . ' ');
-        $this->addCell($width, 0, ' : ' . $visit['Maladie'] . ' ');
-        $this->addCell(0, 0, $visit['NomMaladie']);
+        $disease = $visit->isDisease() ? ' Oui :' : ' Aucune';
+        $width = $this->GetStringWidth(' : ' . $disease . ' ');
+        $this->addCell($width, 0,  $disease . ' ');
+        $diseaseName = $visit->getDisease() === null ? '' : $visit->getDisease()->getName();
+        $this->addCell(0, 0, $diseaseName);
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
-        $width = $this->GetStringWidth("Reine visible");
+        $width = $this->GetStringWidth("Reine visible : ");
         $this->addCell(15);
-        $this->addCell($width, 0, "Reine visible");
+        $this->addCell($width, 0, "Reine visible : ");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['ReineVisible']);
+        $this->addCell(0, 0, ' : ' . $visit->isQueenVisible() ? ' Oui' : ' Non');
         $this->ln(15);
 
         $this->addCell(10);
@@ -231,11 +215,12 @@ class EditielPdf extends Fpdf
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
-        $width = $this->GetStringWidth("Temperature");
+        $width = $this->GetStringWidth("Temperature : ");
         $this->addCell(15);
-        $this->addCell($width, 0, "Température");
+        $this->addCell($width, 0, "Température :");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['Temperature']);
+        $temperature = $visit->getTemperature() === null ? 'Non mesuré' : $visit->getTemperature() .'°C';
+        $this->addCell(0, 0,  $temperature);
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
@@ -243,7 +228,7 @@ class EditielPdf extends Fpdf
         $this->addCell(15);
         $this->addCell($width, 0, "Climat");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['Climat']);
+        $this->addCell(0, 0, ' : ' . $visit->getWeather()->label());
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
@@ -251,7 +236,8 @@ class EditielPdf extends Fpdf
         $this->addCell(15);
         $this->addCell($width, 0, "Hygrométrie");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['Hygro']);
+        $hygometry = $visit->getHygrometry() === null ? 'Non mesuré' : $visit->getHygrometry() .'%';
+        $this->addCell(0, 0, ' : ' . $hygometry);
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
@@ -259,7 +245,8 @@ class EditielPdf extends Fpdf
         $this->addCell(15);
         $this->addCell($width, 0, "Poids");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['Poids']);
+        $weight = $visit->getWeight() === null ? 'Non mesuré' : $visit->getWeight() .' kg';
+        $this->addCell(0, 0, ' : ' . $weight);
         $this->ln(15);
 
         $this->addCell(10);
@@ -268,21 +255,22 @@ class EditielPdf extends Fpdf
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
-        $width = $this->GetStringWidth("Nourrissage");
+        $width = $this->GetStringWidth("Nourrissage : ");
         $this->addCell(15);
-        $this->addCell($width, 0, "Nourrissage");
+        $this->addCell($width, 0, "Nourrissage :");
         $this->SetFont('Arial', '', 10);
-        $width = $this->GetStringWidth($visit['Nourrissage']);
-        $this->addCell($width, 0, ' : ' . $visit['Nourrissage']);
-        $this->addCell(0, 0, ' ' . $visit['Type_Nourrissage']);
+        $feeding = $visit->isFeeded() ? 'Oui :' : 'non effectué';
+        $width = $this->GetStringWidth($feeding . '  ');
+        $this->addCell($width, 0, $feeding);
+        $this->addCell(0, 0, ' ' . $visit->getFeeding());
         $this->ln(7);
 
         $this->SetFont('Arial', 'BU', 10);
-        $width = $this->GetStringWidth("Travaux a prevoir");
+        $width = $this->GetStringWidth("Travaux a prevoir : ");
         $this->addCell(15);
-        $this->addCell($width, 0, "Travaux à prévoir");
+        $this->addCell($width, 0, "Travaux à prévoir :");
         $this->SetFont('Arial', '', 10);
-        $this->addCell(0, 0, ' : ' . $visit['Travaux']);
+        $this->addCell(0, 0, $visit->isWorksToDo() ? 'Oui': 'Non');
         $this->ln(15);
 
         $this->addCell(10);
@@ -291,7 +279,7 @@ class EditielPdf extends Fpdf
         $this->ln(7);
         $this->SetFont('Arial', '', 10);
         $this->addCell(15);
-        $this->addMultiCell(0, 4, $visit['Notes']);
+        $this->addMultiCell(0, 4, $visit->getNotes() ?? 'Aucunes');
     }
 
     private function utf8Decode(string $toConvert): string
