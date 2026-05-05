@@ -13,12 +13,14 @@ parameters:
     dead_file_path: '%kernel.project_dir%/resources/dead.png'
     app.datalogger.version: '1'
     app.datalogger.signature: 'HM_GC1'
+    
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+        bind:
+            $userFolderRoot: '%kernel.project_dir%/storage/'
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -32,4 +34,3 @@ services:
     App\Service\HivePictureCreator:
         arguments:
             $deadFile: '%dead_file_path%'
-    
