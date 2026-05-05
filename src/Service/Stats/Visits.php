@@ -46,7 +46,7 @@ class Visits
 
     private function buildPdf(array $visits, Hive $hive, DateTimeImmutable $start, DateTimeImmutable $end, string $basePath): string
     {
-        $path = PathMaker::makeUserHiveStatPath($hive->getOwner()->getId(), $hive->getId(), 'visits', $basePath);
+        $path = PathMaker::makeUserHiveStatPath($hive->getOwner(), $hive, 'visits', $basePath);
         $filename = $hive->getIdentification() . '.pdf';
         $filePath = $path . $filename;
         $this->pdf->setAuthor('Editiel98');

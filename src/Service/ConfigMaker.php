@@ -12,7 +12,7 @@ class ConfigMaker
 {
     public function makeConfig(Hive $hive, DataloggerConfigDto $dto, string $path, Apiculteur $user): string
     {
-        $fullPath = PathMaker::makeDataloggerConfigPath($user->getId(), $hive->getId(), $path);
+        $fullPath = PathMaker::makeDataloggerConfigPath($user, $hive, $path);
         if(!is_dir($fullPath)) {
             mkdir($fullPath, 0644, true);
         }
