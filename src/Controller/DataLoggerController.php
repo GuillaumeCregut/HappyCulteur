@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,6 +25,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 #[Route('/datalogger', name: 'app_datalogger_')]
 final class DataLoggerController extends AbstractController
 {
+
+    public function __construct(private readonly string $userFolderRoot) {}
+
     #[Route('', name: 'index')]
     public function index(): Response
     {
@@ -63,7 +65,6 @@ final class DataLoggerController extends AbstractController
         ConfigMaker $maker,
         Request $request,
         #[CurrentUser] Apiculteur $user,
-        #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
         $config = new DataloggerConfigDto();
@@ -77,7 +78,7 @@ final class DataLoggerController extends AbstractController
             $signature = $this->getParameter('app.datalogger.signature');
             $config->version = $version;
             $config->signature = $signature;
-            $file = $maker->makeConfig($hive, $config, $uploadDirectory, $user);
+            $file = $maker->makeConfig($hive, $config, $this->userFolderRoot, $user);
             $hive->setDataloggerName($file);
             $em->flush();
             return $this->redirectToRoute('app_datalogger_hive', ['id' => $hive->getId()]);
@@ -94,14 +95,13 @@ final class DataLoggerController extends AbstractController
         ConfigMaker $maker,
         Request $request,
         #[CurrentUser] Apiculteur $user,
-        #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
         $configFile = $hive->getDataloggerName();
         if (null === $configFile) {
             $this->createNotFoundException("La ruche n'a pas de datalogger");
         }
-        $config = $maker->loadConfig($hive, $uploadDirectory);
+        $config = $maker->loadConfig($hive, $this->userFolderRoot);
         $form =  $this->createForm(DataLoggerCreateType::class, $config);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,7 +109,7 @@ final class DataLoggerController extends AbstractController
             $signature = $this->getParameter('app.datalogger.signature');
             $config->version = $version;
             $config->signature = $signature;
-            $maker->makeConfig($hive, $config, $uploadDirectory, $user);
+            $maker->makeConfig($hive, $config, $this->userFolderRoot, $user);
             return $this->redirectToRoute('app_datalogger_hive', ['id' => $hive->getId()]);
         }
         return $this->render('data_logger/update.html.twig', [
@@ -125,7 +125,6 @@ final class DataLoggerController extends AbstractController
         DataloggerLoadFile $loader,
         EntityManagerInterface $em,
         #[CurrentUser] Apiculteur $user,
-        #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
         if (null === $hive->getDataloggerName()) {
@@ -149,12 +148,12 @@ final class DataLoggerController extends AbstractController
                     'form' => $form
                 ]);
             }
-            $path = PathMaker::makeDataloggerFilePath($user, $hive, $uploadDirectory);
+            $path = PathMaker::makeDataloggerFilePath($user, $hive, $this->userFolderRoot);
             $newFilename = $hive->getIdentification() . '.bin';
             $newFile = $datas->move($path, $newFilename);
-            $datas = $loader->loadDatas($newFile->getPathname(), $hive, $uploadDirectory, $user);
-            if(false === $datas) {
-                 $form->get('file')->addError(
+            $datas = $loader->loadDatas($newFile->getPathname(), $hive, $this->userFolderRoot, $user);
+            if (false === $datas) {
+                $form->get('file')->addError(
                     new FormError("Le fichier ne correspond pas à la ruche selectionnée")
                 );
                 return $this->render('data_logger/load.html.twig', [
@@ -162,11 +161,11 @@ final class DataLoggerController extends AbstractController
                     'form' => $form
                 ]);
             }
-            foreach($datas as $data) {
+            foreach ($datas as $data) {
                 $em->persist($data);
             }
             $em->flush();
-            $count =count($datas);
+            $count = count($datas);
             $this->addFlash('success', "{$count} enregistrements enregistrés avec succès.");
             return $this->redirectToRoute('app_datalogger_hive', ['id' => $hive->getId()]);
         }

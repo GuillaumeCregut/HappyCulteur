@@ -4,8 +4,6 @@ namespace App\Command;
 
 use App\Entity\Hive;
 use App\Tool\PathMaker;
-use App\Service\ConfigMaker;
-use App\Dto\DataloggerConfigDto;
 use App\Repository\HiveRepository;
 use Editiel98\FileWriter\FileWriter;
 use App\Exception\DataloggerFileException;
@@ -15,7 +13,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(name: 'app:generate-datas', description: 'generate a logger file for the hive already configured', help: 'This command generate a logger file and config for the hive that has already a datalogger')]
 class GenerateHiveDatas
@@ -25,8 +22,7 @@ class GenerateHiveDatas
     public function __construct(
         private HiveRepository $repo,
         #[Autowire('%kernel.project_dir%')] private string $projectDir,
-        private ConfigMaker $maker,
-        private ParameterBagInterface $params
+        private readonly string $userFolderRoot,
     ) {}
 
     public function __invoke(InputInterface $input, OutputInterface $output): int
@@ -81,7 +77,8 @@ class GenerateHiveDatas
 
     private function generateConfig(Hive $hive): array
     {
-        $filename = $this->projectDir . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
+        //TODO : check if works
+        $filename = $this->userFolderRoot;
         $filename .= $hive->getDataloggerName();
         if (!file_exists($filename)) {
             throw new DataloggerFileException('Config file not found');

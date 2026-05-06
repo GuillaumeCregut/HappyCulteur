@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Hive;
 use App\Entity\Apiary;
-use App\Entity\Apiculteur;
 use App\Tool\PathMaker;
+use App\Entity\Apiculteur;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -30,5 +31,14 @@ final class SecureFileController extends AbstractController
         $filename = "declaration_{$apiary->getIdentification()}.pdf";
         $fullPath .= $filename;
         return $this->file($fullPath);
+    }
+
+     #[Route('/datalogger/{id}', name: 'datalogger')]
+    public function datalogger(
+        Hive $hive
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $filename = $this->userFolderRoot . $hive->getDataloggerName();
+        return $this->file($filename);
     }
 }
