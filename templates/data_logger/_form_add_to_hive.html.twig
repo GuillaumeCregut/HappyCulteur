@@ -27,16 +27,16 @@
         </div>
         <div class="data-form-row">
             {{ form_widget(form.extHygro) }}
-            {{ form_label(form.intTemp,'Hygrométrie extérieure' )}}
+            {{ form_label(form.extHygro,'Hygrométrie extérieure' )}}
         </div>
 
         <div class="data-form-row">
             {{ form_widget(form.intHygro)}}
-            {{ form_label(form.intTemp,'Hygrométrie intérieure' )}}
+            {{ form_label(form.intHygro,'Hygrométrie intérieure' )}}
         </div>
         <div class="data-form-row">
             {{ form_widget(form.weight) }}
-            {{ form_label(form.intTemp,'Poids' )}}
+            {{ form_label(form.weight,'Poids' )}}
         </div>
     </div>
     <button class="form-button">{{ button_label|default('Valider') }}</button>
