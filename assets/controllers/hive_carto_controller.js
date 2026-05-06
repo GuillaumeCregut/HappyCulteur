@@ -16,12 +16,13 @@ export default class extends Controller {
         hivePicture: String,
         url: String,
         csrf: String,
+        initialized: Boolean
     }
     async connect() {
         this.canvas = this.canvasTarget;
         this.ctx = this.canvasTarget.getContext("2d");
         console.log(this.pathValue);
-        if(this.pathValue ==='/uploads/') {
+        if(!this.initializedValue) {
             this.uninitializedTarget.classList.remove('hive-carto-message-hidden');
             return;
         }
