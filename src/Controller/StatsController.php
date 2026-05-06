@@ -9,12 +9,14 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/stats', name: 'app_stats_')]
 final class StatsController extends AbstractController
 {
+
+    public function __construct(private readonly string $userFolderRoot) {}
+
     #[Route('/hive/{id}', name: 'index')]
     public function index(
         Hive $hive
@@ -30,14 +32,13 @@ final class StatsController extends AbstractController
         Hive $hive,
         Request $request,
         Visits $visits,
-        #[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
         $form = $this->createForm(DatesType::class, null);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $dates = $form->getData();
-            $visits = $visits->getHiveVisits($hive, $dates, $uploadDirectory);
+            $visits = $visits->getHiveVisits($hive, $dates, $this->userFolderRoot);
             $request->getSession()->set('visit_results', $visits);
             return $this->redirectToRoute('app_stats_visits_results', ['id' => $hive->getId()]);
         }

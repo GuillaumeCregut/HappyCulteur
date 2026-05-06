@@ -6,6 +6,7 @@ use App\Entity\Hive;
 use App\Entity\Apiary;
 use App\Tool\PathMaker;
 use App\Entity\Apiculteur;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -42,7 +43,7 @@ final class SecureFileController extends AbstractController
         return $this->file($filename);
     }
 
-     #[Route('/carto/apiary/{id}', name: 'carto_apiary')]
+    #[Route('/carto/apiary/{id}', name: 'carto_apiary')]
     public function apiaryCarto(
         Apiary $apiary,
         #[CurrentUser] Apiculteur $user,
@@ -51,6 +52,19 @@ final class SecureFileController extends AbstractController
             throw $this->createAccessDeniedException();
         }
         $filename = $this->userFolderRoot . $apiary->getPathImage();
+        return $this->file($filename);
+    }
+
+    #[Route('/stats/visits/hive/{id}', name: 'stats_visit_hive')]
+    public function visitStats(
+        Hive $hive,
+        #[CurrentUser] Apiculteur $user,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $visits = $request->getSession()->get('visit_results');
+        $doc = $visits['path'];
+        $filename = $this->userFolderRoot . $doc;
         return $this->file($filename);
     }
 }
