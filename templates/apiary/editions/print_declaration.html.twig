@@ -7,7 +7,7 @@
 {% block body %}
 <h1 class="title">Déclaration de rucher</h1>
 <p class="apiary-edition-btn-container">
-    <a href="{{asset('uploads/' ~ file)}}" target="_blank">
+    <a href="{{path('app_secure_declaration', {id: apiary.id})}}">
         <img src="{{asset('pictures/pdf.png')}}" alt="pdf icon">
         Télécharger le fichier
     </a>

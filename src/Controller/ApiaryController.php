@@ -16,13 +16,15 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/apiary', name: 'app_apiary_')]
 final class ApiaryController extends AbstractController
 {
+
+    public function __construct(private readonly string $userFolderRoot) {}
+
     #[Route('/{id}', name: 'index')]
     public function index(
         #[CurrentUser] Apiculteur $user,
@@ -109,16 +111,15 @@ final class ApiaryController extends AbstractController
         #[CurrentUser] Apiculteur $user,
         EntityManagerInterface $em,
         SluggerInterface $slugger,
-        #[Autowire("%kernel.project_dir%/public/uploads/")] string $uploadDirectory
     ): Response {
         $form = $this->createForm(ApiaryPictureType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /**@var UploadedFile $hivePicture */
             $picture = $form->get('picture')->getData();
-            $relativePath = PathMaker::makeCartoApiaryPath($user, $apiary, $uploadDirectory);
-            $filePath = $this->handlefile($apiary->getIdentification(), $relativePath, $uploadDirectory, $slugger, false, $uploader, $picture);
-            $apiary->setLastPicture($filePath);
+            $relativePath = PathMaker::makeCartoApiaryPath($user, $apiary, $this->userFolderRoot);
+            $filePath = $this->handlefile($apiary->getIdentification(), $relativePath, $this->userFolderRoot, $slugger, false, $uploader, $picture);
+            $apiary->setPathImage($filePath);
             $em->persist($apiary);
             $em->flush();
             return $this->redirectToRoute('app_apiary_cartography', ['id' => $apiary->getId()]);
@@ -150,8 +151,8 @@ final class ApiaryController extends AbstractController
         bool $remove,
         Uploader $uploader,
         ?UploadedFile $file = null
-    ) : ?string {
-         if ($remove) {
+    ): ?string {
+        if ($remove) {
             $picturePath = $rootPath . $filename;
             unlink($picturePath);
             return null;

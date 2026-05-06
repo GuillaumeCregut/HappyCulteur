@@ -38,8 +38,7 @@ class ApiaryDeclaration
         $this->pdf->displayHeader("Informations sur l'apiculteur");
         $this->pdf->ln(10);
         $this->pdf->displayApi();
-        //TODO : Change hive number
-        $hiveNumber = 0;
+        $hiveNumber = count($apiary->getHives());
         $this->pdf->SetRucher($apiary->getName(), $apiary->getIdentification(), $apiary->getLocalisation(), $hiveNumber);
         $this->pdf->ln(15);
         $this->pdf->displayHeader("Informations sur le rucher");
