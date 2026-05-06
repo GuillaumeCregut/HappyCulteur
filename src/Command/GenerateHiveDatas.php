@@ -77,7 +77,6 @@ class GenerateHiveDatas
 
     private function generateConfig(Hive $hive): array
     {
-        //TODO : check if works
         $filename = $this->userFolderRoot;
         $filename .= $hive->getDataloggerName();
         if (!file_exists($filename)) {
