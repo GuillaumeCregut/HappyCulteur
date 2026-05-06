@@ -54,7 +54,7 @@ class PathMaker
      */
     public static function makeUserHiveStatPath(Apiculteur $user, Hive $hive, string $typeDoc, string $basePath): string
     {
-        $path = $basePath . $user->getId() . DIRECTORY_SEPARATOR;
+        $path = $user->getId() . DIRECTORY_SEPARATOR;
         $path .= 'stats' . DIRECTORY_SEPARATOR . $typeDoc . DIRECTORY_SEPARATOR;
         $path .= $hive->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
