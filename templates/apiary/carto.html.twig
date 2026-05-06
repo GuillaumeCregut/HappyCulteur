@@ -9,11 +9,11 @@
 <p class="apiary-carto-line">Nom : {{ apiary.name }}</p>
 <p class="apiary-carto-line">Numéro : {{ apiary.identification }}</p>
 
-{% if apiary.lastPicture %}
+{% if apiary.pathImage %}
 <p class="apiary-carto-line">Photo actuelle :</p>
 <div class="apiary-carto-carto-container">
     <div class="apiary-carto-picture-container">
-    <img src="{{ asset('/uploads/'~ apiary.lastPicture) }}" alt="image du rucher" class="apiary-carto-picture">
+    <img src="{{ path('app_secure_carto_apiary', {id: apiary.id}) }}" alt="image du rucher" class="apiary-carto-picture">
     </div>
     <div class="apiary-carto-see-carto-container">
     <a href="" class="form-button">Voir la cartographie du rucher</a>

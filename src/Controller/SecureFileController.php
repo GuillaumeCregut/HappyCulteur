@@ -33,12 +33,24 @@ final class SecureFileController extends AbstractController
         return $this->file($fullPath);
     }
 
-     #[Route('/datalogger/{id}', name: 'datalogger')]
+    #[Route('/datalogger/{id}', name: 'datalogger')]
     public function datalogger(
         Hive $hive
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
         $filename = $this->userFolderRoot . $hive->getDataloggerName();
+        return $this->file($filename);
+    }
+
+     #[Route('/carto/apiary/{id}', name: 'carto_apiary')]
+    public function apiaryCarto(
+        Apiary $apiary,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        if ($user !== $apiary->getBeekeeper()) {
+            throw $this->createAccessDeniedException();
+        }
+        $filename = $this->userFolderRoot . $apiary->getPathImage();
         return $this->file($filename);
     }
 }

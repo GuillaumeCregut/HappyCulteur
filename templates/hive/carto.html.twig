@@ -17,8 +17,8 @@
     scale: hive.coordZ, 
     name: hive.name, 
     hivePicture: asset('/pictures/hives/ruche_carto.png'),
-    path: asset('/uploads/'~ hive.apiary.lastPicture),
-    url: path('app_hive_carto_save',{id:hive.id}),
+    path: path('app_secure_carto_apiary', {id:hive.apiary.id}),
+    url: path('app_hive_carto_save', {id:hive.id}),
     csrf: csrf_token('save_coords'), 
     id: hive.id
 }) }}>
