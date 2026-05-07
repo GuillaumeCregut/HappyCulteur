@@ -8,6 +8,7 @@ use App\Service\Stats\Temps;
 use App\Form\Stats\DatesType;
 use App\Service\Stats\Visits;
 use App\Service\Stats\Weight;
+use App\Service\Stats\Hygrometry;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -167,6 +168,53 @@ final class StatsController extends AbstractController
             'endDate' => $weight['endDate'],
             'startDate' => $weight['startDate'],
             'doc' => $weight['path']
+        ]);
+    }
+
+    #[Route('/hive/{id}/hygrometry', name: 'hygrometry_search', methods: ['GET', 'POST'])]
+    public function hygrometry(
+        Hive $hive,
+        Request $request,
+        Hygrometry $hygro,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $form = $this->createForm(DatesType::class, null);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dates = $form->getData();
+            $hygrometry = $hygro->gethygrometry($hive, $dates, $user, $this->userFolderRoot);
+            $request->getSession()->set('hygrometry_results', $hygrometry);
+            return $this->redirectToRoute('app_stats_hygrometry_result', ['id' => $hive->getId()]);
+        }
+        return $this->render('stats/hygrometry/search.html.twig', [
+            'id' => $hive->getId(),
+            'form' => $form,
+            'hive' => $hive
+        ]);
+    }
+
+    #[Route('/hive/{id}/hygrometry/result', name: 'hygrometry_result', methods: ['GET'])]
+    public function hygroResult(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $hygrometry = $request->getSession()->get('hygrometry_results');
+        if (null === $hygrometry) {
+            $form = $this->createForm(DatesType::class, null);
+            $form->addError(new FormError("Une erreur est survenue, veuillez recommencer"));
+            return $this->render('stats/hygrometry/search.html.twig', [
+                'id' => $hive->getId(),
+                'form' => $form,
+                'hive' => $hive
+            ]);
+        }
+        return $this->render('stats/hygrometry/details.html.twig', [
+            'hive' => $hive,
+            'endDate' => $hygrometry['endDate'],
+            'startDate' => $hygrometry['startDate'],
+            'doc' => $hygrometry['path']
         ]);
     }
 }
