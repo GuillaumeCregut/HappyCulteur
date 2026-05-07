@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/stats/visit.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Résultat des relevés de température</h1>
+<p class="stats-line">Ruche : {{ hive.name }}</p>
+<p class="stats-line">Recherche du {{ startDate}} au {{ endDate }} </p>
+{% if doc %}
+    <p class="stats-line"><img src="{{  path('app_secure_stats_temp_hive', {id: hive.id}) }}" alt="Graphique de relevé" class="stat-"></p>
+{% endif %}
+
+<p class="stats-btn-container"><a href="{{ path('app_stats_temps_search', {id: hive.id}) }}" class= "form-button">Retour à la recherche</a></p>
+{% endblock %}
