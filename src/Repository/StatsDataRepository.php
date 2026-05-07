@@ -2,11 +2,12 @@
 
 namespace App\Repository;
 
-use App\Dto\StatDtoInterface;
 use App\Dto\TempDto;
-use App\Dto\WeightDto;
 use App\Entity\Hive;
+use App\Dto\WeightDto;
 use DateTimeImmutable;
+use App\Dto\HygrometryDto;
+use App\Dto\StatDtoInterface;
 use Doctrine\DBAL\Connection;
 
 class StatsDataRepository
@@ -35,6 +36,30 @@ class StatsDataRepository
         WHERE h.id = :hiveId AND d.ext_temp IS NOT NULL {$dateConditionDlog} ORDER BY d.date_time ASC";
 
         return $this->findData($params, $sqlDataLogger, $sqlVisit, TempDto::class);
+    }
+
+    public function findHygrometryData(
+        Hive $hive,
+        ?DateTimeImmutable $start = null,
+        ?DateTimeImmutable $end = null,
+    ): array {
+        $dateParams = $this->makeDatesRequest($start, $end);
+        $params = $dateParams['params'];
+        $params['hiveId'] = $hive->getId();
+        $dateConditionVisit = $dateParams['conditionVisit'];
+        $dateConditionDlog = $dateParams['conditionsDlog'];
+
+        $sqlVisit = "SELECT v.hygrometry as hygrometry, v.date as date, 'visit' as type
+        FROM hive h
+        LEFT JOIN visit v ON v.hive_id = h.id
+        WHERE h.id = :hiveId AND v.hygrometry IS NOT NULL {$dateConditionVisit} ORDER BY v.date ASC";
+
+        $sqlDataLogger = "SELECT d.ext_hyrgo as hygrometry, d.date_time as date, 'datalogger' as type 
+        FROM hive h
+        LEFT JOIN datalogger d ON d.hive_id = h.id
+        WHERE h.id = :hiveId AND d.ext_hyrgo IS NOT NULL {$dateConditionDlog} ORDER BY d.date_time ASC";
+
+        return $this->findData($params, $sqlDataLogger, $sqlVisit, HygrometryDto::class);
     }
 
     public function findWeightData(
@@ -66,7 +91,7 @@ class StatsDataRepository
         ?DateTimeImmutable $end,
     ): array {
         $dateConditionVisit = '';
-        $params=[];
+        $params = [];
         $dateConditionDlog  = '';
         if ($start !== null) {
             $dateConditionVisit .= ' AND v.date >= :start';
@@ -81,9 +106,9 @@ class StatsDataRepository
         }
 
         return [
-            'params' =>$params,
-            'conditionVisit' =>$dateConditionVisit,
-            'conditionsDlog'=>$dateConditionDlog
+            'params' => $params,
+            'conditionVisit' => $dateConditionVisit,
+            'conditionsDlog' => $dateConditionDlog
         ];
     }
 

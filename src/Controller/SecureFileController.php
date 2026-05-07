@@ -90,4 +90,16 @@ final class SecureFileController extends AbstractController
         $filename = $this->userFolderRoot . $doc;
         return $this->file($filename);
     }
+
+    #[Route('/stats/hygrometry/hive/{id}', name: 'stats_hygrometry_hive')]
+    public function hygrometryStats(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $hygrometry = $request->getSession()->get('hygrometry_results');
+        $doc = $hygrometry['path'];
+        $filename = $this->userFolderRoot . $doc;
+        return $this->file($filename);
+    }
 }
