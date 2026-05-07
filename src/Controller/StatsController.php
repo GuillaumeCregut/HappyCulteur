@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Hive;
+use App\Entity\Apiculteur;
+use App\Service\Stats\Temps;
 use App\Form\Stats\DatesType;
 use App\Service\Stats\Visits;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/stats', name: 'app_stats_')]
@@ -52,6 +55,7 @@ final class StatsController extends AbstractController
     #[Route('/hive/{id}/visits/results', name: 'visits_results', methods: ['GET'])]
     public function displayResultVisit(Hive $hive, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('own', $hive);
         $visits = $request->getSession()->get('visit_results');
         if (null === $visits) {
             $form = $this->createForm(DatesType::class, null);
@@ -69,5 +73,53 @@ final class StatsController extends AbstractController
             'startDate' => $visits['startDate'],
             'doc' => $visits['path']
         ]);
+    }
+
+    #[Route('/hive/{id}/temperature', name: 'temps_search', methods: ['GET', 'POST'])]
+    public function temps(
+        Hive $hive,
+        Request $request,
+        Temps $temperatures,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $form = $this->createForm(DatesType::class, null);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dates = $form->getData();
+            $temps = $temperatures->getTemps($hive, $dates, $user, $this->userFolderRoot);
+            $request->getSession()->set('temps_results', $temps);
+            return $this->redirectToRoute('app_stats_temps_result', ['id' => $hive->getId()]);
+        }
+        return $this->render('stats/temps/search.html.twig', [
+            'id' => $hive->getId(),
+            'form' => $form,
+            'hive' => $hive
+        ]);
+    }
+
+    #[Route('/hive/{id}/temperature/result', name: 'temps_result', methods: ['GET'])]
+    public function tempsResult(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $temps = $request->getSession()->get('temps_results');
+        if (null === $temps) {
+            $form = $this->createForm(DatesType::class, null);
+            $form->addError(new FormError("Une erreur est survenue, veuillez recommencer"));
+            return $this->render('stats/temps/search.html.twig', [
+                'id' => $hive->getId(),
+                'form' => $form,
+                'hive' => $hive
+            ]);
+        }
+         return $this->render('stats/temps/details.html.twig', [
+            'hive' => $hive,
+            'endDate' => $temps['endDate'],
+            'startDate' => $temps['startDate'],
+            'doc' => $temps['path']
+        ]);
+
     }
 }

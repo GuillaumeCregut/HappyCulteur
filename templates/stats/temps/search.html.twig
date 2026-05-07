@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Relevé des températures</h1>
+<p class="stats-line">Ruche : {{ hive.name }}</p>
+<p class="stats-line">Les relevés s'appuient sur les données provenant des visites et du datalogger si il y en a un. Dans ce cas, ce sont les températures extérieures qui sont prises en compte.</p>
+<p class="stats-line">Si aucune visite n'est renseignée avec des températures, mais qu'il y a un datalogger, il faut afficher alors les statistiques du datalogger.</p>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+     <twig:StatsDates 
+     startDate="{{ form.startDate}}"
+     endDate="{{ form.endDate}}"
+     typePage="températures"
+     />
+{{ form_end(form) }}
+
+<p class="stats-btn-container"><a href="{{ path('app_stats_index', {id: hive.id}) }}" class= "form-button">Retour aux statistiques</a></p>
+{% endblock %}

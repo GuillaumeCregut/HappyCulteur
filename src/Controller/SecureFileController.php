@@ -58,11 +58,22 @@ final class SecureFileController extends AbstractController
     #[Route('/stats/visits/hive/{id}', name: 'stats_visit_hive')]
     public function visitStats(
         Hive $hive,
-        #[CurrentUser] Apiculteur $user,
         Request $request,
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
         $visits = $request->getSession()->get('visit_results');
+        $doc = $visits['path'];
+        $filename = $this->userFolderRoot . $doc;
+        return $this->file($filename);
+    }
+
+    #[Route('/stats/temperature/hive/{id}', name: 'stats_temp_hive')]
+    public function tempStats(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $visits = $request->getSession()->get('temps_results');
         $doc = $visits['path'];
         $filename = $this->userFolderRoot . $doc;
         return $this->file($filename);
