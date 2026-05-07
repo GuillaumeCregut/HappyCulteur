@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Datalogger;
+use App\Entity\Hive;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +16,28 @@ class DataloggerRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Datalogger::class);
+    }
+
+    public function findByHiveBetweenDates(
+        Hive $hive,
+        ?DateTimeImmutable $start = null,
+        ?DateTimeImmutable $end = null
+    ): array {
+        $qb = $this->createQueryBuilder('d')
+            ->where('d.hive = :hive')
+            ->setParameter('hive', $hive)
+            ->orderBy('d.dateTime', 'ASC');
+
+        if ($start !== null) {
+            $qb->andWhere('d.date >= :startDate')
+                ->setParameter('startDate', $start);
+        }
+
+        if ($end !== null) {
+            $qb->andWhere('d.date <= :endDate')
+                ->setParameter('endDate', $end);
+        }
+        return $qb->getQuery()->getResult();
     }
 
     //    /**
