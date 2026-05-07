@@ -64,7 +64,7 @@ class SingleGraph
     }
 
     /**
-     * Undocumented function
+     * Get the minimum date and maximum date in an array
      *
      * @param StatDtoInterface[] $values
      * @return DateTimeImmutable[]
@@ -77,7 +77,8 @@ class SingleGraph
     }
 
     /**
-     * Undocumented function
+     * Create 2 arrays from data array. 
+     * One for x axis, the other for y axis
      *
      * @param StatDtoInterface[] $values
      * @return array[]

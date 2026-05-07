@@ -79,7 +79,6 @@ class Temps
 
     private function drawGraph(array $values, Hive $hive, string $start, string $end, string $path)
     {
-        
         $title = "Relevé des températures de la ruche {$hive->getName()} sur la période du {$start} jusqu'à {$end}";
         $drawer = new SingleGraph(800, 400);
         $drawer->draw($title, $values);
