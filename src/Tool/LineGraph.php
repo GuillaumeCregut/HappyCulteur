@@ -41,12 +41,18 @@ class LineGraph
      * @param array $values
      * @return boolean true if line is added, false else
      */
-    public function addLine(array $values): bool
+    public function addLine(array $values, ?string $legend= null, ?string $color=null): bool
     {
         if (0 === ($this->xValues)) {
             return false;
         }
         $plot = new LinePlot($values, $this->xValues);
+        if(null !== $legend) {
+            $plot->SetLegend($legend);
+        }
+        if(null !== $color) {
+            $plot->setColor($color);
+        }
         $this->lines[] = $plot;
         return true;
     }
