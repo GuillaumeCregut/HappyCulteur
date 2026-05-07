@@ -73,8 +73,20 @@ final class SecureFileController extends AbstractController
         Request $request,
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
-        $visits = $request->getSession()->get('temps_results');
-        $doc = $visits['path'];
+        $temp = $request->getSession()->get('temps_results');
+        $doc = $temp['path'];
+        $filename = $this->userFolderRoot . $doc;
+        return $this->file($filename);
+    }
+
+    #[Route('/stats/weight/hive/{id}', name: 'stats_weight_hive')]
+    public function weightStats(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $weight = $request->getSession()->get('weight_results');
+        $doc = $weight['path'];
         $filename = $this->userFolderRoot . $doc;
         return $this->file($filename);
     }

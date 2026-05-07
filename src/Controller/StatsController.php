@@ -7,6 +7,7 @@ use App\Entity\Apiculteur;
 use App\Service\Stats\Temps;
 use App\Form\Stats\DatesType;
 use App\Service\Stats\Visits;
+use App\Service\Stats\Weight;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -114,12 +115,58 @@ final class StatsController extends AbstractController
                 'hive' => $hive
             ]);
         }
-         return $this->render('stats/temps/details.html.twig', [
+        return $this->render('stats/temps/details.html.twig', [
             'hive' => $hive,
             'endDate' => $temps['endDate'],
             'startDate' => $temps['startDate'],
             'doc' => $temps['path']
         ]);
+    }
 
+    #[Route('/hive/{id}/weight', name: 'weight_search', methods: ['GET', 'POST'])]
+    public function weight(
+        Hive $hive,
+        Request $request,
+        Weight $weightStats,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $form = $this->createForm(DatesType::class, null);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dates = $form->getData();
+            $weight = $weightStats->getWeight($hive, $dates, $user, $this->userFolderRoot);
+            $request->getSession()->set('weight_results', $weight);
+            return $this->redirectToRoute('app_stats_weight_result', ['id' => $hive->getId()]);
+        }
+        return $this->render('stats/weight/search.html.twig', [
+            'id' => $hive->getId(),
+            'form' => $form,
+            'hive' => $hive
+        ]);
+    }
+
+    #[Route('/hive/{id}/weight/result', name: 'weight_result', methods: ['GET'])]
+    public function weightResult(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $weight = $request->getSession()->get('weight_results');
+        if (null === $weight) {
+            $form = $this->createForm(DatesType::class, null);
+            $form->addError(new FormError("Une erreur est survenue, veuillez recommencer"));
+            return $this->render('stats/weight/search.html.twig', [
+                'id' => $hive->getId(),
+                'form' => $form,
+                'hive' => $hive
+            ]);
+        }
+        return $this->render('stats/weight/details.html.twig', [
+            'hive' => $hive,
+            'endDate' => $weight['endDate'],
+            'startDate' => $weight['startDate'],
+            'doc' => $weight['path']
+        ]);
     }
 }
