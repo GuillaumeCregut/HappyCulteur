@@ -5,7 +5,6 @@ namespace App\Service\Stats;
 use App\Dto\TempDto;
 use App\Entity\Hive;
 use DateTimeImmutable;
-use App\Tool\EditielPdf;
 use App\Entity\Apiculteur;
 use App\Repository\StatsDataRepository;
 use App\Tool\PathMaker;
