@@ -10,11 +10,11 @@ use App\Repository\StatsDataRepository;
 use App\Tool\PathMaker;
 use App\Tool\SingleGraph;
 
-class Temps
+class Weight
 {
     public function __construct(private StatsDataRepository $repo) {}
 
-    public function getTemps(Hive $hive, array $dates, Apiculteur $user, string $rooPath): array
+    public function getWeight(Hive $hive, array $dates, Apiculteur $user, string $rooPath): array
     {
         $dates = $this->formatDate($dates);
         $startDate = $dates['startDate'];
@@ -61,7 +61,7 @@ class Temps
 
     private function getDatas(Hive $hive, ?DateTimeImmutable $startDate, ?DateTimeImmutable $endDate): array | false
     {
-        $datas = $this->repo->findTempsData($hive, $startDate, $endDate);
+        $datas = $this->repo->findWeightData($hive, $startDate, $endDate);
         if (0 === count($datas)) {
             return false;
         }
@@ -72,13 +72,13 @@ class Temps
     private function makePicturePath(Apiculteur $user, Hive $hive, string $rootPath): string
     {
         $relativePath = PathMaker::makeStatPicturePath($user, $hive, $rootPath);
-        $filename = "temperature.png";
+        $filename = "weight.png";
         return $relativePath . $filename;
     }
 
     private function drawGraph(array $values, Hive $hive, string $start, string $end, string $path)
     {
-        $title = "Relevé des températures de la ruche {$hive->getName()} sur la période du {$start} jusqu'à {$end}";
+        $title = "Relevé des pesées de la ruche {$hive->getName()} sur la période du {$start} jusqu'à {$end}";
         $drawer = new SingleGraph(800, 400);
         $drawer->draw($title, $values);
         $drawer->save($path);
