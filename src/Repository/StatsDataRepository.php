@@ -17,10 +17,32 @@ class StatsDataRepository
         ?DateTimeImmutable $start = null,
         ?DateTimeImmutable $end = null,
     ): array {
-        $params = ['hiveId' => $hive->getId()];
-        $dateConditionVisit = '';
-        $dateConditionDlog  = '';
+        $dateParams = $this->makeDatesRequest($start, $end);
+        $params = $dateParams['params'];
+        $params['hiveId'] = $hive->getId();
+        $dateConditionVisit = $dateParams['conditionVisit'];
+        $dateConditionDlog = $dateParams['conditionsDlog'];
 
+        $sqlVisit = "SELECT v.temperature as temperature, v.date as date, 'visit' as type
+        FROM hive h
+        LEFT JOIN visit v ON v.hive_id = h.id
+        WHERE h.id = :hiveId AND v.temperature IS NOT NULL {$dateConditionVisit} ORDER BY v.date ASC";
+
+        $sqlDataLogger = "SELECT d.ext_temp as temperature, d.date_time as date, 'datalogger' as type 
+        FROM hive h
+        LEFT JOIN datalogger d ON d.hive_id = h.id
+        WHERE h.id = :hiveId AND d.ext_temp IS NOT NULL {$dateConditionDlog} ORDER BY d.date_time ASC";
+
+        return $this->findData($params, $sqlDataLogger, $sqlVisit, TempDto::class);
+    }
+
+    private function makeDatesRequest(
+        ?DateTimeImmutable $start,
+        ?DateTimeImmutable $end,
+    ): array {
+        $dateConditionVisit = '';
+        $params=[];
+        $dateConditionDlog  = '';
         if ($start !== null) {
             $dateConditionVisit .= ' AND v.date >= :start';
             $dateConditionDlog  .= ' AND d.date_time >= :start';
@@ -33,21 +55,25 @@ class StatsDataRepository
             $params['end'] = $end->format('Y-m-d');
         }
 
-        $sqlVisit = "SELECT v.temperature as temperature, v.date as date, 'visit' as type
-        FROM hive h
-        LEFT JOIN visit v ON v.hive_id = h.id
-        WHERE h.id = :hiveId {$dateConditionVisit} AND v.temperature IS NOT NULL ORDER BY v.date ASC";
+        return [
+            'params' =>$params,
+            'conditionVisit' =>$dateConditionVisit,
+            'conditionsDlog'=>$dateConditionDlog
+        ];
+    }
 
-        $sqlDataLogger = "SELECT d.ext_temp as temperature, d.date_time as date, 'datalogger' as type 
-        FROM hive h
-        LEFT JOIN datalogger d ON d.hive_id = h.id
-        WHERE h.id = :hiveId {$dateConditionDlog} AND d.ext_temp IS NOT NULL ORDER BY d.date_time ASC";
+    private function findData(
+        array $params,
+        string $sqlDataLogger,
+        string $sqlVisit,
+        string $dto
+    ): array {
 
         $visits = $this->execQuery($sqlVisit, $params);
         $datalogger = $this->execQuery($sqlDataLogger, $params);
 
         $values = $this->formatDate(array_merge($visits, $datalogger));
-        $valuesDto = $this->MakeDto($values, TempDto::class);
+        $valuesDto = $this->MakeDto($values, $dto);
         return $valuesDto;
     }
 
