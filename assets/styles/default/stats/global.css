@@ -27,3 +27,11 @@ margin-bottom: 1rem;
     border: none;
     padding: 3px;
 }
+
+@media screen and (max-width: 820px) {
+    .stats-graph {
+        width: 75vw;
+        height: auto;
+    }
+    
+}

@@ -10,7 +10,7 @@
 <p class="stats-line">Ruche : {{ hive.name }}</p>
 <p class="stats-line">Recherche du {{ startDate}} jusqu'à {{ endDate }} </p>
 {% if doc %}
-    <p class="stats-line"><img src="{{  path('app_secure_stats_temp_hive', {id: hive.id}) }}" alt="Graphique de relevé"></p>
+    <p class="stats-line"><img src="{{  path('app_secure_stats_temp_hive', {id: hive.id}) }}" alt="Graphique de relevé" class="stats-graph"></p>
 {% endif %}
 
 <p class="stats-btn-container"><a href="{{ path('app_stats_temps_search', {id: hive.id}) }}" class= "form-button">Retour à la recherche</a></p>
