@@ -89,7 +89,7 @@ class LineGraph
      * @param int|null $legendWidth : How many time width will be divide to make legend width (default 2)
      * @return boolean return true if graph is create, false else
      */
-    public function drawGraph(?string $title = null, ?int $legendWidth = 2): bool
+    public function drawGraph(?string $title = null, ?int $legendWidth = 2, ?int $yLegend = 40): bool
     {
         if (0 >= count($this->lines)) {
             return false;
@@ -112,7 +112,6 @@ class LineGraph
             $this->graph->add($line);
         }
         $xLegend = $this->width - ($this->width / $legendWidth);
-        $yLegend = 40;
         $this->graph->legend->SetAbsPos($xLegend, $yLegend, 'center', 'bottom');
         return true;
     }
