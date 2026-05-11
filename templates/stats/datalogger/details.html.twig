@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/stats/datalogger.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Résultat des relevés du datalogger</h1>
+<p class="stats-line">Ruche : {{ hive.name }}</p>
+<p class="stats-line">Recherche du {{ datas.startDate}} jusqu'à {{ datas.endDate }} </p>
+{% if datas.isDatasFill %}
+    <section>
+		<h2 class="stats-line">Valeurs moyennes des relevés</h2>
+		<div class="stats-datalogger-averages">
+			<p class="stats-line">Hygrométrie intérieure : {{datas.averageHygroInt ?? '-' }} %</p>
+			<p class="stats-line">Hygrométrie extérieure : {{datas.averageHygroExt ?? '-' }} %</p>
+			<p class="stats-line">Température intérieure : {{datas.averageTempInt ?? '-' }}  °C</p>
+			<p class="stats-line">Température extérieure : {{datas.averageTempExt ?? '-' }} °C</p>
+			<p class="stats-line">Poids : {{datas.averageWeight ?? '-' }} Kg</p>
+		</div>	
+	</section>
+	<section>
+		<h2 class="stats-line">Valeurs moyennes des relevés</h2>
+		<div class="stats-datalogger-graph-container">
+			{% if datas.graphTemp %}
+				<div class="stats-datalogger-graph-line">
+					<p class="stats-line">Relevé de températures</p>
+					<img src="{{ path('app_secure_stats_datalogger_hive',{id: hive.id, kind:'temp'}) }}" alt="Graphe des relevés des températures" class="stats-datalogger-graph">
+				</div>
+			{% endif %}
+			{% if datas.graphHygro %}
+				<div class="stats-datalogger-graph-line">
+					<p class="stats-line">Relevé hygrométrique</p>
+					<img src="{{ path('app_secure_stats_datalogger_hive',{id: hive.id, kind:'hygro'}) }}" alt="Graphe des relevés hygrométrique" class="stats-datalogger-graph">
+				</div>
+			{% endif %}
+			{% if datas.graphWeight %}
+				<div class="stats-datalogger-graph-line">
+					<p class="stats-line">Relevé du poids</p>
+					<img src="{{ path('app_secure_stats_datalogger_hive',{id: hive.id, kind:'weight'}) }}" alt="Graphe des relevés du poids" class="stats-datalogger-graph">
+				</div>
+			{% endif %}
+		</div>
+	</section>
+{% else %}
+<p class="stats-line">Il n'y a aucune donnée sur la période demandéee</p>
+{% endif %}
+
+<p class="stats-btn-container"><a href="{{ path('app_stats_datalogger_search', {id: hive.id}) }}" class= "form-button">Retour à la recherche</a></p>
+{% endblock %}

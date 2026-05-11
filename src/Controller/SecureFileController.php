@@ -6,6 +6,7 @@ use App\Entity\Hive;
 use App\Entity\Apiary;
 use App\Tool\PathMaker;
 use App\Entity\Apiculteur;
+use App\Dto\DataloggerStatsDto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -99,6 +100,34 @@ final class SecureFileController extends AbstractController
         $this->denyAccessUnlessGranted('own', $hive);
         $hygrometry = $request->getSession()->get('hygrometry_results');
         $doc = $hygrometry['path'];
+        $filename = $this->userFolderRoot . $doc;
+        return $this->file($filename);
+    }
+
+    #[Route('/stats/datalogger/hive/{id}/{kind}', name: 'stats_datalogger_hive')]
+    public function dataloggerStats(
+        Hive $hive,
+        Request $request,
+        string $kind,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        /**@var DataloggerStatsDto $datas */
+        $datas = $request->getSession()->get('datalogger_results');
+        switch ($kind) {
+            case 'temp':
+                $doc = $datas->graphTemp;
+                break;
+            case 'hygro':
+                $doc = $datas->graphHygro;
+                break;
+            case 'weight':
+                $doc = $datas->graphWeight;
+                break;
+            default: $doc = null;
+        }
+        if(null === $doc) {
+            throw  $this->createNotFoundException();
+        }
         $filename = $this->userFolderRoot . $doc;
         return $this->file($filename);
     }
