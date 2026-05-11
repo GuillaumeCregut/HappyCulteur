@@ -8,6 +8,8 @@ use App\Service\Stats\Temps;
 use App\Form\Stats\DatesType;
 use App\Service\Stats\Visits;
 use App\Service\Stats\Weight;
+use App\Dto\DataloggerStatsDto;
+use App\Service\Stats\Datalogger;
 use App\Service\Stats\Hygrometry;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -216,5 +218,50 @@ final class StatsController extends AbstractController
             'startDate' => $hygrometry['startDate'],
             'doc' => $hygrometry['path']
         ]);
+    }
+
+    #[Route('/hive/{id}/datalogger', name: 'datalogger_search', methods: ['GET', 'POST'])]
+    public function datalogger(
+        Hive $hive,
+        Datalogger $dataloggerStats,
+        Request $request,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $form = $this->createForm(DatesType::class, null);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dates = $form->getData();
+            $stats = $dataloggerStats->getLogs($hive, $dates, $user, $this->userFolderRoot);
+            $request->getSession()->set('datalogger_results', $stats);
+            return $this->redirectToRoute('app_stats_datalogger_result', ['id' => $hive->getId()]);
+        }
+        return $this->render('stats/datalogger/search.html.twig', [
+            'hive' => $hive,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/hive/{id}/datalogger/result', name: 'datalogger_result', methods: ['GET'])]
+    public function dataloggerResult(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        /**@var DataloggerStatsDto $datas */
+        $datas =  $request->getSession()->get('datalogger_results', null);
+        if (null === $datas) {
+            $form = $this->createForm(DatesType::class, null);
+            $form->addError(new FormError("Une erreur est survenue, veuillez recommencer"));
+            return $this->render('stats/datalogger/search.html.twig', [
+                'form' => $form,
+                'hive' => $hive
+            ]);
+        }
+        return $this->render('stats/datalogger/details.html.twig', [
+            'hive' => $hive,
+            'datas' => $datas,
+        ]);
+
     }
 }

@@ -1,5 +1,5 @@
-.stat-visit-print-picture{
-     cursor: pointer;
+.stat-visit-print-picture {
+    cursor: pointer;
 }
 
 .stats-visit-container {
@@ -59,8 +59,8 @@
 }
 
 @media screen and (max-width: 820px) {
-    .stat-visit-print-picture{
-     width: 75px;
-     height: auto;
-}
+    .stat-visit-print-picture {
+        width: 75px;
+        height: auto;
+    }
 }
