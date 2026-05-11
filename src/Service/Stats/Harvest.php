@@ -155,7 +155,7 @@ class Harvest
     }
 
     /**
-     * Undocumented function
+     * Add a line to the graph form harvest array
      *
      * @param HarvestDto[] $values
      * @param string $type
