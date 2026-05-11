@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/stats/harvest.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Résultat des recherches sur les récoltes</h1>
+<p class="stats-line">Ruche : {{ hive.name }}</p>
+<p class="stats-line">Recherche du {{ datas.startDate}} jusqu'à {{ datas.endDate }} </p>
+<p class="stats-line">Poids total des récoltes : {{ datas.totalWeight }} Kg</p>
+<section class="stats-harvest-weight-list-container">
+<h2 class="stats-harvest-title">Poids récolté par type de miel</h2>
+	<div class="stats-harvest-weight-list">
+		{% for type, weight in datas.harvests %}
+			<p class="stats-harvest-weight-line">{{ type }} : {{ weight }} Kg</p>
+		{% endfor %}
+	</div>
+</section>
+{% if datas.file %}
+<section class="stats-picture-container">
+<h2 class="stats-harvest-title">Graphique</h2>
+    <p class="stats-line"><img src="{{ path('app_secure_stats_harvest_file', {id: hive.id}) }}" alt="Graphique de relevé" class="stats-harvest-picture"></p>
+</section>
+{% endif %}
+
+<p class="stats-btn-container"><a href="{{ path('app_stats_harvest_search', {id: hive.id}) }}" class= "form-button">Retour à la recherche</a></p>
+{% endblock %}

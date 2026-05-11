@@ -123,12 +123,24 @@ final class SecureFileController extends AbstractController
             case 'weight':
                 $doc = $datas->graphWeight;
                 break;
-            default: $doc = null;
+            default:
+                $doc = null;
         }
-        if(null === $doc) {
+        if (null === $doc) {
             throw  $this->createNotFoundException();
         }
         $filename = $this->userFolderRoot . $doc;
+        return $this->file($filename);
+    }
+
+    #[Route('/stats/harvest/hive/{id}', name: 'stats_harvest_file')]
+    public function harvestStats(
+        Hive $hive,
+        Request $request,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $data = $request->getSession()->get('harvests_results');
+        $filename = $this->userFolderRoot . $data->file;
         return $this->file($filename);
     }
 }
