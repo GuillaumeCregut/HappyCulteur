@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Hive;
+use DateTimeImmutable;
+use App\Dto\HarvestDto;
 use App\Entity\Harvest;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Apiculteur;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Harvest>
@@ -16,20 +20,49 @@ class HarvestRepository extends ServiceEntityRepository
         parent::__construct($registry, Harvest::class);
     }
 
-    //    /**
-    //     * @return Harvest[] Returns an array of Harvest objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('h.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return HarvestDto[] Returns an array of Harvest objects
+     */
+    public function findByHiveBeekeeperDate(
+        Apiculteur $user,
+        ?Hive $hive,
+        ?DateTimeImmutable $start = null,
+        ?DateTimeImmutable $end = null
+    ): array {
+        $qb = $this->createQueryBuilder('h')
+            ->select(
+                'h.date',
+                'h.weight',
+                'ho.name as honeyType',
+                'ho.picture as picture',
+            )
+            ->join('h.honeyKind', 'ho')
+            ->join('h.beekeeper', 'bk')
+            ->where('bk = :beeKeeper')
+            ->setParameter('beeKeeper', $user)
+            ->orderBy('h.date', 'ASC');
+        if (null !== $hive) {
+            $qb->join('h.hive', 'hv')
+                ->andWhere('hv = :hive')
+                ->setParameter('hive', $hive);
+        }
+        if (null !== $start) {
+            $qb->andWhere('d.date >= :startDate')
+                ->setParameter('startDate', $start);
+        }
+
+        if (null !== $end) {
+            $qb->andWhere('d.date <= :endDate')
+                ->setParameter('endDate', $end);
+        }
+        $returnArray = [];
+        $results = $qb->getQuery()->getResult();
+        foreach ($results as $result) {
+            $dto = HarvestDto::fromArray($result, $user, $hive);
+            $returnArray[] = $dto;
+        }
+        return $returnArray;
+    }
 
     //    public function findOneBySomeField($value): ?Harvest
     //    {
