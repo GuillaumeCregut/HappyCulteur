@@ -17,7 +17,7 @@
 
 @media screen and (max-width: 820px) {
     .stats-datalogger-graph {
-        width: 75wv;
+        width: 75vw;
         height: auto;
     }
 }

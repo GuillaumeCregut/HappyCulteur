@@ -10,6 +10,7 @@ use App\Service\Stats\Visits;
 use App\Service\Stats\Weight;
 use App\Dto\DataloggerStatsDto;
 use App\Service\Stats\Datalogger;
+use App\Service\Stats\Harvest;
 use App\Service\Stats\Hygrometry;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -262,6 +263,47 @@ final class StatsController extends AbstractController
             'hive' => $hive,
             'datas' => $datas,
         ]);
+    }
 
+    #[Route('/hive/{id}/harvest', name: 'harvest_search', methods: ['GET', 'POST'])]
+    public function harvest(
+        Hive $hive,
+        Request $request,
+        #[CurrentUser] Apiculteur $user,
+        Harvest $finder,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $form = $this->createForm(DatesType::class, null);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dates = $form->getData();
+            $harvests = $finder->getHarvest($dates, $user, $hive, $this->userFolderRoot);
+            $request->getSession()->set('harvests_results', $harvests);
+            return $this->redirectToRoute('app_stats_harvest_result', ['id' => $hive->getId()]);
+        }
+        return $this->render('stats/harvest/search.html.twig', [
+            'hive' => $hive,
+            'form' => $form
+        ]);
+    }
+    #[Route('/hive/{id}/harvest/result', name: 'harvest_result', methods: ['GET'])]
+    public function harvestResult(
+        Request $request,
+        Hive $hive
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $datas =  $request->getSession()->get('harvests_results', null);
+        if (null === $datas) {
+            $form = $this->createForm(DatesType::class, null);
+            $form->addError(new FormError("Une erreur est survenue, veuillez recommencer"));
+            return $this->render('stats/harvest/search.html.twig', [
+                'form' => $form,
+                'hive' => $hive
+            ]);
+        }
+        return $this->render('stats/harvest/details.html.twig', [
+            'hive' => $hive,
+            'datas' => $datas,
+        ]);
     }
 }

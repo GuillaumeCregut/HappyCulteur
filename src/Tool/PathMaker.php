@@ -145,6 +145,16 @@ class PathMaker
         return $path;
     }
 
+    public static function makeHarvestPicturePath(Apiculteur $user, Hive $hive, string $basePath): string
+    {
+        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path .= 'stats' . DIRECTORY_SEPARATOR . 'harvests' . DIRECTORY_SEPARATOR;
+        $path .= $hive->getId() . DIRECTORY_SEPARATOR;
+        $fullPath = $basePath . $path;
+        self::makeFolder($fullPath);
+        return $path;
+    }
+
 
     private static function makeFolder(string $fullPath): void
     {
