@@ -78,7 +78,7 @@ class Datalogger
     }
 
     /**
-     * Undocumented function
+     * Create averages  values from datas and store them to $dto
      *
      * @param DataloggerEntity[] $logs
      * @return void
