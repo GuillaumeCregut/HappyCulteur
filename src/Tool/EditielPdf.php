@@ -3,9 +3,8 @@
 namespace App\Tool;
 
 use App\Entity\Visit;
-use Fpdf\Fpdf;
 
-class EditielPdf extends Fpdf
+class EditielPdf extends PdfBase
 {
     protected string $documentTitle = '';
     protected string $userName = '';
@@ -18,18 +17,6 @@ class EditielPdf extends Fpdf
     protected string $apiaryNumber = '';
     protected string $apiaryName = '';
     protected string $hiveNumber = '';
-
-    public function addCell(int $w, int $h = 0, string $txt = '', mixed $border = 0, int $ln = 0, string $align = '', bool $fill = false, string $link = ''): void
-    {
-        $newTxt = $this->utf8Decode($txt);
-        parent::Cell($w, $h, $newTxt, $border, $ln, $align, $fill, $link);
-    }
-
-    public function addMultiCell(float $w, float $h, string $txt,  mixed $border = 0, ?string $align = 'J', ?bool $fill = false): void
-    {
-        $newTxt = $this->utf8Decode($txt);
-        parent::MultiCell($w, $h, $newTxt, $border, $align, $fill);
-    }
 
     public function header(): void
     {
@@ -280,10 +267,5 @@ class EditielPdf extends Fpdf
         $this->SetFont('Arial', '', 10);
         $this->addCell(15);
         $this->addMultiCell(0, 4, $visit->getNotes() ?? 'Aucunes');
-    }
-
-    private function utf8Decode(string $toConvert): string
-    {
-        return mb_convert_encoding($toConvert, 'ISO-8859-1', 'UTF-8');
     }
 }
