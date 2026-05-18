@@ -11,6 +11,7 @@ use App\Service\Stats\Weight;
 use App\Dto\DataloggerStatsDto;
 use App\Service\Stats\Datalogger;
 use App\Service\Stats\Harvest;
+use App\Service\Stats\HiveResults;
 use App\Service\Stats\Hygrometry;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -304,6 +305,22 @@ final class StatsController extends AbstractController
         return $this->render('stats/harvest/details.html.twig', [
             'hive' => $hive,
             'datas' => $datas,
+        ]);
+    }
+
+    #[Route('/hive/{id}/results', name: 'hive_results', methods: ['GET'])]
+    public function hiveResults(
+        Hive $hive,
+        Request $request,
+        #[CurrentUser] Apiculteur $user,
+        HiveResults $results,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        //create pdf
+        $path = $results->getHiveStats($hive, $user, $this->userFolderRoot);
+        $request->getSession()->set('hive_stats_results', $path);
+        return $this->render('stats/results/index.html.twig', [
+            'hive' => $hive,
         ]);
     }
 }
