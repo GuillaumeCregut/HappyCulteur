@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+<h1 class="title">Bilan De la ruche</h1>
+<p class="stats-line">Le bilan de la ruche vous permet d'enregistrer au format pdf toute l'activité de la ruche depuis sa déclaration dans le systême.</p>
+<p class="stats-line">Vous y retrouvez les courbes de r&eacute;colte, les suivis de poids, de température, d'hygrométrie et les relevés du datalogger.</p>
+<p class="stats-line">Afin de profiter au maximum de l'espace, l'impression se fera en format paysage.</p>
+<p class="stats-line"><a href="{{ path('app_secure_stats_hive_results_file', {id: hive.id}) }}"><img src="{{asset('pictures/pdf.png')}}" alt="imprimer"></a>
+
+<p class="stats-btn-container"><a href="{{ path('app_stats_index', {id: hive.id}) }}" class= "form-button">Retour aux statistiques</a></p>
+{% endblock %}

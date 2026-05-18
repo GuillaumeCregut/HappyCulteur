@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Apiculteur;
 use App\Entity\Datalogger;
 use App\Entity\Hive;
 use DateTimeImmutable;
@@ -37,6 +38,19 @@ class DataloggerRepository extends ServiceEntityRepository
             $qb->andWhere('d.date <= :endDate')
                 ->setParameter('endDate', $end);
         }
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByHiveAndBeekeeper(
+        Hive $hive,
+        Apiculteur $user
+    ): array {
+        $qb = $this->createQueryBuilder('d')
+            ->where('d.hive = :hive')
+            ->andWhere('d.beekeeper = :bk')
+            ->setParameter('hive', $hive)
+            ->setParameter('bk', $user)
+            ->orderBy('d.dateTime', 'ASC');
         return $qb->getQuery()->getResult();
     }
 
