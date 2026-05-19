@@ -19,10 +19,10 @@ class HiveRepository extends ServiceEntityRepository
 
     public function findWithDatalogger()
     {
-         return $this->createQueryBuilder('h')
-        ->where('h.dataLoggerName IS NOT NULL')
-        ->getQuery()
-        ->getResult();
+        return $this->createQueryBuilder('h')
+            ->where('h.dataLoggerName IS NOT NULL')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findByApiary(Apiary $value): array

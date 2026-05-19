@@ -180,10 +180,10 @@ final class HiveController extends AbstractController
 
     #[Route('/apiary/{id}', name: 'by_apiary', methods: ['GET'])]
     public function getHivesByApiary(
-        Apiary $apiary, 
+        Apiary $apiary,
         #[CurrentUser] Apiculteur $user,
-        HiveRepository $repo): Response
-    {
+        HiveRepository $repo
+    ): Response {
         if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
             throw $this->createAccessDeniedException();
         }
