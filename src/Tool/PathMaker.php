@@ -165,6 +165,17 @@ class PathMaker
         return $path;
     }
 
+    public static function makeApiaryStatsPath(Apiary $apiary, string $basePath): string
+    {
+        $user = $apiary->getBeekeeper();
+        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path .= 'stats' . DIRECTORY_SEPARATOR . 'apiary' . DIRECTORY_SEPARATOR;
+        $path .= $apiary->getId() . DIRECTORY_SEPARATOR;
+        $fullPath = $basePath . $path;
+        self::makeFolder($fullPath);
+        return $path;
+    }
+
 
     private static function makeFolder(string $fullPath): void
     {

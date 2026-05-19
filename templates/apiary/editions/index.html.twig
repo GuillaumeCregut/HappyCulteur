@@ -8,7 +8,7 @@
 <h1 class="title">Editions des documents du rucher</h1>
 <ul class="apiary-edition-link-list">
     <li class="apiary-edition-link"><a href="{{ path('app_edition_apiary_declaration', {id: apiary.id}) }}">Fac similé déclaration de rucher</a> (ceci n'est pas un document officiel. Pour effectuer la déclaration, se rendre sur <a href="https://agriculture-portail.6tzen.fr/default/requests/Cerfa13995/" target= "_blank">le site officiel</a></li>
-    <li class="apiary-edition-link"><a href="">Statistiques sur le rucher</a></li>
+    <li class="apiary-edition-link"><a href="{{ path('app_stats_apiary_results', {id: apiary.id}) }}">Statistiques sur le rucher</a></li>
 </ul>
 <p class="apiary-edition-btn-container"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
 {% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/apiary.css')}}">
+    <link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+{% endblock %}
+{% block title %}Statistiques du rucher{% endblock %}
+
+{% block body %}
+<h1 class="title">Statistiques du rucher</h1>
+<p class="stats-line">Nom du rucher : {{ apiary.name }}</p>
+<p class="stats-line">Nombres de ruches dans le rucher: {{ apiary.hives|length }}</p>
+<p class="stats-line">Dont : </p>
+<ul class="stats-apiary-list">
+    {% for name, state in stats.hivesStates %}
+        <li>{{ name }} : {{ state }}</li>
+    {% else %}
+        <li>Aucune ruche</li>    
+    {% endfor %}
+</ul>
+<p class="stats-line">Récolte totale sur le rucher : {{ stats.totalHarvest }} Kg</p>
+<p class="stats-line">Récolte par type : </p>
+<ul class="stats-apiary-list">
+    {% for name, quantity in stats.harvests %}
+        <li>{{ name }} : {{ quantity }} kg</li>
+    {% else %}
+        <li>Aucune récolte</li>    
+    {% endfor %}
+</ul>
+<p class="stats-line"><a href="{{ path('app_secure_stats_apiary_results_file', {id:apiary.id}) }}"><img src="{{asset('pictures/pdf.png')}}" alt="imprimer"></a>
+<p class="apiary-edition-btn-container"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+{% endblock %}

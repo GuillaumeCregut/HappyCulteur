@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Hive;
 use DateTimeImmutable;
 use App\Dto\HarvestDto;
+use App\Entity\Apiary;
 use App\Entity\Harvest;
 use App\Entity\Apiculteur;
 use Doctrine\Persistence\ManagerRegistry;
@@ -59,6 +60,33 @@ class HarvestRepository extends ServiceEntityRepository
         $results = $qb->getQuery()->getResult();
         foreach ($results as $result) {
             $dto = HarvestDto::fromArray($result, $user, $hive);
+            $returnArray[] = $dto;
+        }
+        return $returnArray;
+    }
+
+    public function findHarvestsByApiary(Apiary $apiary, Apiculteur $user): array
+    {
+        $qb = $this->createQueryBuilder('h')
+            ->select(
+                'h.date',
+                'h.weight',
+                'ho.name as honeyType',
+                'ho.picture as picture',
+            )
+            ->join('h.hive', 'hv')
+            ->join('h.honeyKind', 'ho')
+            ->join('hv.apiary', 'ap')
+            ->where('ap = :apiary')
+            ->andWhere('h.beekeeper = :beekeeper')
+            ->setParameter('apiary', $apiary)
+            ->setParameter('beekeeper', $user)
+            ->orderBy('h.date', 'ASC')
+            ->getQuery();
+        $results = $qb->getResult();
+        $returnArray = [];
+        foreach ($results as $result) {
+            $dto = HarvestDto::fromArray($result, $user);
             $returnArray[] = $dto;
         }
         return $returnArray;
