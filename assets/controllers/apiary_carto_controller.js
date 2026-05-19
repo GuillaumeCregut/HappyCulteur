@@ -23,7 +23,6 @@ export default class extends Controller {
         this.apiary = new Apiary(this.pathValue);
         await this.apiary.ready;
         if (hives.length === 0) {
-            console.log('Pas de ruches avec coordonnées');
             this.hivesOk = false;
         }
         for (const hive of hives) {
