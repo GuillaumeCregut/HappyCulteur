@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Apiary;
 use App\Entity\Hive;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,10 +19,23 @@ class HiveRepository extends ServiceEntityRepository
 
     public function findWithDatalogger()
     {
-         return $this->createQueryBuilder('h')
-        ->where('h.dataLoggerName IS NOT NULL')
-        ->getQuery()
-        ->getResult();
+        return $this->createQueryBuilder('h')
+            ->where('h.dataLoggerName IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByApiary(Apiary $value): array
+    {
+        return $this->createQueryBuilder('h')
+            ->select('h.id, h.name, h.coordX, h.coordY, h.coordZ')
+            ->andWhere('h.apiary = :val')
+            ->andWhere('h.coordX IS NOT NULL')
+            ->setParameter('val', $value)
+            ->orderBy('h.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     //    /**

@@ -50,6 +50,7 @@ export default class Hive {
         context.lineWidth = 1;
         context.stroke();
         context.fillStyle = 'white';
+        context.font = "10px sans-serif";
         context.fillText(this.name, (xlabel + 5), (ylabel + 12));
     }
 

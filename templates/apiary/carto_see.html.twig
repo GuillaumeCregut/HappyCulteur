@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/apiary.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/apiary_carto.css')}}">
+{% endblock %}
+{% block title %}Rucher : Cartographie{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion du rucher - Cartographie</h1>
+
+{% if apiary.pathImage %}
+ <section class="apiary-carto-container" {{ stimulus_controller('apiary-carto',{
+    initialized: apiary.pathImage !== null,
+    path: path('app_secure_carto_apiary', {id:apiary.id}),
+    url: path('app_hive_by_apiary', {id:apiary.id}),
+    hivePicture: asset('/pictures/hives/ruche_carto.png'),
+    csrf: csrf_token('save_coords'),
+    savePath: path('app_apiary_save_carto', {id:apiary.id})
+ })}}>
+    <canvas  {{ stimulus_target('apiary-carto', 'canvas') }}>Votre navigateur ne supporte pas le canvas</canvas>
+    <p class="apiary-carto-btn-container"><button class="form-button" {{ stimulus_action('apiary-carto', 'save') }}>Sauvegarder</button>
+    <p {{ stimulus_target('apiary-carto', 'message') }}></p>
+ </section>
+{% endif %}
+
+<p class="apiary-carto-btn-container"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+{% endblock %}

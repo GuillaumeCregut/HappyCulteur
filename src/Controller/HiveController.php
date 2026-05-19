@@ -9,6 +9,7 @@ use App\Form\HiveType;
 use App\Entity\Apiculteur;
 use App\Form\HiveTransferType;
 use App\Repository\ApiaryRepository;
+use App\Repository\HiveRepository;
 use App\Service\HiveProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,14 +82,14 @@ final class HiveController extends AbstractController
         $this->denyAccessUnlessGranted('own', $hive);
         $apiaries = $repo->findByBeekeeper($user);
         $dtos = [];
-        foreach($apiaries as $apiary) {
-            if($hive->getApiary() !== $apiary) {
+        foreach ($apiaries as $apiary) {
+            if ($hive->getApiary() !== $apiary) {
                 $dtos[] = new ApiaryDto($apiary->getId(), $apiary->getName());
             }
         }
         $form = $this->createForm(HiveTransferType::class, null, ['dtos' =>  $dtos]);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $newId = $form->get('apiaryList')->getNormData();
             $newApiary = $repo->findOneBy(['id' => $newId]);
             $hive->setApiary($newApiary);
@@ -175,5 +176,18 @@ final class HiveController extends AbstractController
             ->setCoordZ($data['z']);
         $em->flush();
         return $this->json(['success' => true]);
+    }
+
+    #[Route('/apiary/{id}', name: 'by_apiary', methods: ['GET'])]
+    public function getHivesByApiary(
+        Apiary $apiary,
+        #[CurrentUser] Apiculteur $user,
+        HiveRepository $repo
+    ): Response {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+        $hives = $repo->findByApiary($apiary);
+        return $this->json($hives);
     }
 }
