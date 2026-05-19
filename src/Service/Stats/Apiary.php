@@ -44,8 +44,8 @@ class Apiary
         }
         if (null !== $apiary->getLastPicture() && '' !== $apiary->getLastPicture()) {
             $title = "Cartographie du rucher";
-            //TODO: make full path to integrate picture if exists
-            $fullPath = '';
+            $filename = $apiary->getLastPicture();
+            $fullPath = $rootPath . $filename;
             $pdf->setPicture($fullPath, $title);
         }
         $filename = $relativePath . 'results.pdf';
