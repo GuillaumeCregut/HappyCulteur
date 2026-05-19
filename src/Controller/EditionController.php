@@ -23,8 +23,11 @@ final class EditionController extends AbstractController
     ) {}
 
     #[Route('/edition/apiary/{id}', name: 'app_edition_apiary_declaration')]
-    public function declaration(Apiary $apiary): Response
+    public function declaration(Apiary $apiary, #[CurrentUser] Apiculteur $user): Response
     {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
         return $this->render('apiary/editions/declaration.html.twig', [
             'apiary' => $apiary
         ]);
@@ -36,6 +39,9 @@ final class EditionController extends AbstractController
         ApiaryDeclaration $declaration,
         #[CurrentUser] Apiculteur $user,
     ): Response {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
         $declaration->createdoc($user, $apiary);
         $relativePath = PathMaker::makeApiaryDeclarationPath($user, $this->userFolderRoot);
         $userPath = $this->userFolderRoot . $relativePath;
