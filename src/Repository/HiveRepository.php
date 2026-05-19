@@ -33,7 +33,6 @@ class HiveRepository extends ServiceEntityRepository
             ->andWhere('h.coordX IS NOT NULL')
             ->setParameter('val', $value)
             ->orderBy('h.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
