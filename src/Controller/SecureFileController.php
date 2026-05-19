@@ -154,4 +154,18 @@ final class SecureFileController extends AbstractController
         $filename = $this->userFolderRoot . $data;
         return $this->file($filename);
     }
+
+    #[Route('/stats/results/apiary/{id}', name: 'stats_apiary_results_file')]
+    public function apiaryResults(
+        Apiary $apiary,
+        Request $request,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+        $data = $request->getSession()->get('apiary_stats_results');
+        $filename = $this->userFolderRoot . $data;
+        return $this->file($filename);
+    }
 }

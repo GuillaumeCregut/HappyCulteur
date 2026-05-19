@@ -3,16 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Hive;
+use App\Entity\Apiary;
 use App\Entity\Apiculteur;
 use App\Service\Stats\Temps;
 use App\Form\Stats\DatesType;
 use App\Service\Stats\Visits;
 use App\Service\Stats\Weight;
-use App\Dto\DataloggerStatsDto;
-use App\Service\Stats\Datalogger;
 use App\Service\Stats\Harvest;
-use App\Service\Stats\HiveResults;
+use App\Dto\DataloggerStatsDto;
+use App\Service\Stats\Apiary as StatsApiary;
+use App\Service\Stats\Datalogger;
 use App\Service\Stats\Hygrometry;
+use App\Service\Stats\HiveResults;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -321,6 +323,24 @@ final class StatsController extends AbstractController
         $request->getSession()->set('hive_stats_results', $path);
         return $this->render('stats/results/index.html.twig', [
             'hive' => $hive,
+        ]);
+    }
+
+    #[Route('/apiary/{id}/results', name: 'apiary_results')]
+    public function apiaryResult(
+        Apiary $apiary,
+        Request $request,
+        #[CurrentUser] Apiculteur $user,
+        StatsApiary $statsApiary,
+    ): Response {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+        $stats = $statsApiary->getApiaryStats($apiary, $this->userFolderRoot);
+        $request->getSession()->set('apiary_stats_results', $stats['path']);
+        return $this->render('stats/apiary/index.html.twig', [
+            'apiary' => $apiary,
+            'stats' => $stats
         ]);
     }
 }
