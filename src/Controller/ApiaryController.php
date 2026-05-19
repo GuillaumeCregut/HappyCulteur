@@ -3,19 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Apiary;
+use App\Tool\PathMaker;
 use App\Service\Uploader;
 use App\Entity\Apiculteur;
 use App\Form\ApiaryFormType;
 use App\Form\ApiaryPictureType;
-use App\Tool\PathMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[IsGranted('ROLE_USER')]
@@ -96,8 +98,11 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/edition/{id}', name: 'edition')]
-    public function edition(Apiary $apiary): Response
+    public function edition(Apiary $apiary, #[CurrentUser] Apiculteur $user): Response
     {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
         return $this->render('apiary/editions/index.html.twig', [
             'apiary' => $apiary
         ]);
@@ -112,6 +117,9 @@ final class ApiaryController extends AbstractController
         EntityManagerInterface $em,
         SluggerInterface $slugger,
     ): Response {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
         $form = $this->createForm(ApiaryPictureType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -128,6 +136,46 @@ final class ApiaryController extends AbstractController
             'apiary' => $apiary,
             'form' => $form
         ]);
+    }
+
+    #[Route('/cartography/{id}/see', name: 'see_carto')]
+    public function seeApiaryCarto(Apiary $apiary, #[CurrentUser] Apiculteur $user,): Response
+    {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+        return $this->render('apiary/carto_see.html.twig', [
+            'apiary' => $apiary,
+
+        ]);
+    }
+
+    #[Route('/cartography/save/{id}', name: 'save_carto', methods: ['POST'])]
+    public function saveApiaryCarto(
+        Request $request,
+        Apiary $apiary,
+        #[CurrentUser] Apiculteur $user,
+        CsrfTokenManagerInterface $csrf,
+        SluggerInterface $slugger,
+        EntityManagerInterface $em,
+    ): Response {
+        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+        $token = $request->headers->get('X-CSRF-Token');
+        if (!$csrf->isTokenValid(new CsrfToken('save_coords', $token))) {
+            return $this->json(['error' => 'Invalid CSRF token'], 403);
+        }
+        /**@var UploadedFile $file */
+        $file = $request->files->get('image');
+        $relativePath = PathMaker::makeApiaryFullCartoPath($apiary, $this->userFolderRoot);
+        $fullPath = $this->userFolderRoot . $relativePath;
+        $filename = $slugger->slug($apiary->getIdentification())->lower()->toString();
+        $filename .= '.png';
+        $file->move($fullPath, $filename);
+        $apiary->setLastPicture($relativePath . $filename);
+        $em->flush();
+        return $this->json(['success' => 'success'], 200);
     }
 
     /**
