@@ -10,6 +10,7 @@ use App\Entity\Apiculteur;
 use App\Form\HiveTransferType;
 use App\Repository\ApiaryRepository;
 use App\Repository\HiveRepository;
+use App\Service\HiveFinder;
 use App\Service\HiveProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -189,5 +190,45 @@ final class HiveController extends AbstractController
         }
         $hives = $repo->findByApiary($apiary);
         return $this->json($hives);
+    }
+
+    #[Route('/beekeeper/stats', name: 'beepkeeper_stats', methods: ['GET'])]
+    public function getBeekeeperApiaries(
+        #[CurrentUser] Apiculteur $user,
+        ApiaryRepository $repo,
+        HiveFinder $finder,
+        Request $request
+    ): Response {
+        $apiaryId = $request->query->getInt('apiaryId');
+        if (0 === $apiaryId) {
+            return $this->json(['error' => 'no apiary sent'], 422);
+        }
+        $apiary = $repo->findOneBy(['id' => $apiaryId]);
+        if (null === $apiary) {
+            return $this->json(['error' => 'no apiary found'], 404);
+        }
+        $hives = $finder->findhiveByApiaryOwnedByUser($apiary, $user);
+        return $this->json($hives, 200);
+    }
+
+    #[Route('/beekeeper/resume', name: 'beekeeper_resume', methods: ['GET'])]
+    public function getHiveResume(
+        #[CurrentUser] Apiculteur $user,
+        HiveFinder $finder,
+        Request $request
+    ): Response {
+        $hiveId = $request->query->getInt('hiveId');
+        if (0 === $hiveId) {
+            return $this->json(['error' => 'no hive sent'], 422);
+        }
+        $hiveInfo = $finder->findHiveByIdOwnedByUser($hiveId, $user);
+        if (200 !== $hiveInfo['error']) {
+            return $this->json(['error' => 'something went wrong'], $hiveInfo['error']);
+        }
+        return $this->json([
+            'state' => $hiveInfo['state'],
+            'rise' => $hiveInfo['rise'],
+            'swarm' => $hiveInfo['swarm'],
+        ], 200);
     }
 }

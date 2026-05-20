@@ -354,6 +354,7 @@ final class StatsController extends AbstractController
         return $this->render('stats/beekeeper/index.html.twig', [
             'apiaries' => $stats['apiaries'],
             'harvests' => $stats['harvests'],
+            'apiariesList' => $user->getApiaries()
         ]);
     }
 }

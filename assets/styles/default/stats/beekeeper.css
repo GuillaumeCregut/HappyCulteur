@@ -1,3 +1,7 @@
+.stats-beekeeper-section{
+    margin-bottom: 1rem;
+}
+
 .stats-beekeeper-apiary-table {
     margin-bottom: 1rem;
 }
@@ -28,4 +32,15 @@
 .stats-beekeeper-cell {
     text-align : center;
 	padding : 3px;
+}
+
+.stats-beekeeper-message-error{
+    color : red;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.stats-beekeeper-hive-infos-container{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
