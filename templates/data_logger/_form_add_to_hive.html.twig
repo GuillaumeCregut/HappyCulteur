@@ -4,6 +4,14 @@
         {{ form_errors(form) }}
     </div>
     <p class="data-form-line">Configuration du datalogger</p>
+     <div class="data-form-row">
+            {{ form_label(form.identification,"Numéro du boitier : " )}}
+            {{ form_widget(form.identification, {
+                 attr : {
+                    class: 'data-form-input'
+                }
+            }) }}
+        </div>
     <p class="data-form-line">Indiquez la fréquence de relevés. 1 signifie 1 relevé toutes les heures, 24 signifie un relevé toutes les 24 heures.</p>
     {{ form_row(form.frequency,  {
                 row_attr: {

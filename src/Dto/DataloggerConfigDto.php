@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DataloggerConfigDto
 {
-    #[Assert\NotBlank(message:'Veuillez entrer un nombre')]
+    #[Assert\NotBlank(message: 'Veuillez entrer un nombre')]
     #[Assert\Range(
         min: 1,
         max: 24,
@@ -18,14 +18,15 @@ class DataloggerConfigDto
     public bool $extTemp = false;
     public bool $extHygro = false;
     public bool $weight = false;
-    public string $signature ='';
+    public string $signature = '';
     public int $version = 0;
+    public string $identification = '';
 
     public static function fromArray(array $data): self
     {
         $dto = new self();
-        foreach($data as $key => $value) {
-            if(property_exists($dto, $key)) {
+        foreach ($data as $key => $value) {
+            if (property_exists($dto, $key)) {
                 $dto->$key = $value;
             }
         }
