@@ -11,9 +11,9 @@
 	<table class="stats-beekeeper-apiary-table">
 		<caption>Liste des ruchers et leur population</caption>
 		<thead>
-			<tr class="stats-beekeeper-table-row">
-				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Nom du rucher</th>
-				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Nombre de ruches</th>
+			<tr class="stats-beekeeper-table-row-head">
+				<th class="stats-beekeeper-cell-head">Nom du rucher</th>
+				<th class="stats-beekeeper-cell-head">Nombre de ruches</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -33,16 +33,22 @@
 	<table class="stats-beekeeper-apiary-table">
 		<caption>Relevé des récoltes</caption>
 		<thead>
-			<tr class="stats-beekeeper-table-row">
-				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Type de miel</th>
-				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Quantité</th>
+			<tr class="stats-beekeeper-table-row-head">
+				<th class="stats-beekeeper-cell-head">Type de miel</th>
+				<th class="stats-beekeeper-cell-head">Quantité</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="stats-beekeeper-table-row">
-				<td class="stats-beekeeper-cell">&nbsp;</td>
-				<td class="stats-beekeeper-cell">&nbsp;</td>
-			</tr>
+            {% for harvest in harvests %}
+                <tr class="stats-beekeeper-table-row">
+                    <td class="stats-beekeeper-cell">{{ harvest.name }}</td>
+                    <td class="stats-beekeeper-cell">{{ harvest.weight }} Kg</td>
+                </tr>
+            {% else %}
+				<tr class="stats-beekeeper-table-row">
+					<td class="stats-beekeeper-cell" colspan="2">Aucune information trouvée</td>
+				</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 

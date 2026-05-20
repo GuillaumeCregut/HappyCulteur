@@ -10,6 +10,7 @@
 
 .stats-beekeeper-table-row:hover{
     background-color : #828282;
+    color : white;
 }
 
 .stats-beekeeper-table-row:nth-child(even){
