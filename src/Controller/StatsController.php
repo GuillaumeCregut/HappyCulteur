@@ -12,6 +12,7 @@ use App\Service\Stats\Weight;
 use App\Service\Stats\Harvest;
 use App\Dto\DataloggerStatsDto;
 use App\Service\Stats\Apiary as StatsApiary;
+use App\Service\Stats\Beekeeper;
 use App\Service\Stats\Datalogger;
 use App\Service\Stats\Hygrometry;
 use App\Service\Stats\HiveResults;
@@ -341,6 +342,17 @@ final class StatsController extends AbstractController
         return $this->render('stats/apiary/index.html.twig', [
             'apiary' => $apiary,
             'stats' => $stats
+        ]);
+    }
+
+    #[Route('/beekeeper', name: 'beekeeper_home', methods: ['GET'])]
+    public function statsBeekeeper(
+        #[CurrentUser] Apiculteur $user,
+        Beekeeper $beekeeperStats,
+    ): Response {
+        $stats = $beekeeperStats->getBeekeeperStats($user);
+        return $this->render('stats/beekeeper/index.html.twig', [
+            'apiaries' => $stats['apiaries'],
         ]);
     }
 }

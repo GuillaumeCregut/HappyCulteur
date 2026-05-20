@@ -1,0 +1,30 @@
+.stats-beekeeper-apiary-table {
+    margin-bottom: 1rem;
+}
+
+.stats-beekeeper-apiary-table caption {
+    caption-side: top;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.stats-beekeeper-table-row:hover{
+    background-color : #828282;
+}
+
+.stats-beekeeper-table-row:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+.stats-beekeeper-table-row:nth-child(even):hover{
+    background-color: #828282;
+}
+
+.stats-beekeeper-cell-head{
+    background-color : #d0e1fa;
+}
+
+.stats-beekeeper-cell {
+    text-align : center;
+	padding : 3px;
+}

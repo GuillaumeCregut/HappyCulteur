@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/beekeeper.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+{% endblock %}
+{% block title %}Statistiques apiculteur
+{% endblock %}
+
+{% block body %}
+	<h1 class="title">Statistiques apiculteur</h1>
+	<table class="stats-beekeeper-apiary-table">
+		<caption>Liste des ruchers et leur population</caption>
+		<thead>
+			<tr class="stats-beekeeper-table-row">
+				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Nom du rucher</th>
+				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Nombre de ruches</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for apiary in apiaries %}
+				<tr class="stats-beekeeper-table-row">
+					<td class="stats-beekeeper-cell">{{ apiary.name }}</td>
+					<td class="stats-beekeeper-cell">{{ apiary.hiveCount }}</td>
+				</tr>
+			{% else %}
+				<tr class="stats-beekeeper-table-row">
+					<td class="stats-beekeeper-cell" colspan="2">Aucune information trouvée</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<table class="stats-beekeeper-apiary-table">
+		<caption>Relevé des récoltes</caption>
+		<thead>
+			<tr class="stats-beekeeper-table-row">
+				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Type de miel</th>
+				<th class="stats-beekeeper-cell stats-beekeeper-cell-head">Quantité</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="stats-beekeeper-table-row">
+				<td class="stats-beekeeper-cell">&nbsp;</td>
+				<td class="stats-beekeeper-cell">&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="apiary-edition-btn-container">
+		<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
+	</p>
+{% endblock %}
