@@ -18,7 +18,6 @@ class ConfigMaker
         $fullPath .= $filename;
         $config = (array) $dto;
         $config['hive'] = $hive->getName();
-        $config['identification'] = $hive->getIdentification(); //TODO: Change this
         $config['hiveId'] = $hive->getIdentification();
         $template = [];
         $template['hive'] = 'string';
