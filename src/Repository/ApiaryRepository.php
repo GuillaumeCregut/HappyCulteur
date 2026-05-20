@@ -27,6 +27,18 @@ class ApiaryRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findApiaryHiveCountbyBeekeeper(Apiculteur $user): array
+    {
+        $qb = $this->createQueryBuilder('ap')
+            ->select('ap.name', 'COUNT(hv.id) AS hiveCount')
+            ->leftJoin('ap.hives', 'hv')
+            ->where('ap.beekeeper = :beekeeper')
+            ->setParameter('beekeeper', $user)
+            ->groupBy('ap.id')
+            ->orderBy('ap.name', 'ASC');
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Apiary[] Returns an array of Apiary objects
     //     */

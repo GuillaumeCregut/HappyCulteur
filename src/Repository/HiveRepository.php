@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Apiary;
+use App\Entity\Apiculteur;
 use App\Entity\Hive;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,6 +33,18 @@ class HiveRepository extends ServiceEntityRepository
             ->andWhere('h.apiary = :val')
             ->andWhere('h.coordX IS NOT NULL')
             ->setParameter('val', $value)
+            ->orderBy('h.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByApiaryAndUser(Apiary $apiary, Apiculteur $user): array
+    {
+         return $this->createQueryBuilder('h')
+            ->select('h.id, h.name')
+            ->andWhere('h.apiary = :val')
+            ->setParameter('val', $apiary)
             ->orderBy('h.id', 'ASC')
             ->getQuery()
             ->getResult()

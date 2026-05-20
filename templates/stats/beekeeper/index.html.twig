@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stats/beekeeper.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/stats/global.css')}}">
+{% endblock %}
+{% block title %}Statistiques apiculteur
+{% endblock %}
+
+{% block body %}
+	<h1 class="title">Statistiques apiculteur</h1>
+	<section class="stats-beekeeper-section">
+		<table class="stats-beekeeper-apiary-table">
+			<caption>Liste des ruchers et leur population</caption>
+			<thead>
+				<tr class="stats-beekeeper-table-row-head">
+					<th class="stats-beekeeper-cell-head">Nom du rucher</th>
+					<th class="stats-beekeeper-cell-head">Nombre de ruches</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for apiary in apiaries %}
+					<tr class="stats-beekeeper-table-row">
+						<td class="stats-beekeeper-cell">{{ apiary.name }}</td>
+						<td class="stats-beekeeper-cell">{{ apiary.hiveCount }}</td>
+					</tr>
+				{% else %}
+					<tr class="stats-beekeeper-table-row">
+						<td class="stats-beekeeper-cell" colspan="2">Aucune information trouvée</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</section>
+	<section class="stats-beekeeper-section">
+		<table class="stats-beekeeper-apiary-table">
+			<caption>Relevé des récoltes</caption>
+			<thead>
+				<tr class="stats-beekeeper-table-row-head">
+					<th class="stats-beekeeper-cell-head">Type de miel</th>
+					<th class="stats-beekeeper-cell-head">Quantité</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for harvest in harvests %}
+					<tr class="stats-beekeeper-table-row">
+						<td class="stats-beekeeper-cell">{{ harvest.name }}</td>
+						<td class="stats-beekeeper-cell">{{ harvest.weight }}
+							Kg</td>
+					</tr>
+				{% else %}
+					<tr class="stats-beekeeper-table-row">
+						<td class="stats-beekeeper-cell" colspan="2">Aucune information trouvée</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</section>
+	<section 
+    class="stats-beekeeper-section" 
+    {{ stimulus_controller('beekeeper-stats', {
+        url: path('app_hive_beepkeeper_stats'),
+        hiveUrl: path('app_hive_beekeeper_resume')
+        } ) }}>
+		<h2 class="stats-beekeeper-apiary-hive-title">Informations résumées des ruches par rucher</h2>
+		<div class="stats-beekeeper-select-container">
+			<select {{ stimulus_target('beekeeper-stats', 'apiarySelector')}} {{ stimulus_action('beekeeper-stats', 'apiaryChanged') }}>
+				<option value="">--Choisir un rucher</option>
+				{% for apiary in apiariesList %}
+					<option value="{{ apiary.id }}">{{ apiary.name }}</option>
+				{% endfor %}
+			</select>
+			<select {{ stimulus_target('beekeeper-stats', 'hiveSelector')}} {{ stimulus_action('beekeeper-stats', 'hiveChanged') }}>
+				<option value="">-- Choisir une ruche --</option>
+			</select>
+		</div>
+		<p {{ stimulus_target('beekeeper-stats', 'errorMessage')}}></p>
+        <div class="stats-beekeeper-hive-infos-container" {{ stimulus_target('beekeeper-stats', 'hiveInfos')}}>
+        </div>
+	</section>
+	<p class="apiary-edition-btn-container">
+		<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
+	</p>
+{% endblock %}
