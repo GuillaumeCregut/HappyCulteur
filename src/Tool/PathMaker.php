@@ -194,4 +194,22 @@ class PathMaker
             mkdir($fullPath, 0744, true);
         }
     }
+
+    public static function getCleanPaths(Apiculteur $user): array
+    {
+        $returnArray = [];
+        //Documents
+        $documentPath = $user->getId() . DIRECTORY_SEPARATOR;
+        $documentPath .= 'documents' . DIRECTORY_SEPARATOR;
+        $returnArray['documents'] = $documentPath;
+        //Dataloggers datas
+        $DataloggerPath =  $user->getId() . DIRECTORY_SEPARATOR;
+        $DataloggerPath .= 'datalogger' . DIRECTORY_SEPARATOR . 'datas' . DIRECTORY_SEPARATOR;
+        $returnArray['datalogger'] = $DataloggerPath;
+        //Stats
+        $statsPath = $user->getId() . DIRECTORY_SEPARATOR;
+        $statsPath .= 'stats' . DIRECTORY_SEPARATOR;
+        $returnArray['stats'] = $statsPath;
+        return $returnArray;
+    }
 }
