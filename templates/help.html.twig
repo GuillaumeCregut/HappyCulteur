@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/help.css')}}">
+{% endblock %}
+{% block title %}Aide
+{% endblock %}
+
+{% block body %}
+<h1 class="title">Index de l'aide</h1>
+	<main class="help-index">
+		<ol class="help-list help-list-root">
+			<li>
+				<a href="{{ path('app_help_home') }}"  target="_blank" >Fiche aide : Accueil</a>
+				<ol class="help-list">
+					<li>Le Rucher
+						<ol class="help-list">
+							<li>Visualiser l'état de chaque rucher en votre possession</li>
+							<li>Ajouter un rucher</li>
+						</ol>
+					</li>
+					<li>Informations</li>
+					<li>Paramètres
+						<ol class="help-list">
+							<li>Liste des maladies</li>
+							<li>Liste des types de miel</li>
+							<li>Apparence</li>
+						</ol>
+					</li>
+					<li>Achat</li>
+					<li>Statisitiques apiculteur</li>
+				</ol>
+			</li>
+			<li>
+				<a href="{{ path('app_help_apiary') }}">Fiche aide : rucher</a>
+				<ol class="help-list">
+					<li>Les ruches</li>
+					<li>Informations</li>
+					<li>Editions
+						<ol class="help-list">
+							<li>Déclaration de rucher</li>
+							<li>Statistiques du rucher</li>
+						</ol>
+					</li>
+					<li>Cartographie</li>
+					<ol class="help-list">
+						<li>Fichier Image de la cartographie</li>
+						<li>Affichage de la cartographie</li>
+					</ol>
+				</ol>
+			</li>
+
+			<li>
+				<a href="{{ path('app_help_hive') }}">Fiche aide : Les ruches</a>
+				<ol class="help-list">
+					<li>Les ruches</li>
+					<li>La gestion des essaims
+						<ol class="help-list">
+							<li>Affectation :</li>
+							<li>Création d'un nouvel essaim :</li>
+						</ol>
+					</li>
+					<li>Les informations</li>
+					<li>Les visites</li>
+					<li>Les récoltes</li>
+					<li>Les statistiques
+						<ol class="help-list">
+							<li>Suivi des visites</li>
+							<li>Graphiques de relevés</li>
+							<li>Bilan de la ruche</li>
+						</ol>
+					</li>
+					<li>Cartographie</li>
+				</ol>
+			</li>
+
+		</ol>
+	</main>
+	<p>
+		<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
+	</p>
+{% endblock %}
