@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/help.css')}}">
+{% endblock %}
+{% block title %}Aide{% endblock %}
+
+{% block body %}
+	<h1 class="title">Fiche aide : rucher</h1>
+	<main class="help-index">
+		<p><img src="{{ asset('pictures/help/apiary/fiche_rucher.png') }}" alt="ecran rucher"></p>
+		<div class="paraf">
+			Dans cette page, vous trouverez tout ce qui concerne la gestion du rucher.
+		</div>	  
+		<section class="paraf"> 
+			<h2 class="help-subtitle">Les ruches :</h2>
+			<p>Dans le cadre, en premier lieu, est affiché les ruches constituant le rucher.<br>
+				Il suffit de cliquer sur une ruche pour y accéder.
+			</p>
+			<p>En cliquant sur l'ajout d'une ruche, vous pouvez ajouter une ruche au rucher.</p>
+			<p>Les icones suivantes représentent :</p>
+			<p><img src="{{ asset('pictures/help/apiary/dadant_actif.png') }}" alt="ruche active"> Une ruche active<br>
+				<img src="{{ asset('pictures/help/apiary/dadant_stock.png') }}" alt="ruche stockee"> Une ruche re stockée<br>
+				<img src="{{ asset('pictures/help/apiary/dadant_dead.png') }}" alt="ruche morte"> Une ruche morte.
+			</p>
+			<p>Suivant le type de ruche défini dans la création d'une ruche, les icones seront modifiées afin d'avoir un visuel distinctif pour chaque type de ruche.</p>
+			<p><img src="{{ asset('pictures/help/apiary/dadant_actif.png') }}" alt="ruche dadant"> Une ruche dandant<br>
+				<img src="{{ asset('pictures/help/apiary/langstroth_actif.png') }}" alt="ruche langstroth"> Une ruche Langstroth<br>
+				<img src="{{ asset('pictures/help/apiary/warre_actif.png') }}" alt="ruche warre"> Une ruche Warré<br>
+				<img src="{{ asset('pictures/help/apiary/ruchette_actif.png') }}" alt="ruchette"> Une ruchette<br>
+				<img src="{{ asset('pictures/help/apiary/autre_actif.png') }}" alt="ruche autre"> Une ruche non identifiée
+			</p>  
+		</section>	  
+		<section class="paraf">	  
+		<h2 class="help-subtitle">Informations</h2>
+			<p class="imgpage"><img alt="Information rucher" src="{{ asset('pictures/help/apiary/info_rucher.png') }}"></p>
+			<p>Dans les informations, vous retrouverez les informations saisies lors de la création du rucher. Depuis cette page, vous pouvez modifier certains éléments.</p> 
+		</section>
+		<section class="paraf">	  
+			<h2 class="help-subtitle">Editions</h2>
+			<p class="imgpage"><img alt="page editions" src="{{ asset('pictures/help/apiary/edition_rucher.png') }}"></p>
+			<p> Sur la page éditions, vous pouvez imprimer les différents documents relatifs au rucher, ainsi que voir les statistiques globales de celui-ci.</p>
+			<h3 class="help-subtitle-three">Déclaration de rucher</h3>
+			<p>Imprime un document d'aide à la déclaration du rucher. Ce document n'est pas officiel, il faut se reporter au document CERFA indiqué sur le page.</p>
+			<h3 class="help-subtitle-three">Statistiques du rucher</h3>
+			<p>Affiche les statistiques du rucher</p>
+		</section>
+		<section class="paraf">	  
+			<h2 class="help-subtitle">Cartographie</h2>
+			<p class="imgpage"><img alt="page editions" src="{{ asset('pictures/help/apiary/carto_rucher.png') }}"></p>
+			<p>La cartographie permet de localiser sur un plan ou une photo (satellite) de repérer les ruches du rucher.</p>
+			<h3 class="help-subtitle-three">Fichier image de la cartographie</h3>
+			<p>Vous pouvez selectionner une photo et lui donner un nom.<br>
+				Cette photo sera stockée sur le système et permettra l'affichage des position des ruches sur le rucher
+			</p>
+			<h3 class="help-subtitle-three">Affichage de la cartographie</h3>
+			<p class="imgpage"><img alt="page editions" src="{{ asset('pictures/help/apiary/save_carto_rucher.png') }}"></p>
+			<p>Cette page permet l'affichage et la sauvegarde de la cartographie du rucher.</p>
+		</section>
+	</main>
+<p><a href="{{ path('app_help_index') }}" class= "form-button">Retour à l'index de l'aide</a></p>
+{% endblock %}

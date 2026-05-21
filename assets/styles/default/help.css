@@ -1,0 +1,43 @@
+.help-index {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.help-subtitle {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+}
+
+.help-subtitle-three {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.help-list-root>li {
+    margin-bottom: 0.7rem;
+}
+
+.help-list,
+.help-list li {
+    padding: revert;
+    list-style-type: revert;
+}
+
+img {
+    display: inline-block;
+    border: inset;
+    border-width: 1px;
+    vertical-align: middle;
+    padding: 5px;
+    margin: 10px;
+}
+
+.paraf {
+    padding-left: 10px;
+    width: 100%;
+}
+
+.imgpage {
+    margin-left: 70px;
+}

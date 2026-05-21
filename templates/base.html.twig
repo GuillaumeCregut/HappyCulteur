@@ -19,21 +19,22 @@
 	</head>
 	<body>
 		{% block body %}{% endblock %}
-	</body>
-	<div class="footer">
-		<hr>
-		<p>Gestion rucher Version
-			{{version}}</p>
-		<p>(c)2017 - 2026 Editiel 98</p>
-	</div>
-	<div class="flash-container">
-	{% for type, messages in app.flashes %}
-		{% for message in messages %}
-			<div class="alert alert-{{ type }}"
-				{{ stimulus_controller('flash') }}>
-				<div>{{ message }}</div>
-			</div>
+
+		<div class="footer">
+			<hr>
+			<p>Gestion rucher Version
+				{{version}}</p>
+			<p>(c)2017 - 2026 Editiel 98</p>
+		</div>
+		<div class="flash-container">
+		{% for type, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ type }}"
+					{{ stimulus_controller('flash') }}>
+					<div>{{ message }}</div>
+				</div>
+			{% endfor %}
 		{% endfor %}
-	{% endfor %}
-	</div>
+		</div>
+	</body>
 </html>

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/help.css')}}">
+{% endblock %}
+{% block title %}Aide
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="title">Fiche aide : Accueil</h1>
+	<main class="help-index">
+		<div class="paraf">
+			La page d'accueil regroupe les informations concernant l'apiculteur et ses outils de travail.<br>
+			Dans le cadre, vous pouvez visualiser et accéder aux informations suivantes :
+		</div>
+		<section class="paraf">
+			<h2 class="help-subtitle">Le rucher :</h2>
+			<h3 class="help-subtitle-three">Visualiser l'état de chaque rucher en votre possession</h3>
+			<p><img alt="rucher actif" src="{{ asset('pictures/help/home/rucher.png') }}">
+				Cette icône représente un rucher actif<br>
+				<img alt="Rucher inactif" src="{{ asset('pictures/help/home/rucher_dead.png') }}">
+				Cette icône représente un rucher que vous avez déclaré inactif<br>
+			</p>
+			<h3 class="help-subtitle-three">Ajout d'un rucher</h3>
+			<p>En cliquant sur le lien ajouter un rucher, vous arrivez sur la page d'ajout de rucher</p>
+			<p class="imgpage"><img alt="page ajout rucher" src="{{ asset('pictures/help/home/ajout_rucher.png') }}"></p>
+			<p>Dans cette page, vous aller saisir les informations concernant le rucher. Les éléments marqués d'un astérisque sont obligatoires :<br>
+			Nom du rucher, localisation, numéro de rucher<br>
+			Les autres informations sont a votre choix (observations et coordonnées GPS).</p>
+		</section>
+		<section class="paraf">
+			<h2 class="help-subtitle">Informations :</h2>
+			<p>En cliquant sur informations, vous accédez à vos informations que vous avez saisies lors de votre inscription. De cette page, vous pouvez modifier les informations suivantes :<br>
+				Code APE, SIRET, adresse, adresse mail et votre mot de passe.
+			</p>
+		</section>
+		<section class="paraf">
+			<h2 class="help-subtitle">Paramètres</h2>
+			<p>En cliquant sur paramètre, vous aller pouvoir gérer votre liste de maladies (il est toutefois possible de la modifier aussi dans la page visite d'une ruche), la liste de type de miel produit et gérer l'apparence de l'application (via des plugins a télécharger).</p>
+			<h3 class="help-subtitle-three">Liste des maladies :</h3>
+			<p class="imgpage"><img alt="page liste maladie" src="{{ asset('pictures/help/home/maladie.png') }}"></p>
+			<p>Vous pouvez ajouter une (ou plusieurs) maladie.</p>
+			<h3 class="help-subtitle-three">Liste des types de miel :</h3>
+			<p class="imgpage"><img alt="page liste type miel" src="{{ asset('pictures/help/home/type_miel.png') }}"></p>
+			<p>Vous pouvez ajouter un (ou plusieurs) type de miel récolté. Vous pouvez aussi, de cette page, changer l'icône représentant le type de miel.<br>
+				Pour cela, il suffit de sélectionner dans la liste le type de miel à modifier, et de choisir une icône (attention 20px*20px,4ko) représentant le type de miel. cette icône est utilisée dans les graphiques de statistiques.<br>
+				En choisissant une icône, puis en saisissant un nom de type de miel, alors vous créez un nouveau type de miel.</p>
+			<h3 class="help-subtitle-three">Apparence :</h3>
+			<p class="imgpage"><img alt="page apparence" src="{{ asset('pictures/help/home/apparence.png') }}"></p>
+			<p>Permet de sélectionner l'apparence de l'interface utilisateur. Il faut pour cela importer les modules requis.</p>
+		</section>
+		<section class="paraf">
+			<h2 class="help-subtitle">Achat :</h2>
+			<p class="imgpage"><img alt="page achat" src="{{ asset('pictures/help/home/achat.png') }}"></p>
+			<p>La page des achats vous permet de saisir et d'afficher les achats effectués dans le cadre de l'apiculture. Ce n'est qu'un aide mémoire.<br>
+				Pour afficher un achat dans l'historique, il suffit de cliquer sur la date, et les informations apparaissent.</p>
+		</section>
+		
+		<section class="paraf">
+		<h2 class="help-subtitle">Statisitiques apiculteur :</h2>
+			<p class="imgpage"><img alt="page stat" src="{{ asset('pictures/help/home/stat_api.png') }}"></p>
+			<p>Dans cette section, vous avez les résumé de votre activité :<br></p>
+			<p>La liste de vos ruchers et le nombre de ruches qui le constituent, un résumé globales de vos récoltes par type de miel.</p>
+			<p>Ensuite, en sélectionnant le rucher dans le menu déroulant, puis la ruche désirée, vous pouvez voir l'état de la ruche et son essaim.</p>
+		</section>
+	</main>
+	<p><a href="{{ path('app_help_index') }}" class="form-button">Retour au sommaire</a></p>
+{% endblock %}
