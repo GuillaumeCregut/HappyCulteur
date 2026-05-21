@@ -63,4 +63,19 @@ final class HomeController extends AbstractController
     {
         return $this->render('params/index.html.twig', []);
     }
+
+    #[Route(path: '/params/infos', name: 'params_infos')]
+    #[IsGranted('ROLE_USER')]
+    public function parametersInfo(): Response
+    {
+        $version = $this->getParameter('app.datalogger.version');
+        return $this->render('params/infos_system.html.twig', ['version' => $version]);
+    }
+
+    #[Route(path: '/params/appearence', name: 'params_appearence')]
+    #[IsGranted('ROLE_USER')]
+    public function appearence(): Response
+    {
+        return $this->render('params/appearence.html.twig', []);
+    }
 }

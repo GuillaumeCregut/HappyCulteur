@@ -1,3 +1,8 @@
-.param-index-link-list li{
+.param-index-link-list li {
     margin-top: 1rem;
+}
+
+.param-line {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
