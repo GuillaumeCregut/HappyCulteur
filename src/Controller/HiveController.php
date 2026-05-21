@@ -53,6 +53,7 @@ final class HiveController extends AbstractController
             $hive->setApiary($apiary);
             $qrCode = HiveProcessor::generateQR($user, $hive);
             $hive->setQrCode($qrCode);
+            $hive->setBeekeeper($user);
             $em->persist($hive);
             $em->flush();
             return $this->redirectToRoute('app_apiary_index', ['id' => $apiary->getId()]);

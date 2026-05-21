@@ -100,6 +100,12 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Datalogger::class, mappedBy: 'beekeeper')]
     private Collection $dataloggers;
 
+    /**
+     * @var Collection<int, Hive>
+     */
+    #[ORM\OneToMany(targetEntity: Hive::class, mappedBy: 'beekeeper')]
+    private Collection $hives;
+
     public function __construct()
     {
         $this->apiaries = new ArrayCollection();
@@ -107,6 +113,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->swarms = new ArrayCollection();
         $this->harvests = new ArrayCollection();
         $this->dataloggers = new ArrayCollection();
+        $this->hives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -460,6 +467,36 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($datalogger->getBeekeeper() === $this) {
                 $datalogger->setBeekeeper(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hive>
+     */
+    public function getHives(): Collection
+    {
+        return $this->hives;
+    }
+
+    public function addHive(Hive $hive): static
+    {
+        if (!$this->hives->contains($hive)) {
+            $this->hives->add($hive);
+            $hive->setBeekeeper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHive(Hive $hive): static
+    {
+        if ($this->hives->removeElement($hive)) {
+            // set the owning side to null (unless already changed)
+            if ($hive->getBeekeeper() === $this) {
+                $hive->setBeekeeper(null);
             }
         }
 

@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Constant\HiveState;
 use App\Entity\Hive;
-use App\Entity\Apiary;
 use App\Entity\HiveKind;
 use App\Entity\HiveRise;
 use Symfony\Component\Form\AbstractType;
@@ -36,6 +35,7 @@ class HiveType extends AbstractType
             ])
             ->add('riseNumber', ChoiceType::class, [
                 'choices' => [
+                    '0' => 0,
                     '1' => 1,
                     '2' => 2,
                     '3' => 3,
@@ -64,7 +64,7 @@ class HiveType extends AbstractType
             ])
             ->add('rise', EntityType::class, [
                 'class' => HiveRise::class,
-                'choice_label' => 'name', 
+                'choice_label' => 'name',
                 'placeholder' => false,
                 'required' => true,
             ])

@@ -51,7 +51,6 @@ class Hive
     private ?int $coordZ = null;
 
     #[ORM\ManyToOne(inversedBy: 'hives')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Apiary $apiary = null;
 
     #[ORM\ManyToOne(inversedBy: 'hives')]
@@ -76,11 +75,15 @@ class Hive
     #[ORM\OneToMany(targetEntity: Harvest::class, mappedBy: 'hive')]
     private Collection $harvests;
 
-    #[ORM\OneToMany(targetEntity:Datalogger::class, mappedBy: 'hive')]
+    #[ORM\OneToMany(targetEntity: Datalogger::class, mappedBy: 'hive')]
     private Collection $datalogger;
 
     #[ORM\Column(nullable: true)]
     private ?string $dataLoggerName = null;
+
+    #[ORM\ManyToOne(inversedBy: 'hives')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Apiculteur $beekeeper = null;
 
     public function __construct()
     {
@@ -386,6 +389,18 @@ class Hive
 
     public function getOwner(): ?Apiculteur
     {
-        return $this->apiary->getBeekeeper();
+        return $this->beekeeper;
+    }
+
+    public function getBeekeeper(): ?Apiculteur
+    {
+        return $this->beekeeper;
+    }
+
+    public function setBeekeeper(?Apiculteur $beekeeper): static
+    {
+        $this->beekeeper = $beekeeper;
+
+        return $this;
     }
 }

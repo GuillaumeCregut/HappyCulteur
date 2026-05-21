@@ -31,10 +31,9 @@ final class HiveOwnerVoter extends Voter
             return false;
         }
 
-         /** @var Hive $hive */
+        /** @var Hive $hive */
         $hive = $subject;
-        $apiary = $hive->getApiary();
-        $result = $user === $apiary->getBeekeeper();
+        $result = $user === $hive->getBeekeeper();
         return $result;
     }
 }

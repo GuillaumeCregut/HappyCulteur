@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260521165007 extends AbstractMigration
+final class Version20260521170400 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20260521165007 extends AbstractMigration
         $this->addSql('CREATE TABLE datalogger (id INT AUTO_INCREMENT NOT NULL, identification VARCHAR(20) NOT NULL, date_time DATETIME NOT NULL, weight DOUBLE PRECISION DEFAULT NULL, ext_temp DOUBLE PRECISION DEFAULT NULL, int_temp DOUBLE PRECISION DEFAULT NULL, ext_hyrgo INT DEFAULT NULL, int_hygro INT DEFAULT NULL, hive_id INT DEFAULT NULL, beekeeper_id INT NOT NULL, INDEX IDX_5CF933F0E9A48D12 (hive_id), INDEX IDX_5CF933F03484929B (beekeeper_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
         $this->addSql('CREATE TABLE disease (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
         $this->addSql('CREATE TABLE harvest (id INT AUTO_INCREMENT NOT NULL, weight DOUBLE PRECISION NOT NULL, date DATE NOT NULL, honey_kind_id INT NOT NULL, hive_id INT DEFAULT NULL, beekeeper_id INT NOT NULL, INDEX IDX_36BDDB374924A9F1 (honey_kind_id), INDEX IDX_36BDDB37E9A48D12 (hive_id), INDEX IDX_36BDDB373484929B (beekeeper_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE hive (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(60) NOT NULL, frame_number INT NOT NULL, rise_number INT NOT NULL, identification VARCHAR(30) NOT NULL, state INT NOT NULL, date DATE DEFAULT NULL, observation LONGTEXT DEFAULT NULL, qr_code VARCHAR(255) DEFAULT NULL, coord_x INT DEFAULT NULL, coord_y INT DEFAULT NULL, coord_z INT DEFAULT NULL, data_logger_name VARCHAR(255) DEFAULT NULL, apiary_id INT NOT NULL, kind_id INT NOT NULL, rise_id INT DEFAULT NULL, INDEX IDX_DC6DBBF8D0E2858B (apiary_id), INDEX IDX_DC6DBBF830602CA9 (kind_id), INDEX IDX_DC6DBBF8E2EAC1E2 (rise_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE hive (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(60) NOT NULL, frame_number INT NOT NULL, rise_number INT NOT NULL, identification VARCHAR(30) NOT NULL, state INT NOT NULL, date DATE DEFAULT NULL, observation LONGTEXT DEFAULT NULL, qr_code VARCHAR(255) DEFAULT NULL, coord_x INT DEFAULT NULL, coord_y INT DEFAULT NULL, coord_z INT DEFAULT NULL, data_logger_name VARCHAR(255) DEFAULT NULL, apiary_id INT NOT NULL, kind_id INT NOT NULL, rise_id INT DEFAULT NULL, beekeeper_id INT DEFAULT NULL, INDEX IDX_DC6DBBF8D0E2858B (apiary_id), INDEX IDX_DC6DBBF830602CA9 (kind_id), INDEX IDX_DC6DBBF8E2EAC1E2 (rise_id), INDEX IDX_DC6DBBF83484929B (beekeeper_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
         $this->addSql('CREATE TABLE hive_kind (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(60) NOT NULL, picture VARCHAR(255) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
         $this->addSql('CREATE TABLE hive_rise (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
         $this->addSql('CREATE TABLE honey (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, picture VARCHAR(255) DEFAULT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 ENGINE = InnoDB');
@@ -42,6 +42,7 @@ final class Version20260521165007 extends AbstractMigration
         $this->addSql('ALTER TABLE hive ADD CONSTRAINT FK_DC6DBBF8D0E2858B FOREIGN KEY (apiary_id) REFERENCES apiary (id)');
         $this->addSql('ALTER TABLE hive ADD CONSTRAINT FK_DC6DBBF830602CA9 FOREIGN KEY (kind_id) REFERENCES hive_kind (id)');
         $this->addSql('ALTER TABLE hive ADD CONSTRAINT FK_DC6DBBF8E2EAC1E2 FOREIGN KEY (rise_id) REFERENCES hive_rise (id)');
+        $this->addSql('ALTER TABLE hive ADD CONSTRAINT FK_DC6DBBF83484929B FOREIGN KEY (beekeeper_id) REFERENCES apiculteur (id)');
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B3484929B FOREIGN KEY (beekeeper_id) REFERENCES apiculteur (id)');
         $this->addSql('ALTER TABLE swarm ADD CONSTRAINT FK_E9A752A1E9A48D12 FOREIGN KEY (hive_id) REFERENCES hive (id)');
         $this->addSql('ALTER TABLE swarm ADD CONSTRAINT FK_E9A752A13484929B FOREIGN KEY (beekeeper_id) REFERENCES apiculteur (id)');
@@ -61,6 +62,7 @@ final class Version20260521165007 extends AbstractMigration
         $this->addSql('ALTER TABLE hive DROP FOREIGN KEY FK_DC6DBBF8D0E2858B');
         $this->addSql('ALTER TABLE hive DROP FOREIGN KEY FK_DC6DBBF830602CA9');
         $this->addSql('ALTER TABLE hive DROP FOREIGN KEY FK_DC6DBBF8E2EAC1E2');
+        $this->addSql('ALTER TABLE hive DROP FOREIGN KEY FK_DC6DBBF83484929B');
         $this->addSql('ALTER TABLE purchase DROP FOREIGN KEY FK_6117D13B3484929B');
         $this->addSql('ALTER TABLE swarm DROP FOREIGN KEY FK_E9A752A1E9A48D12');
         $this->addSql('ALTER TABLE swarm DROP FOREIGN KEY FK_E9A752A13484929B');
