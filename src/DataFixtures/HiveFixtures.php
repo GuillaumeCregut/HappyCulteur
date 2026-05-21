@@ -19,7 +19,7 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        for($i = 0; $i<5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $date = $faker->date();
             $hiveDate = new DateTimeImmutable($date);
             $hive = new Hive();
@@ -27,22 +27,23 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
                 ->setIdentification($faker->bothify('???###'))
                 ->setDate($hiveDate)
                 ->setState($this->randomState())
-                ->setRiseNumber($faker->numberBetween(0,9))
-                ->setFrameNumber($faker->numberBetween(1,12))
+                ->setRiseNumber($faker->numberBetween(0, 9))
+                ->setFrameNumber($faker->numberBetween(1, 12))
                 ->setObservation($faker->paragraph());
             $apiary = $this->getReference('apiary_admin_' .  $faker->numberBetween(0, 4), Apiary::class);
             $hive->setApiary($apiary);
             $user = $apiary->getBeekeeper();
+            $hive->setBeekeeper($user);
             $hive->setQrCode(HiveProcessor::generateQR($user, $hive));
-            $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4),HiveKind::class);
+            $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4), HiveKind::class);
             $hive->setKind($kind);
-            $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12),HiveRise::class);
+            $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12), HiveRise::class);
             $hive->setRise($rise);
             $this->addReference('hive_admin_' . $i, $hive);
             $manager->persist($hive);
         }
 
-        for($i = 0; $i<50; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $date = $faker->date();
             $hiveDate = new DateTimeImmutable($date);
             $hive = new Hive();
@@ -50,16 +51,17 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
                 ->setIdentification($faker->bothify('???###'))
                 ->setDate($hiveDate)
                 ->setState($this->randomState())
-                ->setRiseNumber($faker->numberBetween(0,9))
-                ->setFrameNumber($faker->numberBetween(1,12))
+                ->setRiseNumber($faker->numberBetween(0, 9))
+                ->setFrameNumber($faker->numberBetween(1, 12))
                 ->setObservation($faker->paragraph());
             $apiary = $this->getReference('apiary_' .  $faker->numberBetween(0, 19), Apiary::class);
             $hive->setApiary($apiary);
             $user = $apiary->getBeekeeper();
+            $hive->setBeekeeper($user);
             $hive->setQrCode(HiveProcessor::generateQR($user, $hive));
-            $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4),HiveKind::class);
+            $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4), HiveKind::class);
             $hive->setKind($kind);
-            $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12),HiveRise::class);
+            $rise = $this->getReference('rise_' .  $faker->numberBetween(1, 12), HiveRise::class);
             $hive->setRise($rise);
             $this->addReference('hive_' . $i, $hive);
             $manager->persist($hive);
@@ -75,6 +77,7 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
             ApiaryFixtures::class,
             HiveKindFixtures::class,
             HiveRiseFixtures::class,
+            UserFixtures::class,
         ];
     }
 
