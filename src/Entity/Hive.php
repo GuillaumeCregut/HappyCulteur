@@ -82,6 +82,7 @@ class Hive
     private ?string $dataLoggerName = null;
 
     #[ORM\ManyToOne(inversedBy: 'hives')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Apiculteur $beekeeper = null;
 
     public function __construct()
