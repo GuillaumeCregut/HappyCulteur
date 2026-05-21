@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/help.css')}}">
+{% endblock %}
+{% block title %}Aide{% endblock %}
+
+{% block body %}
+	<h1 class="title">Fiche aide : Les ruches</h1>
+	<main class="help-index">
+		<p><img alt="accueil ruche" src="{{ asset('pictures/help/hive/accueil_ruche.png') }}"></p>
+		<div class="paraf">
+			<p> Dans cette page sont regroupées toutes les actions et les éléments relatifs aux ruches et à la production.</p>
+		</div>	  
+		<section class="paraf"> 
+			<h2 class="help-subtitle">Les ruches</h2>
+			<p>En cliquant sur une ruche, vous accédez aux informations et aux fonctions de la ruche.</p>
+			<p>On y trouve les informations telles que le nom, le numéro, le type de ruche et l'état de la ruche.</p>
+		</section>	  
+		<section class="paraf">	  
+			<h2 class="help-subtitle">La gestion des essaims</h2>
+			<p><img alt="gestion essaim" src="{{ asset('pictures/help/hive/gestion_essaim.png') }}"></p>
+			<p>Dans la partie gestion essaim, vous pouvez, au choix affecter un essaim existant à la ruche selectionnée (ruche en cours), ou bien créer un nouvel essaim pour cette ruche.</p>
+			<h3 class="help-subtitle-three">Affectation :</h3>
+			<p>En sélectionnant dans la liste des essaims existants, vous aller supprimer l'essaim de la ruche de provenance (celle indiquée dans la liste), celle ci sera considérée comme morte, et réaffecter l'essaim à la ruche en cours (dont le nom est rappeler en tête de la page).</p>
+			<h3 class="help-subtitle-three">Création d'un nouvel essaim :</h3>
+			<p>Pour créer un nouvel essaim, il suffit de remplir les champs nécessaires. La ruche est automatiquement peuplée, et passe à l'état actif.</p>
+		</section>
+		<section class="paraf">	  
+			<h2 class="help-subtitle">Les informations</h2>
+			<p><img alt="info ruche" src="{{ asset('pictures/help/hive/info_ruche.png') }}"></p>
+			<p>Dans la section informations de la ruche,vous retrouvez toutes les informations que vous avez saisis lors de la création de la ruche.<br>
+			Il est possible de modifier certaines informations en cliquant sur modifier.<br>
+			En cliquant sur le bouton générer le QRCode, une fenêtre s'ouvre et affiche le QRCode de la ruche et quelques informations sur celle-ci.<br>Il suffit d'imprimer ces informations et les coller sur la ruche. Cette fonctionnalité est prévue notamment pour fonctionner avec la version portable de l'application.</p>
+		</section>
+		<section class="paraf">	  
+			<h2 class="help-subtitle">Les visites</h2>
+			<p><img alt="page visite" src="{{ asset('pictures/help/hive/visite.png') }}"></p>
+			<p>La gestion des visites et une étape importante dans l'activité apicole. C'est dans cette page que vous aller remplir vos informations à chaque visite au rucher.<br>
+				Veuillez donc être précis et le plus détaillé possible lors du remplissage du document. Un champ note permet de saisir toutes les informations que vous souhaitez ajouter en plus de celles par défaut.
+			</p>
+		</section>
+		<section class="paraf">	
+			<h2 class="help-subtitle">Les récoltes</h2>
+			<p><img alt="gestion recolte" src="{{ asset('pictures/help/hive/gestion_recolte.png') }}"></p>
+			<p>Dans la partie ajout d'une récolte, vous saisissez les informations sur une récolte de la ruche. Il faut y saisir le nom, le type de miel et la date.<br>
+				Si le type de miel n'est pas dans la liste, il est possible de l'ajouter aussi ici, en cliquant sur ajout de miel. Cependant, depuis la page récolte, il n'est pas possible d'affecter une icône.<br>
+				Cela pourra être fait dans la gestion des types de miel de la page d'accueil.
+			</p>
+		</section>	
+		<section class="paraf">	
+			<h2 class="help-subtitle">Statisitiques</h2>
+			<p><img alt="stats ruche" src="{{ asset('pictures/help/hive/stat_ruche.png') }}"></p>
+			<p>Dans la partie statistiques de la ruche, vous avez accès aux différentes statistiques de la ruche, tel de les suivis de visite, les graphes de relevés des différentes mesures (en provenance des visites et, le cas échéant, du datalogger).<br>
+			Le bilan de la ruche édite, dans le format pdf, toutes les informations, permettant de tenir un document complet sur la ruche.</p>
+			<p>Toutes les recherches se font sur une période que vous définissez. Ex : recherche des visites.<br>
+			Si vous laissez un champ vide, alors le système cherchera la plus ancienne ou à la date du jour en fonction. En laissant les deux champs libre, cela équivaut à une recherche totale.</p>
+			<p><img alt="recherche" src="{{ asset('pictures/help/hive/visites_rech.png') }}"></p>
+			<h3 class="help-subtitle-three">Suivi des visites</h3>
+			<p><img alt="affiche les visites" src="{{ asset('pictures/help/hive/aff_visites.png') }}"></p>
+			<p>La page visite affiche les visites enregistrées pour la ruche dans la période que vous avez sélectionné.<br>
+			Celles-ci se présente sous forme de liste, et en cliquant sur le bouton afficher, vous pouvez voir les informations concernant cette visite.<br>
+			En cliquant sur le bouton imprimer, vous pouvez enregistrer les visites au format pdf, une visite par page, et ainsi pouvez les imprimer.</p>
+			<h3 class="help-subtitle-three">Graphiques de relevés</h3>
+			<p><img alt="graphiques statistiques" src="{{ asset('pictures/help/hive/graphiques.png') }}"></p>
+			<p>Tous les graphiques sont représentés de la même façon, seul les informations affichées changent, en fonction du type de relevés recherché.</p>
+			<p>On peut voir ici le graphique de relevé d'une ruche, affichant les différentes récoltes. D'abord un bilan total, puis le graphique. On peut constaté, pour ce graphique, l'utilisation des icones de type de miel, permettant de visualiser les différents type sur le graphe.</p> 
+			<h3 class="help-subtitle-three">Bilan de la ruche</h3>
+			<p>Le bilan de la ruche reprend dans un document imprimable (pdf) toutes les informations importantes de la ruche depuis ses débuts.<br>
+				On y trouve les résultats de récoltes et les graphiques divers.
+			</p>
+		</section>
+		<section class="paraf">
+			<h2 class="help-subtitle">Cartographie</h2>
+			<p><img alt="page cartographie" src="{{ asset('pictures/help/hive/carto_ruche.png') }}"></p>
+			<p>La page cartographie permet de positionner la ruche sur l'image de fond du rucher.<br>
+				Cela permet d'avoir des repères visuels de cette ruche au sein du rucher.
+			</p>
+			<p>Pour modifier la position de la ruche, utiliser les boutons de direction. Le bouton "+" agrandira la ruche, le bouton "-" la rétréciera.<br>
+				Le bouton de sauvegarde permet de stocker la nouvelle position.
+			</p>
+		</section> 
+	</main>
+	<p><a href="{{ path('app_help_index') }}" class= "form-button">Retour l'index de l'aide</a></p>
+{% endblock %}
