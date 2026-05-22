@@ -2,10 +2,10 @@
 
 
 <div class="hive-form-container">
-<p class="hive-form-reminder">* : Champs obligatoires</p>
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-        {{ form_row(form.name,  {
+	<p class="hive-form-reminder">* : Champs obligatoires</p>
+	{{ form_start(form) }}
+	{{ form_errors(form) }}
+	{{ form_row(form.name,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -15,7 +15,7 @@
                     }
             })
         }}
-        {{ form_row(form.identification,  {
+	{{ form_row(form.identification,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -25,7 +25,7 @@
                     }
             })
         }}
-        {{ form_row(form.frameNumber,  {
+	{{ form_row(form.frameNumber,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -35,7 +35,7 @@
                     }
             })
         }}
-         {{ form_row(form.rise,  {
+	{{ form_row(form.rise,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -45,7 +45,7 @@
                     }
             })
         }}
-        {{ form_row(form.riseNumber,  {
+	{{ form_row(form.riseNumber,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -55,7 +55,7 @@
                     }
             })
         }}
-        {{ form_row(form.date,  {
+	{{ form_row(form.date,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -65,7 +65,7 @@
                     }
             })
         }}
-        {{ form_row(form.kind,  {
+	{{ form_row(form.kind,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -75,17 +75,19 @@
                     }
             })
         }}
-        {{ form_row(form.state,  {
+	{% if form.state is defined %}
+		{{ form_row(form.state,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
-                    label: 'Etat* : ',
+                    label: 'Etat* (si restockée, alors la ruche sera déplacée dans le stock) : ',
                     attr : {
                         class: 'hive-form-input'
                     }
             })
         }}
-         {{ form_row(form.observation,  {
+	{% endif %}
+	{{ form_row(form.observation,  {
                     row_attr: {
                         class: 'hive-form-row'
                     },
@@ -95,6 +97,6 @@
                     }
             })
         }}
-        <button class="form-button">{{ button_label|default('Valider') }}</button>
-    {{ form_end(form) }}
+	<button class="form-button">{{ button_label|default('Valider') }}</button>
+	{{ form_end(form) }}
 </div>

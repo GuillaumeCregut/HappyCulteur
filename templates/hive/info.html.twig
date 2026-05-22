@@ -8,7 +8,7 @@
 <h1 class="title">Informations sur la ruche</h1>
 <main class="hive-info-main-container">
 	<div class="hive-info-lines-container">
-		<p class="hive-info-line">Rucher : <span class="hive-info-line-value">{{ hive.apiary.name }}</span></p>
+		<p class="hive-info-line">Rucher : <span class="hive-info-line-value">{{hive.apiary ? hive.apiary.name : 'stock' }}</span></p>
 		<p class="hive-info-line">Nom de la ruche : <span class="hive-info-line-value">{{ hive.name }}</span></p>
 		<p class="hive-info-line">Date début d'activité : <span class="hive-info-line-value">{{ hive.date|date('d/m/Y')}}</span></p>
 		<p class="hive-info-line">Numéro de la ruche : <span class="hive-info-line-value">{{ hive.identification }}</span></p>
