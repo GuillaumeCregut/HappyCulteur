@@ -26,13 +26,17 @@ class HiveFinder
             $returnArray['error'] = 404;
             return $returnArray;
         }
-        if($hive->getApiary()->getBeekeeper() !== $user) {
+        if($hive->getBeekeeper() !== $user) {
             $returnArray['error'] = 403;
             return $returnArray;
         }
         $returnArray['state'] = $hive->getState()->translate();
         $returnArray['rise'] = $hive->getRiseNumber();
-        $returnArray['swarm'] = $hive->getSwarm()->getName();
+        $swarmName ='-';
+        if(null !== $hive->getSwarm()){
+            $swarmName = $hive->getSwarm()->getName();
+        }
+        $returnArray['swarm'] = $swarmName;
         return $returnArray;
     }
 }
