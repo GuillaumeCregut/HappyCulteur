@@ -26,7 +26,7 @@ class HiveFinder
             $returnArray['error'] = 404;
             return $returnArray;
         }
-        if($hive->getApiary()->getBeekeeper() !== $user) {
+        if($hive->getBeekeeper() !== $user) {
             $returnArray['error'] = 403;
             return $returnArray;
         }
