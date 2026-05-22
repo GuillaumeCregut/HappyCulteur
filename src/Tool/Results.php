@@ -68,7 +68,11 @@ class Results extends PdfBase
         $this->SetFont('Arial', '', 10);
         $this->ln(7);
         $this->setX($oldX + $margin);
-        $this->addInfoLine('Rucher : ', 'Rucher :', $hive->getApiary()->getName());
+        $apiaryName = 'Aucun';
+        if (null !== $hive->getApiary()) {
+            $apiaryName = $hive->getApiary()->getName();
+        }
+        $this->addInfoLine('Rucher : ', 'Rucher :', $apiaryName);
         //End of Line
         $this->setX($oldX + $margin);
         $this->addInfoLineWithMargin('Nom de la ruche', 'Nom de la ruche', $hive->getName());

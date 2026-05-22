@@ -17,7 +17,10 @@ class HiveProcessor
     public static function generateQR(Apiculteur $user, Hive $hive): string
     {
         $userId = $user->getId();
-        $apiaryId = $hive->getApiary()->getId();
+        $apiaryId = 0;
+        if (null !== $hive->getApiary()) {
+            $apiaryId = $hive->getApiary()->getId();
+        }
         $hiveId = $hive->getIdentification();
         $qrCodeValue = "{$userId}-{$apiaryId}-{$hiveId}";
         $qrCode = md5($qrCodeValue);
@@ -26,14 +29,20 @@ class HiveProcessor
 
     public static function generatePoster(Hive $hive, string $font, ?int $whishWidth = 0): GdImage
     {
+        $apiaryIdentification = '0';
+        $apiaryName = 'Aucun';
+        if (null !== $hive->getApiary()) {
+            $apiaryName = $hive->getApiary()->getName();
+            $apiaryIdentification = $hive->getApiary()->getIdentification();
+        }
         $texts = [
             'nom de la ruche :' => $hive->getName(),
             'numero de la ruche :' => $hive->getIdentification(),
-            'Nom du rucher :' => $hive->getApiary()->getName(),
-            'Numéro de rucher :' => $hive->getApiary()->getIdentification()
+            'Nom du rucher :' => $apiaryName,
+            'Numéro de rucher :' => $apiaryIdentification
         ];
         $qrWidth = 410;
-        if(240 <= $whishWidth) {
+        if (240 <= $whishWidth) {
             $qrWidth = $whishWidth;
         }
         $qrHeight = $qrWidth;
