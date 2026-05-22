@@ -26,12 +26,16 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
             $hive->setName("Ruche {$i}")
                 ->setIdentification($faker->bothify('???###'))
                 ->setDate($hiveDate)
-                ->setState($this->randomState())
                 ->setRiseNumber($faker->numberBetween(0, 9))
                 ->setFrameNumber($faker->numberBetween(1, 12))
                 ->setObservation($faker->paragraph());
+            $state = $this->randomState();
             $apiary = $this->getReference('apiary_admin_' .  $faker->numberBetween(0, 4), Apiary::class);
             $hive->setApiary($apiary);
+            $hive->setState($state);
+            if (HiveState::STOCK_HIVE === $state) {
+                $hive->setApiary(null);
+            }
             $user = $apiary->getBeekeeper();
             $hive->setBeekeeper($user);
             $hive->setQrCode(HiveProcessor::generateQR($user, $hive));

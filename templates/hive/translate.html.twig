@@ -6,7 +6,7 @@
 {% block body %}
 <h1 class="title">Déplacer la ruche</h1>
 <p class="hive-form-translate-line">Nom de la ruche : {{ hive.name }}</p>
-<p class="hive-form-translate-line">Rucher actuel : {{ hive.apiary.name }}</p>
+<p class="hive-form-translate-line">Rucher actuel : {{ hive.apiary ? hive.apiary.name : 'stock' }}</p>
 {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.apiaryList,  {
@@ -21,5 +21,9 @@
         }}
         <button class="form-button">re affecter</button>
         {{ form_end(form) }}
+{% if hive.apiary is null %}
+<p class="hive-btn-container"><a href="{{ path('app_stock_home') }}" class= "form-button">Retour au stock</a></p>
+{% else %}
 <p class="hive-btn-container"><a href="{{ path('app_apiary_index', {id: hive.apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+{% endif %}
 {% endblock %}

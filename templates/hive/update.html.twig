@@ -7,7 +7,7 @@
 {% block body %}
 <h1 class="title">Modification de la ruche</h1>
 <p class="hive-add-info">Ruche: {{ hive.name }}</p>
-<p class="hive-add-info">Rucher d'appartenance: {{ hive.apiary.name }}</p>
+<p class="hive-add-info">Rucher d'appartenance: {{ hive.apiary ? hive.apiary.name : 'stock' }}</p>
 {{ include('hive/_form.html.twig', {'button_label': 'Valider'}) }}
 <p class="hive-btn-container"><a href="{{ path('app_hive_infos',  {id: hive.id}) }}" class= "form-button">Retour aux informations</a></p>
 {% endblock %}

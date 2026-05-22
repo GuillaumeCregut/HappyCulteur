@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Constant\HiveState;
 use App\Dto\ApiaryDto;
 use App\Entity\Hive;
 use App\Entity\Apiary;
@@ -95,6 +96,7 @@ final class HiveController extends AbstractController
             $newId = $form->get('apiaryList')->getNormData();
             $newApiary = $repo->findOneBy(['id' => $newId]);
             $hive->setApiary($newApiary);
+            $hive->setState(HiveState::ACTIVE_HIVE);
             $hive->setCoordX(null);
             $hive->setCoordY(null);
             $hive->setCoordZ(null);
@@ -114,9 +116,19 @@ final class HiveController extends AbstractController
         EntityManagerInterface $em
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
-        $form = $this->createForm(HiveType::class, $hive);
+        $options = [];
+        if (null === $hive->getApiary()) {
+            $options['show_state'] = false;
+        }
+        $form = $this->createForm(HiveType::class, $hive, $options);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if (HiveState::STOCK_HIVE === $hive->getState()) {
+                $hive->setApiary(null)
+                ->setCoordX(null)
+                ->setCoordY(null)
+                ->setCoordZ(null);
+            }
             $em->flush();
             return $this->redirectToRoute('app_hive_infos', ['id' => $hive->getId()]);
         }
@@ -231,5 +243,27 @@ final class HiveController extends AbstractController
             'rise' => $hiveInfo['rise'],
             'swarm' => $hiveInfo['swarm'],
         ], 200);
+    }
+
+    #[Route('/add/stock', name: 'add_stock')]
+    public function addStock(
+        #[CurrentUser] Apiculteur $user,
+        EntityManagerInterface $em,
+        Request $request
+    ): Response {
+        $hive = new Hive();
+        $form = $this->createForm(HiveType::class, $hive, ['show_state' => false]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hive->setApiary(null);
+            $hive->setState(HiveState::STOCK_HIVE);
+            $hive->setBeekeeper($user);
+            $em->persist($hive);
+            $em->flush();
+            return $this->redirectToRoute('app_stock_home');
+        }
+        return $this->render('stock/add.html.twig', [
+            'form' => $form
+        ]);
     }
 }

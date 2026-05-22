@@ -18,7 +18,7 @@ class HiveRepository extends ServiceEntityRepository
         parent::__construct($registry, Hive::class);
     }
 
-    public function findWithDatalogger()
+    public function findWithDatalogger(): array
     {
         return $this->createQueryBuilder('h')
             ->where('h.dataLoggerName IS NOT NULL')
@@ -41,7 +41,7 @@ class HiveRepository extends ServiceEntityRepository
 
     public function findByApiaryAndUser(Apiary $apiary, Apiculteur $user): array
     {
-         return $this->createQueryBuilder('h')
+        return $this->createQueryBuilder('h')
             ->select('h.id, h.name')
             ->andWhere('h.apiary = :val')
             ->andWhere('h.beekeeper = :beekeeper')
@@ -51,6 +51,16 @@ class HiveRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findByStock(Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.apiary IS NULL')
+            ->andWhere('h.beekeeper = :beekeeper')
+            ->setParameter('beekeeper', $user)
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

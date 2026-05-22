@@ -47,14 +47,17 @@ class HiveType extends AbstractType
                     '9' => 9,
                 ],
             ])
-            ->add('identification')
-            ->add('state', EnumType::class, [
+            ->add('identification');
+        if ($options['show_state']) {
+            $builder->add('state', EnumType::class, [
                 'class' => HiveState::class,
                 'choice_label' => fn(HiveState $hs) => $hs->translate(),
-            ])
-            ->add('date', DateType::class, [
-                'widget' => 'single_text',
-            ])
+            ]);
+        }
+        $builder->add('date', DateType::class, [
+            'widget' => 'single_text',
+            'required' => false,
+        ])
             ->add('observation')
             ->add('kind', EntityType::class, [
                 'class' => HiveKind::class,
@@ -75,6 +78,7 @@ class HiveType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Hive::class,
+            'show_state' => true,
         ]);
     }
 }

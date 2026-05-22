@@ -11,18 +11,20 @@ use App\Service\Stats\Visits;
 use App\Service\Stats\Weight;
 use App\Service\Stats\Harvest;
 use App\Dto\DataloggerStatsDto;
-use App\Service\Stats\Apiary as StatsApiary;
 use App\Service\Stats\Beekeeper;
 use App\Service\Stats\Datalogger;
 use App\Service\Stats\Hygrometry;
 use App\Service\Stats\HiveResults;
 use Symfony\Component\Form\FormError;
+use App\Service\Stats\Apiary as StatsApiary;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('ROLE_USER')]
 #[Route('/stats', name: 'app_stats_')]
 final class StatsController extends AbstractController
 {

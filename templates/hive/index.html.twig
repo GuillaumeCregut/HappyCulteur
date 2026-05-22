@@ -6,7 +6,7 @@
 
 {% block body %}
 <h1 class="title">Gestion de la ruche</h1>
-<p class="hive-home-line">Rucher : {{hive.apiary.name}}</p>
+<p class="hive-home-line">Rucher : {{hive.apiary.name ?? 'stock' }}</p>
 <p class="hive-home-line">Nom : {{hive.name}}</p>
 <p class="hive-home-line">Numéro : {{hive.identification}}</p>
 <p class="hive-home-line">Type de ruche : {{hive.kind.name}}</p>
@@ -60,6 +60,7 @@
 					</div>
 				</a>
 			</li>
+			{% if hive.apiary is not null %}
 			<li>
 				<a href="{{ path('app_hive_carto', {id: hive.id}) }}">
 					<div class="hive-home-card">
@@ -76,6 +77,7 @@
 					</div>
 				</a>
 			</li>
+			{% endif %}
 			<li>
 				<a href="{{ path('app_help_hive') }}" target="_blank">
 					<div class="hive-home-card">
@@ -87,5 +89,9 @@
 		</ul>
 	</div>
 </section>
+{% if hive.apiary is null %}
+<p class="hive-btn-container"><a href="{{ path('app_stock_home') }}" class= "form-button">Retour au stock</a></p>
+{% else %}	
 <p class="hive-btn-container"><a href="{{ path('app_apiary_index', {id: hive.apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+{% endif %}
 {% endblock %}

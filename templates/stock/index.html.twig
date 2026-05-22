@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/stock.css')}}">
+{% endblock %}
+{% block title %}Rucher
+{% endblock %}
+
+{% block body %}
+	<h1 class="title">Stock de ruches</h1>
+	<p class="stock-info">Le stock contient toutes les ruches marquées restockées. Elles ne sont plus visibles depuis les ruchers.<br>
+    Si la cartographie a été modifiée, elle est annulée.<br>
+    Pour réactiver une ruche, il suffit de lui réaffecter un nouveau rucher.
+    </p>
+	</p>
+	<section class="stock-container">
+		<div class="stock-hive-container">
+			<p class="item">Ruches</p>
+			<ul class="stock-hives">
+				{% for hive in hives %}
+					<li>
+						<a href="{{ path('app_hive_index',{id: hive.id}) }}">
+							<div class="stock-hivecard">
+								<img src="{{ asset('uploads/' ~ hive.kind.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="stock-hives-picture">
+								<p class="stock-hivecard-title">{{ hive.name }}</p>
+							</div>
+						</a>
+					</li>
+				{% endfor %}
+				<li>
+					<a href="{{ path('app_hive_add_stock') }}">
+						<div class="stock-hivecard">
+							<img src="{{ asset('pictures/hives/ruche_add.png') }}" alt="ajouter une ruche" class="stock-hives-picture">
+							<p class="stock-hivecard-title">Ajouter une ruche</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</section>
+	<p class="return-home">
+		<a href="{{ path('app_home') }}" class="form-button">Retour à l'accueil</a>
+	</p>
+{% endblock %}
