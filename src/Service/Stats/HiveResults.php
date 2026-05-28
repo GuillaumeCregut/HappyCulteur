@@ -3,16 +3,17 @@
 namespace App\Service\Stats;
 
 use App\Entity\Hive;
-use App\Entity\Visit;
+use App\Entity\Archive\Visit;
 use App\Tool\Results;
 use App\Dto\HarvestDto;
 use App\Tool\PathMaker;
 use App\Entity\Apiculteur;
 use App\Entity\Datalogger;
+use App\Tool\Graph\LineDrawer;
 use App\Tool\Graph\HarvestGraph;
 use App\Repository\HarvestRepository;
 use App\Repository\DataloggerRepository;
-use App\Tool\Graph\LineDrawer;
+use App\Repository\Archive\VisitsRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class HiveResults
@@ -20,6 +21,7 @@ class HiveResults
     public function __construct(
         private HarvestRepository $harvestRepo,
         private DataloggerRepository $dlRepo,
+        private VisitsRepository $archives,
         #[Autowire('%kernel.project_dir%/public/uploads/')] private string $uploadDirectory
     ) {}
 
@@ -32,6 +34,7 @@ class HiveResults
         $this->initPdf($pdf);
         $pdf->addPage();
         $this->headerPdf($pdf, $hive);
+
         $harvests = $this->harvestRepo->findByHiveBeekeeperDate($user, $hive);
         $totalHarvestsWeight = $this->getTotalWeight($harvests);
         $totalWeightByType = $this->calcWeigthByType($harvests);
@@ -39,26 +42,36 @@ class HiveResults
         $harvestFilename = $harvestDrawer->drawGraph($harvests, $fullPath, $rootPath, $hive->getName());
         $picturePath = $fullPath . $harvestFilename;
         $this->writeHarvests($pdf, $hive, $totalHarvestsWeight, $totalWeightByType, $picturePath);
+        $archives = $this->getArchives($hive, $user);
         $visits = $hive->getVisits()->toArray();
-        if (0 <= count($visits)) {
+        $count = count($visits) + count($archives);
+        if (0 < $count) {
             $visitsDispatched = $this->dispatchVisits($hive->getVisits()->toArray());
-
             $tempVisit = $visitsDispatched['temperature'];
-            if (0 <= count($tempVisit)) {
+            $tempArchives = $archives['temperature'];
+            $tempVisit = array_merge($tempVisit, $tempArchives);
+            usort($tempVisit, fn($a, $b) => $a['date'] <=> $b['date']);
+            if (0 < count($tempVisit)) {
                 $title = "Relevé des températures de la ruche {$hive->getName()}";
                 $picturename = 'temp.png';
                 $this->writeSingleGraph($pdf, $title, $tempVisit, $fullPath . $picturename);
             }
 
             $hygroVisit = $visitsDispatched['hygro'];
-            if (0 <= count($hygroVisit)) {
+            $hygroArchives = $archives['hygro'];
+            $hygroVisit = array_merge($hygroVisit, $hygroArchives);
+            usort($hygroVisit, fn($a, $b) => $a['date'] <=> $b['date']);
+            if (0 < count($hygroVisit)) {
                 $title = "Relevé de l'hygrométrie de la ruche {$hive->getName()} depuis les fiches de visite";
                 $picturename = "hygro.png";
                 $this->writeSingleGraph($pdf, $title, $hygroVisit, $fullPath . $picturename);
             }
 
             $weightVisit = $visitsDispatched['weight'];
-            if (0 <= count($weightVisit)) {
+            $weightArchive = $archives['weight'];
+            $weightVisit = array_merge($weightVisit, $weightArchive);
+            usort($weightVisit, fn($a, $b) => $a['date'] <=> $b['date']);
+            if (0 < count($weightVisit)) {
                 $title = "Relevé de poids de la ruche {$hive->getName()} depuis les fiches de visite";
                 $picturename = "weight.png";
                 $this->writeSingleGraph($pdf, $title, $weightVisit, $fullPath . $picturename);
@@ -66,23 +79,23 @@ class HiveResults
         }
         /**@var Datalogger[] */
         $dataloggersInfos = $this->dlRepo->findByHiveAndBeekeeper($hive, $user);
-        if (0 <= count($dataloggersInfos)) {
+        if (0 < count($dataloggersInfos)) {
             $dlAverages = $this->getAverageDl($dataloggersInfos);
             $dlDispatched = $this->dispatchDl($dataloggersInfos);
             $from = $dataloggersInfos[0]->getDateTime()->format('d/m/Y');
             $to = end($dataloggersInfos)->getDateTime()->format('d/m/Y');
             $this->writeDataloggerAverage($pdf, $dlAverages, $from, $to);
-            if (0 <= count($dlDispatched['weight'])) {
+            if (0 < count($dlDispatched['weight'])) {
                 $title = 'Relevé du poids via le datalogger de la ruche';
                 $picturename = "dlweight.png";
                 $this->writeSingleGraph($pdf, $title, $dlDispatched['weight'], $fullPath . $picturename);
             }
-            if (0 <= count($dlDispatched['tempExt'])) {
+            if (0 < count($dlDispatched['tempExt'])) {
                 $picturename = "dltemp.png";
                 $path = $fullPath . $picturename;
                 $this->writeDataloggerMultiLine($pdf, "Relevé de la température via le datalogger de la ruche", $dlDispatched['tempExt'], "température extérieure",  $dlDispatched['tempInt'], "température intérieure", $path);
             }
-            if (0 <= count($dlDispatched['hygroExt'])) {
+            if (0 < count($dlDispatched['hygroExt'])) {
                 $picturename = "dlhygro.png";
                 $path = $fullPath . $picturename;
                 $this->writeDataloggerMultiLine($pdf, "Relevé de l'hygrométrie via le datalogger de la ruche", $dlDispatched['hygroExt'], "hygrométrie extérieure",  $dlDispatched['hygroInt'], "hygrométrie intérieure", $path);
@@ -91,6 +104,44 @@ class HiveResults
         $pdfPath = $fullPath . $filename;
         $pdf->Output('F', $pdfPath);
         return $relativePath . $filename;
+    }
+
+    /**
+     * Split archives visits values in an array sort by type and date
+     *
+     * @param Hive hive
+     * @param Apiculteur $user
+     * @return array{weight: array{date: \DateTimeImmutable, value: mixed}, 
+     * temperature: array{date: \DateTimeImmutable, value: mixed}, 
+     * hygro: array{date: \DateTimeImmutable, value: mixed}}
+     */
+    private function getArchives(Hive $hive, Apiculteur $user): array
+    {
+        $archives = $this->archives->findByHiveAndBeekeeper($hive, $user);
+        $weightArray = [];
+        $hygroArray = [];
+        $tempArray = [];
+        /** @var Visit[] $archives */
+        foreach ($archives as $archive) {
+            $date = $archive->getDate();
+            $weight = $archive->getWeight();
+            $temp = $archive->getTemperature();
+            $hygro = $archive->getHygrometry();
+            if (null !== $weight) {
+                $weightArray[] = ['date' => $date, 'value' => $weight];
+            }
+            if (null !== $temp) {
+                $tempArray[] = ['date' => $date, 'value' => $temp];
+            }
+            if (null !== $hygro) {
+                $hygroArray[] = ['date' => $date, 'value' => $hygro];
+            }
+        }
+        return [
+            'weight' => $weightArray,
+            'temperature' => $tempArray,
+            'hygro' => $hygroArray
+        ];
     }
 
     private function initPdf(Results $pdf,): void
@@ -243,7 +294,7 @@ class HiveResults
      *
      * @param Visit[] $visits
      * @return array{weight: array{date: \DateTimeImmutable, value: mixed}, 
-     * temp: array{date: \DateTimeImmutable, value: mixed}, 
+     * temperature: array{date: \DateTimeImmutable, value: mixed}, 
      * hygro: array{date: \DateTimeImmutable, value: mixed}}
      */
     private function dispatchVisits(array $visits): array

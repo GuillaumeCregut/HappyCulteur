@@ -11,6 +11,8 @@
     --font-family: arial;
     --title-size: clamp(0.5rem, 5vw, 2rem);
     --font-size: clamp(0.5rem, 5vw, 1rem);
+    --table-head-bk-color: rgb(237, 223, 167);
+    --table-head-color: black;
 }
 
 body {
@@ -63,6 +65,6 @@ body {
 
 /* Error form */
 
-.error-item{
+.error-item {
     color: red;
 }

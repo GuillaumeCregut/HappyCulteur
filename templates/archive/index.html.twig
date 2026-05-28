@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/archives/global.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/dashboard.css')}}">
+{% endblock %}
+{% block title %}Archives{% endblock %}
+
+{% block body %}
+    <h1 class="title">Consultation des archives</h1>
+    <section class="dashboard-container">
+        <ul class="dashboard-item-container">
+            <li>
+                <a href="{{ path('app_archive_visit_index') }}">
+                    <div class="dashboard-card">
+                        <img src="{{ asset('pictures/options/visite.png') }}" alt="archives" class="dashboard-picture">
+                            <p class="dashboard-card-title">Visites</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <div class="dashboard-card">
+                        <img src="{{ asset('pictures/options/archive.png') }}" alt="archives" class="dashboard-picture">
+                            <p class="dashboard-card-title">Archives</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <p><a href="{{ path('app_home') }}" class= "form-button">Retour à l'accueil</a></p>
+{% endblock %}
+

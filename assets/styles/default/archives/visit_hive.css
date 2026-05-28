@@ -1,0 +1,100 @@
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.archive-visit-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.archive-visit-table caption {
+    caption-side: top;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.archive-visit-table tr:nth-child(even) {
+    background-color: rgb(238, 240, 186);
+}
+
+.archive-visit-table-head {
+    text-align: center;
+}
+
+.archive-visit-cell-head {
+    background-color: var(--table-head-bk-color);
+    color: var(--table-head-color);
+}
+
+.archive-visit-cell {
+    padding: 3px;
+}
+
+.archive-visit-cell-center {
+    text-align: center;
+}
+
+.archive-visit-cell-notes {
+    width: 270px;
+}
+
+@media screen and (max-width: 700px) {
+
+    .archive-visit-table,
+    .archive-visit-table tr,
+    .archive-visit-table th,
+    .archive-visit-table td,
+    .archive-visit-table thead,
+    .archive-visit-table tbody,
+    .archive-visit-table tr {
+        display: block;
+    }
+
+    .archive-visit-table caption {
+        display: block;
+    }
+
+    .archive-visit-table thead {
+        display: none;
+    }
+
+    .archive-visit-table th,
+    .archive-visit-table td {
+        border: solid 1px black;
+    }
+
+    .archive-visit-table tr {
+        margin-bottom: 1rem;
+    }
+
+    .archive-visit-table td {
+        padding-left: 150px;
+        position: relative;
+    }
+
+    .archive-visit-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        width: 130px;
+        background-color: var(--table-head-bk-color);
+        color: var(--table-head-color);
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    .archive-visit-cell-notes {
+        width: 100%;
+    }
+
+    .archive-visit-cell-center {
+        text-align: left;
+    }
+
+}
