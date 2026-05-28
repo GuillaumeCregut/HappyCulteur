@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/archives/global.css')}}">
+{% endblock %}
+{% block title %}Archives{% endblock %}
+
+{% block body %}
+    <h1 class="title">Archives de la ruche</h1>
+    <ul class="archives-links">
+        <li><a href="{{ path('app_archive_visit_hive', {id: hive.id}) }}">Archiver les visites de la ruche</a></li>
+    </ul>
+    <p><a href="{{ path('app_hive_index', {id:hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}

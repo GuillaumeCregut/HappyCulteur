@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/archives/visit.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/archives/global.css')}}">
+{% endblock %}
+{% block title %}Archives visites{% endblock %}
+
+{% block body %}
+Archive des visites, home
+<p><a href="{{ path('app_home') }}" class= "form-button">Retour à l'accueil</a></p>
+{% endblock %}

@@ -79,6 +79,14 @@
 			</li>
 			{% endif %}
 			<li>
+				<a href="{{ path('app_archive_hive',{id: hive.id}) }}">
+					<div class="hive-home-card">
+						<img src="{{ asset('pictures/options/archive.png') }}" alt="aide" class="hive-home-card-picture">
+						<p class="hive-home-card-title">Archives</p>
+					</div>
+				</a>
+			</li>
+			<li>
 				<a href="{{ path('app_help_hive') }}" target="_blank">
 					<div class="hive-home-card">
 						<img src="{{ asset('pictures/options/help.png') }}" alt="aide" class="hive-home-card-picture">
