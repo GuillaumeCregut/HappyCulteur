@@ -6,13 +6,14 @@ use App\Dto\TempDto;
 use App\Entity\Hive;
 use DateTimeImmutable;
 use App\Entity\Apiculteur;
+use App\Repository\Archive\VisitsRepository;
 use App\Repository\StatsDataRepository;
 use App\Tool\PathMaker;
 use App\Tool\SingleGraph;
 
 class Temps
 {
-    public function __construct(private StatsDataRepository $repo) {}
+    public function __construct(private StatsDataRepository $repo, private VisitsRepository $archive) {}
 
     public function getTemps(Hive $hive, array $dates, Apiculteur $user, string $rooPath): array
     {
@@ -25,17 +26,17 @@ class Temps
         $result['endDate'] = null === $endDate ? "Aujourd'hui" : $endDate->format('d/m/Y');
 
         /**@var TempDto[] $datas */
-        $datas = $this->getDatas($hive, $startDate, $endDate);
-        if(false === $datas) {
+        $datas = $this->getDatas($hive, $startDate, $endDate, $user);
+        if (false === $datas) {
             $result['datas'] = [];
             return $result;
         }
 
         $path = $this->makePicturePath($user, $hive, $rooPath);
         $result['path'] = $path;
-        
+
         $fullPath = $rooPath . $path;
-        if(file_exists($fullPath)) {
+        if (file_exists($fullPath)) {
             unlink($fullPath);
         }
         $this->drawGraph($datas, $hive, $result['startDate'], $result['endDate'], $fullPath);
@@ -59,9 +60,11 @@ class Temps
         ];
     }
 
-    private function getDatas(Hive $hive, ?DateTimeImmutable $startDate, ?DateTimeImmutable $endDate): array | false
+    private function getDatas(Hive $hive, ?DateTimeImmutable $startDate, ?DateTimeImmutable $endDate, Apiculteur $user): array | false
     {
         $datas = $this->repo->findTempsData($hive, $startDate, $endDate);
+        $datasArchives = $this->archive->findTempForStats($hive, $user, $startDate, $endDate);
+        $datas = array_merge($datas, $datasArchives);
         if (0 === count($datas)) {
             return false;
         }
