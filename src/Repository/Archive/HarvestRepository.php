@@ -72,4 +72,15 @@ class HarvestRepository extends ServiceEntityRepository
         }
         return $returnArray;
     }
+
+    public function findHarvestsByTypeByBeekeeper(Apiculteur $user): array
+    {
+        $qb = $this->createQueryBuilder('ha')
+            ->select('SUM(ha.weight) as weight', 'ha.honeyKind as name')
+            ->where('ha.beekeeper = :beekeeper')
+            ->groupBy('ha.honeyKind')
+            ->orderBy('ha.honeyKind')
+            ->setParameter('beekeeper', $user);
+        return $qb->getQuery()->getResult();
+    }
 }
