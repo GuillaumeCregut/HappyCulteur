@@ -4,6 +4,7 @@ namespace App\Repository\Archive;
 
 use App\Dto\HygrometryDto;
 use App\Dto\TempDto;
+use App\Dto\WeightDto;
 use App\Entity\Hive;
 use App\Entity\Apiculteur;
 use App\Entity\Archive\Visit;
@@ -77,6 +78,29 @@ class VisitsRepository extends ServiceEntityRepository
         }
         $result = $qb->getQuery()->getResult();
         $returnArray = $this->makeDto($result, HygrometryDto::class);
+        return $returnArray;
+    }
+
+    public function findWeightForStats(Hive $hive, Apiculteur $user, ?DateTimeImmutable $from = null, ?DateTimeImmutable $to = null): array
+    {
+        $hiveName = "{$hive->getName()} - {$hive->getIdentification()}";
+        $qb = $this->createQueryBuilder('arv')
+            ->select('arv.date', 'arv.weight', "'archive' as type")
+            ->where('arv.beekeeper = :user')
+            ->setParameter('user', $user)
+            ->andWhere('arv.hive = :hive')
+            ->setParameter('hive', $hiveName)
+            ->orderBy('arv.date', 'ASC');
+        if (null !== $from) {
+            $qb->andWhere('arv.date >= :from')
+                ->setParameter('from', $from);
+        }
+        if (null !== $from) {
+            $qb->andWhere('arv.date <= :to')
+                ->setParameter('to', $to);
+        }
+        $result = $qb->getQuery()->getResult();
+        $returnArray = $this->makeDto($result, WeightDto::class);
         return $returnArray;
     }
 
