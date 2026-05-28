@@ -2,6 +2,7 @@
 
 namespace App\Repository\Archive;
 
+use App\Dto\HygrometryDto;
 use App\Dto\TempDto;
 use App\Entity\Hive;
 use App\Entity\Apiculteur;
@@ -53,6 +54,29 @@ class VisitsRepository extends ServiceEntityRepository
         }
         $result = $qb->getQuery()->getResult();
         $returnArray = $this->makeDto($result, TempDto::class);
+        return $returnArray;
+    }
+
+    public function findHygroForStats(Hive $hive, Apiculteur $user, ?DateTimeImmutable $from = null, ?DateTimeImmutable $to = null): array
+    {
+        $hiveName = "{$hive->getName()} - {$hive->getIdentification()}";
+        $qb = $this->createQueryBuilder('arv')
+            ->select('arv.date', 'arv.hygrometry', "'archive' as type")
+            ->where('arv.beekeeper = :user')
+            ->setParameter('user', $user)
+            ->andWhere('arv.hive = :hive')
+            ->setParameter('hive', $hiveName)
+            ->orderBy('arv.date', 'ASC');
+        if (null !== $from) {
+            $qb->andWhere('arv.date >= :from')
+                ->setParameter('from', $from);
+        }
+        if (null !== $from) {
+            $qb->andWhere('arv.date <= :to')
+                ->setParameter('to', $to);
+        }
+        $result = $qb->getQuery()->getResult();
+        $returnArray = $this->makeDto($result, HygrometryDto::class);
         return $returnArray;
     }
 
