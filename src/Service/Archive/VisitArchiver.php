@@ -19,7 +19,6 @@ class VisitArchiver
         $success = true;
         try {
             foreach ($visits as $visit) {
-                $array[] = $visit;
                 $archive = new Visit();
                 $archive->setDate($visit->getDate());
                 $archive->setBeekeeper($user);
