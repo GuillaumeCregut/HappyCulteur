@@ -12,15 +12,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/archive', name: 'app_archive_')]
 final class ArchiveController extends AbstractController
 {
-    #[Route('/hive/{id}', name: 'hive')]
-    public function index(
-        Hive $hive, 
-
-    ): Response
+    #[Route('', name: 'index')]
+    public function index(): Response
     {
+        return $this->render('archive/index.html.twig', []);
+    }
+
+    #[Route('/hive/{id}', name: 'hive')]
+    public function hive(
+        Hive $hive,
+
+    ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
-        return $this->render('archive/index.html.twig', [
-           'hive' => $hive
+        return $this->render('archive/hive/index.html.twig', [
+            'hive' => $hive
         ]);
     }
 }
