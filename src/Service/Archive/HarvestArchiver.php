@@ -27,6 +27,7 @@ class HarvestArchiver
                 $archive->setHive($hiveName);
                 $archive->setWeight($harvest->getWeight());
                 $archive->setHoneyKind($harvest->getHoneyKind()->getName());
+                $archive->setPicture($harvest->getHoneyKind()->getPicture());
                 $this->em->persist($archive);
                 $this->em->remove($harvest);
                 $count++;

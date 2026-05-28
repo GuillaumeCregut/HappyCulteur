@@ -31,6 +31,9 @@ class Harvest
     #[ORM\JoinColumn(nullable: false)]
     private ?Apiculteur $beekeeper = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +95,18 @@ class Harvest
     public function setBeekeeper(?Apiculteur $beekeeper): static
     {
         $this->beekeeper = $beekeeper;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
