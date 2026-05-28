@@ -25,11 +25,11 @@ class VisitsRepository extends ServiceEntityRepository
     public function findByBeekeeper(Apiculteur $user): array
     {
         return $this->createQueryBuilder('v')
-               ->andWhere('v.beekeeper = :val')
-               ->setParameter('val', $user)
-               ->orderBy('v.id', 'ASC')
-               ->getQuery()
-               ->getResult();
+            ->andWhere('v.beekeeper = :val')
+            ->setParameter('val', $user)
+            ->orderBy('v.id', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findByHiveAndBeekeeper(Hive $hive, Apiculteur $user): array

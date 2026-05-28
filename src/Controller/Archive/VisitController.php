@@ -22,7 +22,7 @@ final class VisitController extends AbstractController
     {
         $archives = $repo->findByBeekeeper($user);
         return $this->render('archive/visits/index.html.twig', [
-            'archives' =>$archives
+            'archives' => $archives
         ]);
     }
 
@@ -68,9 +68,8 @@ final class VisitController extends AbstractController
         $this->denyAccessUnlessGranted('own', $hive);
         $archives = $repo->findByHiveAndBeekeeper($hive, $user);
         return $this->render('archive/visits/hive_consult.html.twig', [
-            'hive' => $hive, 
+            'hive' => $hive,
             'archives' => $archives
         ]);
     }
-
 }
