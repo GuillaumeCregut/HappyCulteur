@@ -9,6 +9,7 @@ use App\Tool\LineGraph;
 use App\Tool\PathMaker;
 use App\Entity\Apiculteur;
 use App\Dto\HarvestHiveDto;
+use App\Repository\Archive\HarvestRepository as ArchiveHarvestRepository;
 use App\Repository\HarvestRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -16,6 +17,7 @@ class Harvest
 {
     public function __construct(
         private HarvestRepository $repo,
+        private ArchiveHarvestRepository $archives,
         #[Autowire('%kernel.project_dir%/public/uploads/')] private string $uploadDirectory
     ) {}
 
@@ -28,7 +30,9 @@ class Harvest
         $endDate = $dates['endDate'];
         $dto->startDate = null === $startDate ? "Début" : $startDate->format('d/m/Y');;
         $dto->endDate = null === $endDate ? "Aujourd'hui" : $endDate->format('d/m/Y');
-        $harvests = $this->repo->findByHiveBeekeeperDate($user, $hive);
+        $harvests = $this->repo->findByHiveBeekeeperDate($user, $hive, $startDate, $endDate);
+        $harvestArchives = $this->archives->findByHiveBeekeeperDate($user, $hive, $startDate, $endDate);
+        $harvests = array_merge($harvests, $harvestArchives);
         if (0 >= count($harvests)) {
             return $dto;
         }
