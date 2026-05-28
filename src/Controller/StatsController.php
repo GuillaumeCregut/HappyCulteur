@@ -339,7 +339,7 @@ final class StatsController extends AbstractController
         if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
             throw $this->createAccessDeniedException();
         }
-        $stats = $statsApiary->getApiaryStats($apiary, $this->userFolderRoot);
+        $stats = $statsApiary->getApiaryStats($apiary, $this->userFolderRoot, $user);
         $request->getSession()->set('apiary_stats_results', $stats['path']);
         return $this->render('stats/apiary/index.html.twig', [
             'apiary' => $apiary,
