@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/archives/global.css')}}">
+{% endblock %}
+{% block title %}Archives récoltes
+{% endblock %}
+
+{% block body %}
+	<h1 class="title">Archives de la ruche</h1>
+	<table class="archive-table">
+        <caption>Archives des récoltes</caption>
+		<thead class="archive-table-head">
+			<tr>
+				<th class="archive-cell archive-cell-head">Date</th>
+				<th class="archive-cell archive-cell-head">Ruche</th>
+				<th class="archive-cell archive-cell-head">Poids</th>
+				<th class="archive-cell archive-cell-head">Type de miel</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for archive in archives %}
+			    <tr>
+                    <td class="archive-cell" data-label="Date">{{ archive.date | date('d/m/Y')}}</td>
+					<td class="archive-cell" data-label="Ruche">{{ archive.hive }}</td>
+					<td class="archive-cell archive-cell-center" data-label="Poids">{{ archive.weight }} kg</td>
+					<td class="archive-cell archive-cell-notes" data-label="Type de miel">{{ archive.honeyKind }}</td>
+			    </tr>
+            {% else %}
+                <tr>
+                    <td colspan="13">Aucune informations</td>
+                </tr>    
+				{% endfor %}
+		</tbody>
+	</table>
+	<p>
+		<a href="{{ path('app_hive_index', {id:hive.id}) }}" class="form-button">Retour à la ruche</a>
+	</p>
+{% endblock %}

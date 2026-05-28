@@ -2,9 +2,11 @@
 
 namespace App\Repository\Archive;
 
+use App\Entity\Hive;
+use App\Entity\Apiculteur;
 use App\Entity\Archive\Harvest;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Harvest>
@@ -16,28 +18,16 @@ class HarvestRepository extends ServiceEntityRepository
         parent::__construct($registry, Harvest::class);
     }
 
-    //    /**
-    //     * @return Harvest[] Returns an array of Harvest objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('h.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Harvest
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findByHiveAndBeekeeper(Hive $hive, Apiculteur $user): array
+    {
+        $hiveName = "{$hive->getName()} - {$hive->getIdentification()}";
+        return $this->createQueryBuilder('h')
+            ->andWhere('h.beekeeper = :user')
+            ->andWhere('h.hive= :hive')
+            ->setParameter('user', $user)
+            ->setParameter('hive', $hiveName)
+            ->orderBy('h.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/archives/visit.css')}}">
+	<link rel="stylesheet" href="{{asset('styles/default/archives/global.css')}}">
+{% endblock %}
+{% block title %}Archivage des récoltes{% endblock %}
+
+{% block body %}
+<h1 class="title">Archivage des récoltes de la ruche "{{ hive.name }}"</h1>
+<p class="archives-line">L'archivage des récoltes de la ruche vont tranférer dans les archives les récoltes actuellement présentes, et elles ne seront plus modifiables.<br>
+Celles-ci seront toujours prises en compte dans les statistiques de la ruche. Vous pourrez toujours les consulter dans la rubrique archive.</p>
+<form method="post">
+    <input
+        type="hidden"
+        name="_token"
+        value="{{ csrf_token('archive_item') }}"
+    >
+
+    <p class="archives-line">
+		<button type="submit" class="form-button">Procéder à l'archivage</button>
+	</p>
+</form>
+<p><a href="{{ path('app_hive_index', {id:hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}
