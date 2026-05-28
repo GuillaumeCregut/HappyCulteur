@@ -2,9 +2,11 @@
 
 namespace App\Repository\Archive;
 
+use App\Entity\Hive;
+use App\Entity\Apiculteur;
 use App\Entity\Archive\Visit;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Visit>
@@ -14,6 +16,19 @@ class VisitsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Visit::class);
+    }
+
+    public function findByHiveAndBeekeeper(Hive $hive, Apiculteur $user): array
+    {
+        $hiveName = "{$hive->getName()} - {$hive->getIdentification()}";
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.beekeeper = :user')
+            ->andWhere('v.hive= :hive')
+            ->setParameter('user', $user)
+            ->setParameter('hive', $hiveName)
+            ->orderBy('v.date', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

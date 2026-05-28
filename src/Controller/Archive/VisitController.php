@@ -4,6 +4,7 @@ namespace App\Controller\Archive;
 
 use App\Entity\Hive;
 use App\Entity\Apiculteur;
+use App\Repository\Archive\VisitsRepository;
 use App\Service\Archive\VisitArchiver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,6 +53,20 @@ final class VisitController extends AbstractController
 
         return $this->render('archive/visits/hive.html.twig', [
             'hive' => $hive
+        ]);
+    }
+
+    #[Route('/hive/{id}/consult', name: 'hive_consult', methods: ['GET'])]
+    public function consultHive(
+        Hive $hive,
+        VisitsRepository $repo,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        $archives = $repo->findByHiveAndBeekeeper($hive, $user);
+        return $this->render('archive/visits/hive_consult.html.twig', [
+            'hive' => $hive, 
+            'archives' => $archives
         ]);
     }
 }
