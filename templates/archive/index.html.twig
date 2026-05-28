@@ -10,16 +10,20 @@
     <section class="dashboard-container">
         <ul class="dashboard-item-container">
             <li>
-                <div class="dashboard-card">
-                    <img src="{{ asset('pictures/options/visite.png') }}" alt="archives" class="dashboard-picture">
-						<p class="dashboard-card-title">Visites</p>
-                </div>
+                <a href="{{ path('app_archive_visit_index') }}">
+                    <div class="dashboard-card">
+                        <img src="{{ asset('pictures/options/visite.png') }}" alt="archives" class="dashboard-picture">
+                            <p class="dashboard-card-title">Visites</p>
+                    </div>
+                </a>
             </li>
             <li>
-                <div class="dashboard-card">
-                    <img src="{{ asset('pictures/options/archive.png') }}" alt="archives" class="dashboard-picture">
-						<p class="dashboard-card-title">Archives</p>
-                </div>
+                <a href="">
+                    <div class="dashboard-card">
+                        <img src="{{ asset('pictures/options/archive.png') }}" alt="archives" class="dashboard-picture">
+                            <p class="dashboard-card-title">Archives</p>
+                    </div>
+                </a>
             </li>
         </ul>
     </section>

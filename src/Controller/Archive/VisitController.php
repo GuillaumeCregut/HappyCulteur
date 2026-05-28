@@ -18,9 +18,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class VisitController extends AbstractController
 {
     #[Route('', name: 'index')]
-    public function index(): Response
+    public function index(VisitsRepository $repo, #[CurrentUser] Apiculteur $user,): Response
     {
-        return $this->render('archive/visits/index.html.twig', []);
+        $archives = $repo->findByBeekeeper($user);
+        return $this->render('archive/visits/index.html.twig', [
+            'archives' =>$archives
+        ]);
     }
 
     #[Route('/hive/{id}', name: 'hive', methods: ['GET', 'POST'])]
@@ -69,4 +72,5 @@ final class VisitController extends AbstractController
             'archives' => $archives
         ]);
     }
+
 }
