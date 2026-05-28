@@ -9,6 +9,7 @@ use App\Dto\HarvestDto;
 use App\Tool\PathMaker;
 use App\Entity\Apiculteur;
 use App\Entity\Datalogger;
+use App\Repository\Archive\HarvestRepository as ArchiveHarvestRepository;
 use App\Tool\Graph\LineDrawer;
 use App\Tool\Graph\HarvestGraph;
 use App\Repository\HarvestRepository;
@@ -22,6 +23,7 @@ class HiveResults
         private HarvestRepository $harvestRepo,
         private DataloggerRepository $dlRepo,
         private VisitsRepository $archives,
+        private ArchiveHarvestRepository $harvestArchives,
         #[Autowire('%kernel.project_dir%/public/uploads/')] private string $uploadDirectory
     ) {}
 
@@ -36,12 +38,16 @@ class HiveResults
         $this->headerPdf($pdf, $hive);
 
         $harvests = $this->harvestRepo->findByHiveBeekeeperDate($user, $hive);
-        $totalHarvestsWeight = $this->getTotalWeight($harvests);
-        $totalWeightByType = $this->calcWeigthByType($harvests);
-        $harvestDrawer = new HarvestGraph($this->uploadDirectory);
-        $harvestFilename = $harvestDrawer->drawGraph($harvests, $fullPath, $rootPath, $hive->getName());
-        $picturePath = $fullPath . $harvestFilename;
-        $this->writeHarvests($pdf, $hive, $totalHarvestsWeight, $totalWeightByType, $picturePath);
+        $harvestArchives = $this->harvestArchives->findByHiveBeekeeperDate($user, $hive);
+        $harvests = array_merge($harvests, $harvestArchives);
+        if (0 < count($harvests)) {
+            $totalHarvestsWeight = $this->getTotalWeight($harvests);
+            $totalWeightByType = $this->calcWeigthByType($harvests);
+            $harvestDrawer = new HarvestGraph($this->uploadDirectory);
+            $harvestFilename = $harvestDrawer->drawGraph($harvests, $fullPath, $rootPath, $hive->getName());
+            $picturePath = $fullPath . $harvestFilename;
+            $this->writeHarvests($pdf, $hive, $totalHarvestsWeight, $totalWeightByType, $picturePath);
+        }
         $archives = $this->getArchives($hive, $user);
         $visits = $hive->getVisits()->toArray();
         $count = count($visits) + count($archives);
