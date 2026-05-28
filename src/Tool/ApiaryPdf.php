@@ -101,7 +101,7 @@ class ApiaryPdf extends PdfBase
     {
         $this->SetX(15);
         $this->SetFont('Arial', '', 10);
-        $this->cell(0, 0, "{$number} ruches(s) {$state}");
+        $this->addCell(0, 0, "{$number} ruches(s) {$state}");
         $this->ln(7);
     }
 
