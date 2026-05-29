@@ -2,11 +2,35 @@
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{asset('styles/default/hive.css')}}">
 {% endblock %}
-{% block title %}Transmettre la ruche{% endblock %}
+{% block title %}Transmettre la ruche
+{% endblock %}
 {% block body %}
-<h1 class="title">Transmettre la ruche à un autre apiculteur</h1>
-<p class="hive-form-translate-line">Nom de la ruche : {{ hive.name }}</p>
-<p class="hive-form-translate-line">Rucher actuel : {{ hive.apiary ? hive.apiary.name : 'stock' }}</p>
-
-<p class="hive-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+	<h1 class="title">Transmettre la ruche à un autre apiculteur</h1>
+	<p class="hive-form-translate-line">Nom de la ruche :
+		{{ hive.name }}</p>
+	<p class="hive-form-translate-line">Rucher actuel :
+		{{ hive.apiary ? hive.apiary.name : 'stock' }}</p>
+	<p class="hive-form-translate-line">La transmission d'une ruche à un autre apiculteur transfère cette ruche dans son stock.<br>
+		Les données de visites, de récoltes et les possibles dataloggers sont archivées, vous pourrez toujours les consulter. L'apiculteur qui reçoit la ruche n'aura pas accès à ces informations.<br>
+		Choisir le nom de l'apiculteur dans la liste ci dessous et valider pour effectuer la transmission.<br>
+		Attention, celle-ci est définitive, si vous récupérez la ruche, les anciennes données ne seront pas récupérables pour cette ruche.
+	</p>
+	{{ form_start(form, {
+		attr: {
+				onsubmit: "return confirm('Voulez-vous vraiment transmettre la ruche à cet utilisateur ?');"
+			}
+		})
+	}}
+	<p class="hive-form-translate-line">Apiculteur :
+		{{ form_row(form.user, {
+        label: 'Sélectionner un utilisateur :',
+		attr : {
+                    class: 'hive-form-input'
+                }
+    }) }}
+		<button type="submit" class="form-button">Valider</button>
+		{{ form_end(form) }}</p>
+	<p class="hive-btn-container">
+		<a href="{{ path('app_hive_index', {id: hive.id}) }}" class="form-button">Retour à la ruche</a>
+	</p>
 {% endblock %}

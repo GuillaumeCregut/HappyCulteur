@@ -36,7 +36,10 @@ class VisitArchiver
                 $archive->setNotes($visit->getNotes());
                 $weather = $visit->getWeather()->label();
                 $archive->setWeather($weather);
-                $disease = $visit->getDisease()->getName();
+                $disease = null;
+                if (null !== $visit->getDisease()) {
+                    $disease = $visit->getDisease()->getName();
+                }
                 $archive->setDisease($disease);
                 $this->em->persist($archive);
                 $this->em->remove($visit);

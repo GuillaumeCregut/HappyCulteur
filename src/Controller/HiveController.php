@@ -9,10 +9,12 @@ use App\Entity\Apiary;
 use App\Form\HiveType;
 use App\Entity\Apiculteur;
 use App\Form\HiveTransferType;
+use App\Form\UserSelectorType;
 use App\Repository\ApiaryRepository;
 use App\Repository\HiveRepository;
 use App\Service\HiveFinder;
 use App\Service\HiveProcessor;
+use App\Service\PassOnHive;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +30,9 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 #[Route('/hive', name: 'app_hive_')]
 final class HiveController extends AbstractController
 {
+
+    public function __construct(private readonly string $userFolderRoot) {}
+
     #[Route('/{id}', name: 'index')]
     public function index(Hive $hive): Response
     {
@@ -271,12 +276,27 @@ final class HiveController extends AbstractController
     public function passOn(
         Hive $hive,
         Request $request,
+        PassOnHive $passer,
         #[CurrentUser] Apiculteur $user,
-        EntityManagerInterface $em,
     ): Response {
         $this->denyAccessUnlessGranted('own', $hive);
+        $apiary = $hive->getApiary();
+        $form = $this->createForm(UserSelectorType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newUser = $form->get('user')->getData();
+
+            $passer->passOn($hive, $user, $newUser, $this->userFolderRoot);
+            $this->addFlash('success', "Ruche transmise avec succès.");
+            if(null === $apiary) {
+                return $this->redirectToRoute('app_home');
+            }
+            return $this->redirectToRoute('app_apiary_index', ['id' => $apiary->getId()]);
+        }
         return $this->render('hive/pass_on.html.twig', [
-            'hive' => $hive
+            'hive' => $hive,
+            'form' => $form
         ]);
     }
 }
