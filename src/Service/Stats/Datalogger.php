@@ -4,12 +4,15 @@ namespace App\Service\Stats;
 
 use App\Entity\Hive;
 use DateTimeImmutable;
-use App\Entity\Apiculteur;
-use App\Entity\Datalogger as DataloggerEntity;
-use App\Dto\DataloggerStatsDto;
-use App\Repository\DataloggerRepository;
 use App\Tool\LineGraph;
 use App\Tool\PathMaker;
+use App\Dto\DataloggerDto;
+use App\Entity\Apiculteur;
+use App\Dto\DataloggerStatsDto;
+use App\Repository\DataloggerRepository;
+use App\Entity\Datalogger as DataloggerEntity;
+use App\Entity\Archive\Datalogger as ArchiveDatalogger;
+use App\Repository\Archive\DataloggerRepository as ArchiveDataloggerRepository;
 
 class Datalogger
 {
@@ -21,7 +24,10 @@ class Datalogger
     private array $intHygroArray = [];
     private array $weightArray = [];
 
-    public function __construct(private DataloggerRepository $repo) {}
+    public function __construct(
+        private DataloggerRepository $repo,
+        private ArchiveDataloggerRepository $archive,
+    ) {}
 
     public function getLogs(Hive $hive, array $dates, Apiculteur $user, string $rooPath): DataloggerStatsDto
     {
@@ -32,8 +38,9 @@ class Datalogger
         $endDate = $dates['endDate'];
         $dto->startDate = null === $startDate ? "Début" : $startDate->format('d/m/Y');;
         $dto->endDate = null === $endDate ? "Aujourd'hui" : $endDate->format('d/m/Y');
-
+        $archives = $this->archive->findByHiveBetweenDates($hive, $user, $startDate, $endDate);
         $logs = $this->repo->findByHiveBetweenDates($hive, $startDate, $endDate);
+        $logs = $this->mergeDatas($logs, $archives);
         if (0 >= count($logs)) {
             return $dto;
         }
@@ -60,6 +67,28 @@ class Datalogger
         return $dto;
     }
 
+    /**
+     * Merge logs from BD with dataas from archives
+     *
+     * @param DataloggerEntity[] $logs
+     * @param ArchiveDatalogger[] $archives
+     * @return DataloggerDto[]
+     */
+    private function mergeDatas(array $logs, array $archives): array
+    {
+        $returnArray = [];
+        foreach ($logs as $log) {
+            $dto = DataloggerDto::fromLogs($log);
+            $returnArray[] = $dto;
+        }
+        foreach ($archives as $archive) {
+            $dto = DataloggerDto::fromArchive($archive);
+            $returnArray[] = $dto;
+        }
+        usort($returnArray, fn($a, $b) => $a->dateTime <=> $b->dateTime);
+        return $returnArray;
+    }
+
     private function formatDate(array $dates): array
     {
         $startDate = $dates['startDate'];
@@ -80,7 +109,8 @@ class Datalogger
     /**
      * Create averages  values from datas and store them to $dto
      *
-     * @param DataloggerEntity[] $logs
+     * @param DataloggerDto[] $logs
+     * @param ArchiveDatalogger[] $logs
      * @return void
      */
     private function average(array $logs, DataloggerStatsDto $dto): void
@@ -97,33 +127,34 @@ class Datalogger
         $quantityWeight = 0;
 
         foreach ($logs as $log) {
-            $this->dates[] = $log->getDateTime();
-            if (null !== $log->getWeight()) {
-                $averageWeight += $log->getWeight();
+            $this->dates[] = $log->dateTime;
+            if (null !== $log->weight) {
+                $averageWeight += $log->weight;
                 $quantityWeight++;
-                $this->weightArray[] = $log->getWeight();
+                $this->weightArray[] = $log->weight;
             }
-            if (null !== $log->getExtHyrgo()) {
-                $averageExtHygro += $log->getExtHyrgo();
+            if (null !== $log->extHygro) {
+                $averageExtHygro += $log->extHygro;
                 $quantityExtHygro++;
-                $this->extHygroArray[] = $log->getExtHyrgo();
+                $this->extHygroArray[] = $log->extHygro;
             }
-            if (null !== $log->getIntHygro()) {
-                $averageIntHygro += $log->getIntHygro();
+            if (null !== $log->intHygro) {
+                $averageIntHygro += $log->intHygro;
                 $quantityIntHygro++;
-                $this->intHygroArray[] = $log->getIntHygro();
+                $this->intHygroArray[] = $log->intHygro;
             }
-            if (null !== $log->getExtTemp()) {
-                $averageExtTemp += $log->getExtTemp();
+            if (null !== $log->extTemp) {
+                $averageExtTemp += $log->extTemp;
                 $quantityExtTemp++;
-                $this->extTempArray[] = $log->getExtTemp();
+                $this->extTempArray[] = $log->extTemp;
             }
-            if (null !== $log->getIntTemp()) {
-                $averageIntTemp += $log->getIntTemp();
+            if (null !== $log->intTemp) {
+                $averageIntTemp += $log->intTemp;
                 $quantityIntTemp++;
-                $this->intTempArray[] = $log->getIntTemp();
+                $this->intTempArray[] = $log->intTemp;
             }
         }
+
         if (0 < $quantityExtHygro) {
             $dto->averageHygroExt = round($averageExtHygro / $quantityExtHygro, 2);
         }
@@ -149,7 +180,7 @@ class Datalogger
         $filename = 'hygrometry.png';
         $fullPath = $path . $filename;
         $title = "Relevé hygrométrique de la ruche {$hive->getName()} depuis {$from} jusqu'à {$to}";
-        $this->drawGraphs($this->dates, $title, $fullPath, $this->extHygroArray, $this->intHygroArray,'Hygrométrie extérieure', 'teal', 'Hygrométrie intérieure', 'black');
+        $this->drawGraphs($this->dates, $title, $fullPath, $this->extHygroArray, $this->intHygroArray, 'Hygrométrie extérieure', 'teal', 'Hygrométrie intérieure', 'black');
         return $filename;
     }
 
@@ -161,7 +192,7 @@ class Datalogger
         $filename = 'temperature.png';
         $fullPath = $path . $filename;
         $title = "Relevé de température de la ruche {$hive->getName()} depuis {$from} jusqu'à {$to}";
-        $this->drawGraphs($this->dates, $title, $fullPath, $this->extTempArray, $this->intTempArray,'Température extérieure', 'teal', 'température intérieure', 'black');
+        $this->drawGraphs($this->dates, $title, $fullPath, $this->extTempArray, $this->intTempArray, 'Température extérieure', 'teal', 'température intérieure', 'black');
         return $filename;
     }
 
@@ -188,7 +219,7 @@ class Datalogger
         ?string $legend2 = null,
         ?string $color2 = null
     ) {
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             unlink($path);
         }
         $graph = new LineGraph(800, 400);
@@ -200,7 +231,7 @@ class Datalogger
         }
         $graph->setXAxisValues($xValues, $minValue, $maxValue);
         $graph->addLine($line1, $legend1, $color1);
-        if(null !== $line2){
+        if (null !== $line2) {
             $graph->addLine($line2, $legend2, $color2);
         }
         $graph->drawGraph($title);
