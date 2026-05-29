@@ -14,6 +14,7 @@ class DataloggerDto
     public ?float $intTemp = null;
     public ?int $intHygro = null;
     public ?int $extHygro = null;
+    public ?string $identification = null;
 
     public static function fromLogs(Datalogger $log): static
     {
@@ -24,6 +25,7 @@ class DataloggerDto
         $dto->weight = $log->getWeight();
         $dto->intTemp = $log->getIntTemp();
         $dto->intHygro = $log->getIntHygro();
+        $dto->identification = $log->getIdentification();
         return $dto;
     }
 
@@ -36,6 +38,7 @@ class DataloggerDto
         $dto->weight = $log->getWeight();
         $dto->intTemp = $log->getIntTemp();
         $dto->intHygro = $log->getIntHygro();
+        $dto->identification = $log->getIdentification();
         return $dto;
     }
 }

@@ -3,19 +3,22 @@
 namespace App\Service\Stats;
 
 use App\Entity\Hive;
-use App\Entity\Archive\Visit;
 use App\Tool\Results;
 use App\Dto\HarvestDto;
 use App\Tool\PathMaker;
+use App\Dto\DataloggerDto;
 use App\Entity\Apiculteur;
 use App\Entity\Datalogger;
-use App\Repository\Archive\HarvestRepository as ArchiveHarvestRepository;
+use App\Entity\Archive\Visit;
 use App\Tool\Graph\LineDrawer;
 use App\Tool\Graph\HarvestGraph;
 use App\Repository\HarvestRepository;
 use App\Repository\DataloggerRepository;
 use App\Repository\Archive\VisitsRepository;
+use App\Entity\Archive\Datalogger as ArchiveDatalogger;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use App\Repository\Archive\HarvestRepository as ArchiveHarvestRepository;
+use App\Repository\Archive\DataloggerRepository as ArchiveDataloggerRepository;
 
 class HiveResults
 {
@@ -24,6 +27,7 @@ class HiveResults
         private DataloggerRepository $dlRepo,
         private VisitsRepository $archives,
         private ArchiveHarvestRepository $harvestArchives,
+        private ArchiveDataloggerRepository $archiveDl,
         #[Autowire('%kernel.project_dir%/public/uploads/')] private string $uploadDirectory
     ) {}
 
@@ -84,12 +88,14 @@ class HiveResults
             }
         }
         /**@var Datalogger[] */
-        $dataloggersInfos = $this->dlRepo->findByHiveAndBeekeeper($hive, $user);
+        $dataloggersDatas = $this->dlRepo->findByHiveAndBeekeeper($hive, $user);
+        $archivesDlInfos = $this->archiveDl->findByHiveAndBeekeeper($hive, $user);
+        $dataloggersInfos = $this->mergeDataloggers($dataloggersDatas, $archivesDlInfos);
         if (0 < count($dataloggersInfos)) {
             $dlAverages = $this->getAverageDl($dataloggersInfos);
             $dlDispatched = $this->dispatchDl($dataloggersInfos);
-            $from = $dataloggersInfos[0]->getDateTime()->format('d/m/Y');
-            $to = end($dataloggersInfos)->getDateTime()->format('d/m/Y');
+            $from = $dataloggersInfos[0]->dateTime->format('d/m/Y');
+            $to = end($dataloggersInfos)->dateTime->format('d/m/Y');
             $this->writeDataloggerAverage($pdf, $dlAverages, $from, $to);
             if (0 < count($dlDispatched['weight'])) {
                 $title = 'Relevé du poids via le datalogger de la ruche';
@@ -110,6 +116,28 @@ class HiveResults
         $pdfPath = $fullPath . $filename;
         $pdf->Output('F', $pdfPath);
         return $relativePath . $filename;
+    }
+
+    /**
+     * Merge logs from BD with dataas from archives
+     *
+     * @param Datalogger[] $logs
+     * @param ArchiveDatalogger[] $archives
+     * @return DataloggerDto[]
+     */
+    private function mergeDataloggers(array $logs, array $archives): array
+    {
+        $returnArray = [];
+        foreach ($logs as $log) {
+            $dto = DataloggerDto::fromLogs($log);
+            $returnArray[] = $dto;
+        }
+        foreach ($archives as $archive) {
+            $dto = DataloggerDto::fromArchive($archive);
+            $returnArray[] = $dto;
+        }
+        usort($returnArray, fn($a, $b) => $a->dateTime <=> $b->dateTime);
+        return $returnArray;
     }
 
     /**
@@ -325,7 +353,7 @@ class HiveResults
     /**
      * Get all average values from dataloggers
      *
-     * @param Datalogger[] $dataloggers
+     * @param DataloggerDto[] $dataloggers
      * @return array
      */
     private function getAverageDl(array $dataloggers): array
@@ -343,25 +371,25 @@ class HiveResults
         $quantityIntTemp = 0;
         $quantityWeight = 0;
         foreach ($dataloggers as $log) {
-            $identification[] = $log->getIdentification();
-            if (null !== $log->getWeight()) {
-                $averageWeight += $log->getWeight();
+            $identification[] = $log->identification;
+            if (null !== $log->weight) {
+                $averageWeight += $log->weight;
                 $quantityWeight++;
             }
-            if (null !== $log->getExtHyrgo()) {
-                $averageExtHygro += $log->getExtHyrgo();
+            if (null !== $log->extHygro) {
+                $averageExtHygro += $log->extHygro;
                 $quantityExtHygro++;
             }
-            if (null !== $log->getIntHygro()) {
-                $averageIntHygro += $log->getIntHygro();
+            if (null !== $log->intHygro) {
+                $averageIntHygro += $log->intHygro;
                 $quantityIntHygro++;
             }
-            if (null !== $log->getExtTemp()) {
-                $averageExtTemp += $log->getExtTemp();
+            if (null !== $log->extTemp) {
+                $averageExtTemp += $log->extTemp;
                 $quantityExtTemp++;
             }
-            if (null !== $log->getIntTemp()) {
-                $averageIntTemp += $log->getIntTemp();
+            if (null !== $log->intTemp) {
+                $averageIntTemp += $log->intTemp;
                 $quantityIntTemp++;
             }
         }
@@ -398,7 +426,7 @@ class HiveResults
     /**
      * Transform Dataloggers info into arrays (sensor value-date)
      *
-     * @param Datalogger[] $dataloggers
+     * @param DataloggerDto[] $dataloggers
      * @return array{weight: array{date: \DateTimeImmutable, value: mixed},
      *  tempExt: array{date: \DateTimeImmutable, value: mixed},
      *  tempInt: array{date: \DateTimeImmutable, value: mixed},
@@ -409,22 +437,22 @@ class HiveResults
     private function dispatchDl(array $dataloggers): array
     {
         $returnArray = [];
-        usort($dataloggers, fn($a, $b) => $a->getDateTime() <=> $b->getDateTime());
+        usort($dataloggers, fn($a, $b) => $a->dateTime <=> $b->dateTime);
         foreach ($dataloggers as $datalogger) {
-            if (null !== $datalogger->getExtTemp()) {
-                $returnArray['tempExt'][] = array('date' => $datalogger->getDateTime(), 'value' => $datalogger->getExtTemp());
+            if (null !== $datalogger->extTemp) {
+                $returnArray['tempExt'][] = array('date' => $datalogger->dateTime, 'value' => $datalogger->extTemp);
             }
-            if (null !== $datalogger->getIntTemp()) {
-                $returnArray['tempInt'][] = array('date' => $datalogger->getDateTime(), 'value' => $datalogger->getIntTemp());
+            if (null !== $datalogger->intTemp) {
+                $returnArray['tempInt'][] = array('date' => $datalogger->dateTime, 'value' => $datalogger->intTemp);
             }
-            if (null !== $datalogger->getExtHyrgo()) {
-                $returnArray['hygroExt'][] = array('date' => $datalogger->getDateTime(), 'value' => $datalogger->getExtHyrgo());
+            if (null !== $datalogger->extHygro) {
+                $returnArray['hygroExt'][] = array('date' => $datalogger->dateTime, 'value' => $datalogger->extHygro);
             }
-            if (null !== $datalogger->getIntHygro()) {
-                $returnArray['hygroInt'][] = array('date' => $datalogger->getDateTime(), 'value' => $datalogger->getIntHygro());
+            if (null !== $datalogger->intHygro) {
+                $returnArray['hygroInt'][] = array('date' => $datalogger->dateTime, 'value' => $datalogger->intHygro);
             }
-            if (null !== $datalogger->getWeight()) {
-                $returnArray['weight'][] = array('date' => $datalogger->getDateTime(), 'value' => $datalogger->getWeight());
+            if (null !== $datalogger->weight) {
+                $returnArray['weight'][] = array('date' => $datalogger->dateTime, 'value' => $datalogger->weight);
             }
         }
         return $returnArray;

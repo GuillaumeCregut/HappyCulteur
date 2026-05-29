@@ -25,9 +25,9 @@ class Datalogger
     private array $weightArray = [];
 
     public function __construct(
-        private DataloggerRepository $repo, 
+        private DataloggerRepository $repo,
         private ArchiveDataloggerRepository $archive,
-        ) {}
+    ) {}
 
     public function getLogs(Hive $hive, array $dates, Apiculteur $user, string $rooPath): DataloggerStatsDto
     {
@@ -77,13 +77,13 @@ class Datalogger
     private function mergeDatas(array $logs, array $archives): array
     {
         $returnArray = [];
-        foreach($logs as $log) {
-            $dto = DataloggerDto::fromLogs($log); 
-            $returnArray[] = $dto;       
+        foreach ($logs as $log) {
+            $dto = DataloggerDto::fromLogs($log);
+            $returnArray[] = $dto;
         }
-        foreach($archives as $archive) {
-            $dto = DataloggerDto::fromArchive($archive); 
-            $returnArray[] = $dto;       
+        foreach ($archives as $archive) {
+            $dto = DataloggerDto::fromArchive($archive);
+            $returnArray[] = $dto;
         }
         usort($returnArray, fn($a, $b) => $a->dateTime <=> $b->dateTime);
         return $returnArray;
@@ -170,7 +170,6 @@ class Datalogger
         if (0 < $quantityWeight) {
             $dto->averageWeight = round($averageWeight / $quantityWeight, 2);
         }
-       
     }
 
     private function drawHygroGraph(Hive $hive, string $path, string $from, string $to): ?string
@@ -181,7 +180,7 @@ class Datalogger
         $filename = 'hygrometry.png';
         $fullPath = $path . $filename;
         $title = "Relevé hygrométrique de la ruche {$hive->getName()} depuis {$from} jusqu'à {$to}";
-        $this->drawGraphs($this->dates, $title, $fullPath, $this->extHygroArray, $this->intHygroArray,'Hygrométrie extérieure', 'teal', 'Hygrométrie intérieure', 'black');
+        $this->drawGraphs($this->dates, $title, $fullPath, $this->extHygroArray, $this->intHygroArray, 'Hygrométrie extérieure', 'teal', 'Hygrométrie intérieure', 'black');
         return $filename;
     }
 
@@ -193,7 +192,7 @@ class Datalogger
         $filename = 'temperature.png';
         $fullPath = $path . $filename;
         $title = "Relevé de température de la ruche {$hive->getName()} depuis {$from} jusqu'à {$to}";
-        $this->drawGraphs($this->dates, $title, $fullPath, $this->extTempArray, $this->intTempArray,'Température extérieure', 'teal', 'température intérieure', 'black');
+        $this->drawGraphs($this->dates, $title, $fullPath, $this->extTempArray, $this->intTempArray, 'Température extérieure', 'teal', 'température intérieure', 'black');
         return $filename;
     }
 
@@ -220,7 +219,7 @@ class Datalogger
         ?string $legend2 = null,
         ?string $color2 = null
     ) {
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             unlink($path);
         }
         $graph = new LineGraph(800, 400);
@@ -232,7 +231,7 @@ class Datalogger
         }
         $graph->setXAxisValues($xValues, $minValue, $maxValue);
         $graph->addLine($line1, $legend1, $color1);
-        if(null !== $line2){
+        if (null !== $line2) {
             $graph->addLine($line2, $legend2, $color2);
         }
         $graph->drawGraph($title);
