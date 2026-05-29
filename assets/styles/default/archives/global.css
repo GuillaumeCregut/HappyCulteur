@@ -73,6 +73,8 @@
     .archive-table td {
         padding-left: 150px;
         position: relative;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
 
     .archive-table td::before {
