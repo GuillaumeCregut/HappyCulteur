@@ -8,6 +8,7 @@ use App\Service\Uploader;
 use App\Entity\Apiculteur;
 use App\Form\ApiaryFormType;
 use App\Form\ApiaryPictureType;
+use App\Security\Voter\ApiaryVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,13 +29,10 @@ final class ApiaryController extends AbstractController
     public function __construct(private readonly string $userFolderRoot) {}
 
     #[Route('/{id}', name: 'index')]
+    #[IsGranted(ApiaryVoter::BELONG, subject:'apiary')]
     public function index(
-        #[CurrentUser] Apiculteur $user,
         Apiary $apiary,
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         return $this->render('apiary/index.html.twig', [
             'apiary' => $apiary
         ]);
@@ -51,7 +49,7 @@ final class ApiaryController extends AbstractController
         $form = $this->createForm(ApiaryFormType::class, $apiary);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $apiary->setBeekeeper($user);
+            $apiary->setOwner($user);
             $em->persist($apiary);
             $em->flush();
             return $this->redirectToRoute('app_home');
@@ -62,28 +60,22 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/info/{id}', name: 'info')]
+    #[IsGranted(ApiaryVoter::BELONG, subject:'apiary')]
     public function info(
-        #[CurrentUser] Apiculteur $user,
         Apiary $apiary,
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         return $this->render('apiary/info.html.twig', [
             'apiary' => $apiary
         ]);
     }
 
     #[Route('/update/{id}', name: 'update')]
+    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
     public function update(
-        #[CurrentUser] Apiculteur $user,
         Apiary $apiary,
         Request $request,
         EntityManagerInterface $em
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         $form = $this->createForm(ApiaryFormType::class, $apiary);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -98,17 +90,16 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/edition/{id}', name: 'edition')]
+    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
     public function edition(Apiary $apiary, #[CurrentUser] Apiculteur $user): Response
     {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         return $this->render('apiary/editions/index.html.twig', [
             'apiary' => $apiary
         ]);
     }
 
     #[Route('/cartography/{id}', name: 'cartography', methods: ['GET', 'POST'])]
+    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
     public function cartography(
         Apiary $apiary,
         Request $request,
@@ -117,9 +108,6 @@ final class ApiaryController extends AbstractController
         EntityManagerInterface $em,
         SluggerInterface $slugger,
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         $form = $this->createForm(ApiaryPictureType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -139,11 +127,9 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/cartography/{id}/see', name: 'see_carto')]
-    public function seeApiaryCarto(Apiary $apiary, #[CurrentUser] Apiculteur $user,): Response
+    #[IsGranted(ApiaryVoter::BELONG, subject:'apiary')]
+    public function seeApiaryCarto(Apiary $apiary): Response
     {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         return $this->render('apiary/carto_see.html.twig', [
             'apiary' => $apiary,
 
@@ -151,17 +137,14 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/cartography/save/{id}', name: 'save_carto', methods: ['POST'])]
+    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
     public function saveApiaryCarto(
         Request $request,
         Apiary $apiary,
-        #[CurrentUser] Apiculteur $user,
         CsrfTokenManagerInterface $csrf,
         SluggerInterface $slugger,
         EntityManagerInterface $em,
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         $token = $request->headers->get('X-CSRF-Token');
         if (!$csrf->isTokenValid(new CsrfToken('save_coords', $token))) {
             return $this->json(['error' => 'Invalid CSRF token'], 403);

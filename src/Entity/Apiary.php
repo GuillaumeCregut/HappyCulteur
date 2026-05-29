@@ -42,7 +42,7 @@ class Apiary
 
     #[ORM\ManyToOne(inversedBy: 'apiaries')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Apiculteur $beekeeper = null;
+    private ?Apiculteur $owner = null;
 
     /**
      * @var Collection<int, Hive>
@@ -158,12 +158,24 @@ class Apiary
 
     public function getBeekeeper(): ?Apiculteur
     {
-        return $this->beekeeper;
+        return $this->owner;
     }
-
+   
     public function setBeekeeper(?Apiculteur $beekeeper): static
     {
-        $this->beekeeper = $beekeeper;
+        $this->owner = $beekeeper;
+
+        return $this;
+    }
+
+    public function getOwner(): ?Apiculteur
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?Apiculteur $beekeeper): static
+    {
+        $this->owner = $beekeeper;
 
         return $this;
     }

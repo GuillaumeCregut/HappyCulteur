@@ -3,9 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Apiary;
+use App\Tool\PathMaker;
 use App\Entity\Apiculteur;
 use App\Service\ApiaryDeclaration;
-use App\Tool\PathMaker;
+use App\Security\Voter\ApiaryVoter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -23,25 +24,21 @@ final class EditionController extends AbstractController
     ) {}
 
     #[Route('/edition/apiary/{id}', name: 'app_edition_apiary_declaration')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function declaration(Apiary $apiary, #[CurrentUser] Apiculteur $user): Response
     {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         return $this->render('apiary/editions/declaration.html.twig', [
             'apiary' => $apiary
         ]);
     }
 
     #[Route('/edition/apiary/{id}/print', name: 'app_edition_apiary_declaration_print')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function printDeclaration(
         Apiary $apiary,
         ApiaryDeclaration $declaration,
         #[CurrentUser] Apiculteur $user,
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         $declaration->createdoc($user, $apiary);
         $relativePath = PathMaker::makeApiaryDeclarationPath($user, $this->userFolderRoot);
         $userPath = $this->userFolderRoot . $relativePath;

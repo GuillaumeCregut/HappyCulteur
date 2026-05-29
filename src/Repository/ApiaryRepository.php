@@ -20,7 +20,7 @@ class ApiaryRepository extends ServiceEntityRepository
     public function findByBeekeeper(Apiculteur $beekeeper): array
     {
         return $this->createQueryBuilder('a')
-            ->Where('a.beekeeper = :beekeeper')
+            ->Where('a.owner = :beekeeper')
             ->setParameter('beekeeper', $beekeeper)
             ->orderBy('a.name', 'ASC')
             ->getQuery()
@@ -32,7 +32,7 @@ class ApiaryRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('ap')
             ->select('ap.name', 'COUNT(hv.id) AS hiveCount')
             ->leftJoin('ap.hives', 'hv')
-            ->where('ap.beekeeper = :beekeeper')
+            ->where('ap.owner = :beekeeper')
             ->setParameter('beekeeper', $user)
             ->groupBy('ap.id')
             ->orderBy('ap.name', 'ASC');

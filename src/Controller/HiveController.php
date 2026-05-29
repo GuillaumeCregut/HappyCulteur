@@ -2,35 +2,34 @@
 
 namespace App\Controller;
 
-use App\Constant\HiveState;
-use App\Dto\ApiaryDto;
 use App\Entity\Hive;
+use App\Dto\ApiaryDto;
 use App\Entity\Apiary;
 use App\Form\HiveType;
 use App\Entity\Apiculteur;
+use App\Constant\HiveState;
+use App\Service\HiveFinder;
+use App\Service\PassOnHive;
 use App\Form\HiveTransferType;
 use App\Form\UserSelectorType;
-use App\Repository\ApiaryRepository;
-use App\Repository\HiveRepository;
-use App\Service\HiveFinder;
 use App\Service\HiveProcessor;
-use App\Service\PassOnHive;
+use App\Repository\HiveRepository;
+use App\Security\Voter\ApiaryVoter;
+use App\Repository\ApiaryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/hive', name: 'app_hive_')]
 final class HiveController extends AbstractController
 {
-
     public function __construct(private readonly string $userFolderRoot) {}
 
     #[Route('/{id}', name: 'index')]
@@ -43,15 +42,13 @@ final class HiveController extends AbstractController
     }
 
     #[Route('/add/apiary/{id}', name: 'add')]
+    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
     public function add(
         #[CurrentUser] Apiculteur $user,
         EntityManagerInterface $em,
         Apiary $apiary,
         Request $request
     ): Response {
-        if ($apiary->getBeekeeper() !== $user) {
-            throw new AccessDeniedHttpException('Access denied.');
-        }
         $hive = new Hive();
         $form = $this->createForm(HiveType::class, $hive);
         $form->handleRequest($request);
@@ -198,14 +195,13 @@ final class HiveController extends AbstractController
     }
 
     #[Route('/apiary/{id}', name: 'by_apiary', methods: ['GET'])]
+    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
     public function getHivesByApiary(
         Apiary $apiary,
         #[CurrentUser] Apiculteur $user,
         HiveRepository $repo
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
+        //TODO : Afficher uniquement nos ruches
         $hives = $repo->findByApiary($apiary);
         return $this->json($hives);
     }

@@ -35,7 +35,7 @@ class ApiaryPdf extends PdfBase
 
     public function displayApiaryInfo(Apiary $apiary)
     {
-        $user = $apiary->getBeekeeper();
+        $user = $apiary->getOwner();
         $this->SetFont('Arial', '', 10);
         $this->SetTextColor(0);
         $line = "Apiculteur : {$user->getName()} {$user->getFirstname()}";

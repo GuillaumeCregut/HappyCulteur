@@ -36,7 +36,7 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
             if (HiveState::STOCK_HIVE === $state) {
                 $hive->setApiary(null);
             }
-            $user = $apiary->getBeekeeper();
+            $user = $apiary->getOwner();
             $hive->setBeekeeper($user);
             $hive->setQrCode(HiveProcessor::generateQR($user, $hive));
             $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4), HiveKind::class);
@@ -60,7 +60,7 @@ class HiveFixtures extends Fixture implements DependentFixtureInterface
                 ->setObservation($faker->paragraph());
             $apiary = $this->getReference('apiary_' .  $faker->numberBetween(0, 19), Apiary::class);
             $hive->setApiary($apiary);
-            $user = $apiary->getBeekeeper();
+            $user = $apiary->getOwner();
             $hive->setBeekeeper($user);
             $hive->setQrCode(HiveProcessor::generateQR($user, $hive));
             $kind = $this->getReference('kind_' .  $faker->numberBetween(0, 4), HiveKind::class);

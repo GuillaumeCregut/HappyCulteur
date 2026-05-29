@@ -34,8 +34,8 @@ class Apiary
                 $pdf->setHiveState($quantity, $name);
             }
         }
-
-        $harvests = $this->repo->findHarvestsByApiary($apiary, $apiary->getBeekeeper());
+        //TODO : Change this
+        $harvests = $this->repo->findHarvestsByApiary($apiary, $apiary->getOwner());
         $archiveHarvests = $this->getArchivesHarvests($apiary, $user);
         $harvests = array_merge($harvests, $archiveHarvests);
         $totalHarvest = $this->getTotalHarvest($harvests);

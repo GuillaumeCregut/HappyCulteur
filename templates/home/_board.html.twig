@@ -2,7 +2,7 @@
 	<div class="apiary-container">
 		<p class="item">Ruchers</p>
 		<ul class="apiaries">
-		{% for apiary in apiaries%}
+		{% for apiary in apiaries %}
 			<li>
 				<a href="{{ path('app_apiary_index', {id: apiary.id}) }}">
 					<div class="hivecard">

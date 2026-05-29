@@ -64,7 +64,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $street = null;
 
     #[ORM\Column(length: 10)]
-    #[Assert\Length(max: 10, maxMessage:'Ne pas dépasser 10 caractères')]
+    #[Assert\Length(max: 10, maxMessage: 'Ne pas dépasser 10 caractères')]
     private ?string $streetNumber = null;
 
     #[ORM\Column(length: 5)]
@@ -73,7 +73,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Apiary>
      */
-    #[ORM\OneToMany(targetEntity: Apiary::class, mappedBy: 'beekeeper')]
+    #[ORM\OneToMany(targetEntity: Apiary::class, mappedBy: 'owner')]
     private Collection $apiaries;
 
     /**
@@ -186,7 +186,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     public function __serialize(): array
     {
         $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
     }
@@ -335,7 +335,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->apiaries->contains($apiary)) {
             $this->apiaries->add($apiary);
-            $apiary->setBeekeeper($this);
+            $apiary->setOwner($this);
         }
 
         return $this;
@@ -345,8 +345,8 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->apiaries->removeElement($apiary)) {
             // set the owning side to null (unless already changed)
-            if ($apiary->getBeekeeper() === $this) {
-                $apiary->setBeekeeper(null);
+            if ($apiary->getOwner() === $this) {
+                $apiary->setOWner(null);
             }
         }
 
