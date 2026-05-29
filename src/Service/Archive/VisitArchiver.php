@@ -19,7 +19,6 @@ class VisitArchiver
         $success = true;
         try {
             foreach ($visits as $visit) {
-                $array[] = $visit;
                 $archive = new Visit();
                 $archive->setDate($visit->getDate());
                 $archive->setBeekeeper($user);
@@ -30,6 +29,7 @@ class VisitArchiver
                 $archive->setHygrometry($visit->getHygrometry());
                 $archive->setIsDisease($visit->isDisease());
                 $archive->setIsFeeded($visit->isFeeded());
+                $archive->setWeight($visit->getWeight());
                 $archive->setIsWorkToDo($visit->isWorksToDo());
                 $archive->setIsQueenVisible($visit->isQueenVisible());
                 $archive->setFeeding($visit->getFeeding());

@@ -6,14 +6,16 @@ use App\Tool\ApiaryPdf;
 use App\Constant\HiveState;
 use App\Dto\HarvestDto;
 use App\Entity\Apiary as EntityApiary;
+use App\Entity\Apiculteur;
+use App\Repository\Archive\HarvestRepository as ArchiveHarvestRepository;
 use App\Repository\HarvestRepository;
 use App\Tool\PathMaker;
 
 class Apiary
 {
-    public function __construct(private HarvestRepository $repo) {}
+    public function __construct(private HarvestRepository $repo, private ArchiveHarvestRepository $archive) {}
 
-    public function getApiaryStats(EntityApiary $apiary, string $rootPath): array
+    public function getApiaryStats(EntityApiary $apiary, string $rootPath, Apiculteur $user): array
     {
         $relativePath = PathMaker::makeApiaryStatsPath($apiary, $rootPath);
         $returnArray = [];
@@ -33,7 +35,9 @@ class Apiary
             }
         }
 
-        $harvests = $this->repo->findHarvestsByApiary($apiary, $apiary->getBeekeeper());;
+        $harvests = $this->repo->findHarvestsByApiary($apiary, $apiary->getBeekeeper());
+        $archiveHarvests = $this->getArchivesHarvests($apiary, $user);
+        $harvests = array_merge($harvests, $archiveHarvests);
         $totalHarvest = $this->getTotalHarvest($harvests);
         $returnArray['totalHarvest'] = $totalHarvest;
         $pdf->setTotalHarvest($totalHarvest);
@@ -51,6 +55,16 @@ class Apiary
         $filename = $relativePath . 'results.pdf';
         $pdf->Output('F', $rootPath . $filename);
         $returnArray['path'] = $filename;
+        return $returnArray;
+    }
+
+    private function getArchivesHarvests(EntityApiary $apiary, Apiculteur $user): array
+    {
+        $returnArray = [];
+        foreach ($apiary->getHives() as $hive) {
+            $results = $this->archive->findByHiveBeekeeperDate($user, $hive);
+            $returnArray = array_merge($returnArray, $results);
+        }
         return $returnArray;
     }
 
