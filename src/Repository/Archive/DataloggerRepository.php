@@ -19,6 +19,17 @@ class DataloggerRepository extends ServiceEntityRepository
         parent::__construct($registry, Datalogger::class);
     }
 
+    public function findByBeekeeper(Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.beekeeper = :user')
+            ->setParameter('user', $user)
+            ->orderBy('d.hive', 'ASC')
+            ->orderBy('d.dateTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByHiveAndBeekeeper(Hive $hive, Apiculteur $user): array
     {
         $hiveName = "{$hive->getName()} - {$hive->getIdentification()}";
@@ -33,7 +44,7 @@ class DataloggerRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-     public function findByHiveBetweenDates(
+    public function findByHiveBetweenDates(
         Hive $hive,
         Apiculteur $user,
         ?DateTimeImmutable $start = null,

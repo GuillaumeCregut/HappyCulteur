@@ -18,9 +18,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class DataloggerController extends AbstractController
 {
     #[Route('/archive/datalogger', name: 'index')]
-    public function index(): Response
+    public function index(#[CurrentUser] Apiculteur $user, DataloggerRepository $repo): Response
     {
-        return $this->render('archive/datalogger/index.html.twig', []);
+        $archives = $repo->findByBeekeeper($user);
+        return $this->render('archive/datalogger/index.html.twig', [
+            'archives' => $archives
+        ]);
     }
 
     #[Route('/hive/{id}', name: 'hive', methods: ['GET', 'POST'])]

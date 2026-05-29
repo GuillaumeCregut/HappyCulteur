@@ -1,20 +1,51 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello DataloggerController!{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/archives/global.css')}}">
+{% endblock %}
+{% block title %}Archives récoltes
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>F:/projets/happyculteur/src/Controller/Archive/DataloggerController.php</code></li>
-        <li>Your template at <code>F:/projets/happyculteur/templates/archive/datalogger/index.html.twig</code></li>
-    </ul>
-</div>
+	<h1 class="title">Archives des datalogger de ruches</h1>
+	<table class="archive-table">
+		<caption>Archives des dataloggers</caption>
+		<thead class="archive-table-head">
+			<tr>
+				<th class="archive-cell archive-cell-head">Date</th>
+				<th class="archive-cell archive-cell-head">Ruche</th>
+				<th class="archive-cell archive-cell-head">Identifiant</th>
+				<th class="archive-cell archive-cell-head">Poids</th>
+				<th class="archive-cell archive-cell-head">Température intérieure</th>
+				<th class="archive-cell archive-cell-head">Température extérieure</th>
+				<th class="archive-cell archive-cell-head">Hygrométrie intérieure</th>
+				<th class="archive-cell archive-cell-head">Hygrométrie extérieure</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for archive in archives %}
+				<tr>
+					<td class="archive-cell" data-label="Date">{{ archive.dateTime | date('d/m/Y')}}</td>
+					<td class="archive-cell" data-label="Ruche">{{ archive.hive }}</td>
+					<td class="archive-cell" data-label="Identitifiant">{{ archive.identification }}</td>
+					<td class="archive-cell archive-cell-center" data-label="Poids">{{ archive.weight ? archive.weight : '-' }}
+						kg</td>
+					<td class="archive-cell archive-cell-notes" data-label="Température intérieure">{{ archive.intTemp ? archive.intTemp : '-' }}
+						°C</td>
+					<td class="archive-cell archive-cell-notes" data-label="Température extérieure">{{ archive.extTemp ? archive.extTemp : '-' }}
+						°C</td>
+					<td class="archive-cell archive-cell-notes" data-label="Hygrométrie intérieure">{{ archive.extHygro ? archive.extHygro : '-' }}
+						%</td>
+					<td class="archive-cell archive-cell-notes" data-label="Hygrométrie extérieure">{{ archive.extHygro ? archive.extHygro : '-'}}
+						%</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="13">Aucune informations</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<p>
+		<a href="{{ path('app_archive_index') }}" class="form-button">Retour à l'accueil des archives</a>
+	</p>
 {% endblock %}
