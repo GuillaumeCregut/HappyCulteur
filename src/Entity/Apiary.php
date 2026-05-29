@@ -156,18 +156,6 @@ class Apiary
         return $this;
     }
 
-    public function getBeekeeper(): ?Apiculteur
-    {
-        return $this->owner;
-    }
-   
-    public function setBeekeeper(?Apiculteur $beekeeper): static
-    {
-        $this->owner = $beekeeper;
-
-        return $this;
-    }
-
     public function getOwner(): ?Apiculteur
     {
         return $this->owner;
