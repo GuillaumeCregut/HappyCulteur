@@ -50,9 +50,16 @@ class Apiary
     #[ORM\OneToMany(targetEntity: Hive::class, mappedBy: 'apiary')]
     private Collection $hives;
 
+    /**
+     * @var Collection<int, Apiculteur>
+     */
+    #[ORM\ManyToMany(targetEntity: Apiculteur::class, inversedBy: 'multiApiaries')]
+    private Collection $beekeepers;
+
     public function __construct()
     {
         $this->hives = new ArrayCollection();
+        $this->beekeepers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,6 +201,30 @@ class Apiary
                 $hive->setApiary(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Apiculteur>
+     */
+    public function getBeekeepers(): Collection
+    {
+        return $this->beekeepers;
+    }
+
+    public function addBeekeeper(Apiculteur $beekeeper): static
+    {
+        if (!$this->beekeepers->contains($beekeeper)) {
+            $this->beekeepers->add($beekeeper);
+        }
+
+        return $this;
+    }
+
+    public function removeBeekeeper(Apiculteur $beekeeper): static
+    {
+        $this->beekeepers->removeElement($beekeeper);
 
         return $this;
     }
