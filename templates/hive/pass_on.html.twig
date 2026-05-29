@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/hive.css')}}">
+{% endblock %}
+{% block title %}Transmettre la ruche{% endblock %}
+{% block body %}
+<h1 class="title">Transmettre la ruche à un autre apiculteur</h1>
+<p class="hive-form-translate-line">Nom de la ruche : {{ hive.name }}</p>
+<p class="hive-form-translate-line">Rucher actuel : {{ hive.apiary ? hive.apiary.name : 'stock' }}</p>
+
+<p class="hive-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
+{% endblock %}

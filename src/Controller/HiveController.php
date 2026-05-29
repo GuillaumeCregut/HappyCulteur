@@ -125,9 +125,9 @@ final class HiveController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if (HiveState::STOCK_HIVE === $hive->getState()) {
                 $hive->setApiary(null)
-                ->setCoordX(null)
-                ->setCoordY(null)
-                ->setCoordZ(null);
+                    ->setCoordX(null)
+                    ->setCoordY(null)
+                    ->setCoordZ(null);
             }
             $em->flush();
             return $this->redirectToRoute('app_hive_infos', ['id' => $hive->getId()]);
@@ -264,6 +264,19 @@ final class HiveController extends AbstractController
         }
         return $this->render('stock/add.html.twig', [
             'form' => $form
+        ]);
+    }
+
+    #[Route('/{id}/pass', name: 'pass_on', methods: ['GET', 'POST'])]
+    public function passOn(
+        Hive $hive,
+        Request $request,
+        #[CurrentUser] Apiculteur $user,
+        EntityManagerInterface $em,
+    ): Response {
+        $this->denyAccessUnlessGranted('own', $hive);
+        return $this->render('hive/pass_on.html.twig', [
+            'hive' => $hive
         ]);
     }
 }
