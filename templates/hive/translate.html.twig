@@ -24,6 +24,6 @@
 {% if hive.apiary is null %}
 <p class="hive-btn-container"><a href="{{ path('app_stock_home') }}" class= "form-button">Retour au stock</a></p>
 {% else %}
-<p class="hive-btn-container"><a href="{{ path('app_apiary_index', {id: hive.apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
+<p class="hive-btn-container"><a href="{{ path('app_hive_index', {id: hive.id}) }}" class= "form-button">Retour à la ruche</a></p>
 {% endif %}
 {% endblock %}
