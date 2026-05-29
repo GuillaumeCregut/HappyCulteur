@@ -18,11 +18,10 @@ class UserSelectorType extends AbstractType
                 'choice_label' => function (Apiculteur $user): string {
                     return $user->getFirstname() . ' ' . $user->getName();
                 },
-                'placeholder' => '-- Choisir un utilisateur --', 
+                'placeholder' => '-- Choisir un utilisateur --',
                 'required' => true
 
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

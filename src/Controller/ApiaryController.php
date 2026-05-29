@@ -168,8 +168,8 @@ final class ApiaryController extends AbstractController
         }
         /**@var UploadedFile $file */
         $file = $request->files->get('image');
-        if(null === $file) {
-             return $this->json(['error' => 'File is empty'], 422);
+        if (null === $file) {
+            return $this->json(['error' => 'File is empty'], 422);
         }
         $relativePath = PathMaker::makeApiaryFullCartoPath($apiary, $this->userFolderRoot);
         $fullPath = $this->userFolderRoot . $relativePath;

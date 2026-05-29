@@ -289,7 +289,7 @@ final class HiveController extends AbstractController
 
             $passer->passOn($hive, $user, $newUser, $this->userFolderRoot);
             $this->addFlash('success', "Ruche transmise avec succès.");
-            if(null === $apiary) {
+            if (null === $apiary) {
                 return $this->redirectToRoute('app_home');
             }
             return $this->redirectToRoute('app_apiary_index', ['id' => $apiary->getId()]);

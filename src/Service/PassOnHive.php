@@ -32,7 +32,7 @@ class PassOnHive
 
         $hive->setQrCode(null);
 
-        if(!$keepApiary){
+        if (!$keepApiary) {
             $hive->setApiary(null);
             $hive->setState(HiveState::STOCK_HIVE);
         }
