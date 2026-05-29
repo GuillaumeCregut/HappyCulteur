@@ -45,22 +45,32 @@
 					</div>
 				</a>
 			</li>
-            <li>
-				<a href="{{ path('app_apiary_edition', {id: apiary.id}) }}">
-					<div class="apiaries-action-card">
-						<img src="{{ asset('pictures/apiaries/edit1.png') }}" alt="paramètres" class="apiaries-action-picture">
-						<p class="apiaries-action-card-title">Editions</p>
-					</div>
-				</a>
-			</li>
-            <li>
-				<a href="{{ path('app_apiary_cartography',{id:apiary.id}) }}">
-					<div class="apiaries-action-card">
-						<img src="{{ asset('pictures/apiaries/carto.png') }}" alt="achats" class="apiaries-action-picture">
-						<p class="apiaries-action-card-title">Cartographie</p>
-					</div>
-				</a>
-			</li>
+			{% if app.user == apiary.owner %}
+				<li>
+					<a href="{{ path('app_apiary_edition', {id: apiary.id}) }}">
+						<div class="apiaries-action-card">
+							<img src="{{ asset('pictures/apiaries/edit1.png') }}" alt="Editions" class="apiaries-action-picture">
+							<p class="apiaries-action-card-title">Editions</p>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="{{ path('app_apiary_cartography',{id:apiary.id}) }}">
+						<div class="apiaries-action-card">
+							<img src="{{ asset('pictures/apiaries/carto.png') }}" alt="cartographie" class="apiaries-action-picture">
+							<p class="apiaries-action-card-title">Cartographie</p>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<div class="apiaries-action-card">
+							<img src="{{ asset('pictures/admin/user.png') }}" alt="utilisateurs" class="apiaries-action-picture">
+							<p class="apiaries-action-card-title">Gestion usagers</p>
+						</div>
+					</a>
+				</li>
+			{% endif %}
             <li>
 				<a href="{{ path('app_help_apiary') }}" target="_blank">
 					<div class="apiaries-action-card">
