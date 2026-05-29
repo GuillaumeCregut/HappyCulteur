@@ -1,55 +1,39 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{asset('styles/default/archives/visit.css')}}">
-	<link rel="stylesheet" href="{{asset('styles/default/archives/visit_hive.css')}}">
 	<link rel="stylesheet" href="{{asset('styles/default/archives/global.css')}}">
 {% endblock %}
-{% block title %}Archives visites{% endblock %}
+{% block title %}Archives récoltes
+{% endblock %}
 
 {% block body %}
-<h1 class="title">Archives des visites de ruches</h1>
-<table class="archive-table">
-        <caption>Archives des visites</caption>
+	<h1 class="title">Archives des récoltes de ruches</h1>
+	<table class="archive-table">
+		<caption>Archives des récoltes</caption>
 		<thead class="archive-table-head">
 			<tr>
 				<th class="archive-cell archive-cell-head">Date</th>
 				<th class="archive-cell archive-cell-head">Ruche</th>
-				<th class="archive-cell archive-cell-head">Climat</th>
-				<th class="archive-cell archive-cell-head">Maladie constatée</th>
-				<th class="archive-cell archive-cell-head">Nourriture effectuée</th>
-				<th class="archive-cell archive-cell-head">Travaux à faire</th>
-				<th class="archive-cell archive-cell-head">Comportement</th>
-				<th class="archive-cell archive-cell-head">Population</th>
-				<th class="archive-cell archive-cell-head">Reine visible</th>
-				<th class="archive-cell archive-cell-head">Température</th>
-				<th class="archive-cell archive-cell-head">Hygrométrie</th>
 				<th class="archive-cell archive-cell-head">Poids</th>
-				<th class="archive-cell archive-cell-head">Notes</th>
+				<th class="archive-cell archive-cell-head">Type de miel</th>
 			</tr>
 		</thead>
 		<tbody>
-			{# {% for archive in archives %}
-			    <tr>
-                    <td class="archive-cell" data-label="Date">{{ archive.date | date('d/m/Y')}}</td>
+			{% for archive in archives %}
+				<tr>
+					<td class="archive-cell" data-label="Date">{{ archive.date | date('d/m/Y')}}</td>
 					<td class="archive-cell" data-label="Ruche">{{ archive.hive }}</td>
-					<td class="archive-cell" data-label="Climat">{{ archive.weather }}</td>
-					<td class="archive-cell" data-label="Maladie">{{ archive.isDisease ? archive.disease : 'Auncune' }}</td>
-					<td class="archive-cell" data-label="Nourriture">{{ archive.isFeeded ? archive.feeding : 'Non' }}</td>
-					<td class="archive-cell archive-cell-center" data-label=" Travaux">{{ archive.isWorkToDo ? 'Oui' : 'Non' }}</td>
-					<td class="archive-cell" data-label="Comportement">{{ archive.behaviour is null ? '-' : archive.behaviour }}</td>
-					<td class="archive-cell" data-label="Population">{{ archive.population is null ? '-' : archive.population }}</td>
-					<td class="archive-cell archive-cell-center" data-label="Reine visible">{{ archive.isQueenVisible ? 'Oui' : 'Non' }}</td>
-					<td class="archive-cell archive-cell-center" data-label="Température">{{ archive.temperature is null ? '-' : archive.temperature }} °C</td>
-					<td class="archive-cell archive-cell-center" data-label="Hygrométrie">{{ archive.hygrometry is null ? '-' : archive.hygrometry }} %</td>
-					<td class="archive-cell archive-cell-center" data-label="Poids">{{ archive.weight is null ? '-' : archive.weight}} kg</td>
-					<td class="archive-cell archive-cell-notes" data-label="Notes">{{ archive.notes  is null ? '-' : archive.notes }}</td>
-			    </tr>
-            {% else %}
-                <tr>
-                    <td colspan="13">Aucune informations</td>
-                </tr>    
-				{% endfor %} #}
+					<td class="archive-cell archive-cell-center" data-label="Poids">{{ archive.weight }}
+						kg</td>
+					<td class="archive-cell archive-cell-notes" data-label="Type de miel">{{ archive.honeyKind }}</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">Aucune informations</td>
+				</tr>
+			{% endfor %}
 		</tbody>
 	</table>
-<p><a href="{{ path('app_archive_index') }}" class= "form-button">Retour à l'accueil des archives</a></p>
+	<p>
+		<a href="{{ path('app_archive_index') }}" class="form-button">Retour à l'accueil des archives</a>
+	</p>
 {% endblock %}

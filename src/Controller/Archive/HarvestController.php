@@ -18,10 +18,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class HarvestController extends AbstractController
 {
     #[Route('', name: 'index')]
-    public function index(): Response
-    {
+    public function index(
+        HarvestRepository $repo,
+        #[CurrentUser] Apiculteur $user,
+    ): Response {
+        $archives = $repo->findByBeekeeper($user);
         return $this->render('archive/harvest/index.html.twig', [
-            'controller_name' => 'HarvestController',
+            'archives' => $archives
         ]);
     }
 

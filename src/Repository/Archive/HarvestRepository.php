@@ -20,6 +20,16 @@ class HarvestRepository extends ServiceEntityRepository
         parent::__construct($registry, Harvest::class);
     }
 
+    public function findByBeekeeper(Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('h')
+            ->andWhere('h.beekeeper = :user')
+            ->setParameter('user', $user)
+            ->orderBy('h.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByHiveAndBeekeeper(Hive $hive, Apiculteur $user): array
     {
         $hiveName = "{$hive->getName()} - {$hive->getIdentification()}";
@@ -38,7 +48,7 @@ class HarvestRepository extends ServiceEntityRepository
      */
     public function findByHiveBeekeeperDate(
         Apiculteur $user,
-        ?Hive $hive,
+        Hive $hive,
         ?DateTimeImmutable $start = null,
         ?DateTimeImmutable $end = null
     ): array {
