@@ -3,6 +3,7 @@
 namespace App\Repository\Archive;
 
 use App\Entity\Hive;
+use DateTimeImmutable;
 use App\Entity\Apiculteur;
 use App\Entity\Archive\Datalogger;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,6 +31,32 @@ class DataloggerRepository extends ServiceEntityRepository
             ->orderBy('d.hive', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+     public function findByHiveBetweenDates(
+        Hive $hive,
+        Apiculteur $user,
+        ?DateTimeImmutable $start = null,
+        ?DateTimeImmutable $end = null
+    ): array {
+        $hiveName = "{$hive->getName()} - {$hive->getIdentification()}";
+        $qb = $this->createQueryBuilder('d')
+            ->where('d.hive = :hive')
+            ->andWhere('d.beekeeper = :user')
+            ->setParameter('hive', $hiveName)
+            ->setParameter('user', $user)
+            ->orderBy('d.dateTime', 'ASC');
+
+        if ($start !== null) {
+            $qb->andWhere('d.date >= :startDate')
+                ->setParameter('startDate', $start);
+        }
+
+        if ($end !== null) {
+            $qb->andWhere('d.date <= :endDate')
+                ->setParameter('endDate', $end);
+        }
+        return $qb->getQuery()->getResult();
     }
 
     //    /**
