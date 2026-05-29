@@ -4,7 +4,6 @@ namespace App\Service\Archive;
 
 use App\Entity\Apiculteur;
 use App\Entity\Archive\Harvest;
-use App\Entity\Archive\Visit;
 use App\Entity\Hive;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
