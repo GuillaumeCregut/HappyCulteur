@@ -12,6 +12,7 @@ use App\Form\ApiaryUsersType;
 use App\Repository\ApiculteurRepository;
 use App\Repository\HiveRepository;
 use App\Security\Voter\ApiaryVoter;
+use App\Service\UserConnected;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -224,6 +225,8 @@ final class ApiaryController extends AbstractController
         Apiary $apiary,
         Request $request,
         ApiculteurRepository $repo,
+        HiveRepository $hiveRepo,
+        UserConnected $userConnected,
         EntityManagerInterface $em
     ): Response {
 
@@ -233,6 +236,7 @@ final class ApiaryController extends AbstractController
             if (null === $beekeeper) {
                 throw $this->createNotFoundException('Beekeeper not found');
             }
+            $userConnected->removeHivesFromSharedApiary($beekeeper, $apiary, $hiveRepo, $em);
             $apiary->removeBeekeeper($beekeeper);
             $em->flush();
         }
