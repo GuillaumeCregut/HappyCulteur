@@ -110,7 +110,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Apiary>
      */
     #[ORM\ManyToMany(targetEntity: Apiary::class, mappedBy: 'beekeepers')]
-    private Collection $multiApiaries;
+    private Collection $sharedApiaries;
 
     public function __construct()
     {
@@ -120,7 +120,7 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->harvests = new ArrayCollection();
         $this->dataloggers = new ArrayCollection();
         $this->hives = new ArrayCollection();
-        $this->multiApiaries = new ArrayCollection();
+        $this->sharedApiaries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -513,24 +513,24 @@ class Apiculteur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Apiary>
      */
-    public function getMultiApiaries(): Collection
+    public function getSharedApiaries(): Collection
     {
-        return $this->multiApiaries;
+        return $this->sharedApiaries;
     }
 
-    public function addMultiApiary(Apiary $multiApiary): static
+    public function addSharedApiary(Apiary $multiApiary): static
     {
-        if (!$this->multiApiaries->contains($multiApiary)) {
-            $this->multiApiaries->add($multiApiary);
+        if (!$this->sharedApiaries->contains($multiApiary)) {
+            $this->sharedApiaries->add($multiApiary);
             $multiApiary->addBeekeeper($this);
         }
 
         return $this;
     }
 
-    public function removeMultiApiary(Apiary $multiApiary): static
+    public function removeSharedApiary(Apiary $multiApiary): static
     {
-        if ($this->multiApiaries->removeElement($multiApiary)) {
+        if ($this->sharedApiaries->removeElement($multiApiary)) {
             $multiApiary->removeBeekeeper($this);
         }
 

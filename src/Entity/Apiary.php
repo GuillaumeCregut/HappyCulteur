@@ -53,7 +53,7 @@ class Apiary
     /**
      * @var Collection<int, Apiculteur>
      */
-    #[ORM\ManyToMany(targetEntity: Apiculteur::class, inversedBy: 'multiApiaries')]
+    #[ORM\ManyToMany(targetEntity: Apiculteur::class, inversedBy: 'sharedApiaries')]
     private Collection $beekeepers;
 
     public function __construct()

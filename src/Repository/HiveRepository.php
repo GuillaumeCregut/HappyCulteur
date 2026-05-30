@@ -63,6 +63,17 @@ class HiveRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findHiveByApiaryAndOwner(Apiary $apiary, Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.apiary = :apiary')
+            ->andWhere('h.beekeeper = :beekeeper')
+            ->setParameter('apiary', $apiary)
+            ->setParameter('beekeeper', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Hive[] Returns an array of Hive objects
     //     */

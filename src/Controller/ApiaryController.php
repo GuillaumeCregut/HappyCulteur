@@ -8,6 +8,7 @@ use App\Service\Uploader;
 use App\Entity\Apiculteur;
 use App\Form\ApiaryFormType;
 use App\Form\ApiaryPictureType;
+use App\Repository\HiveRepository;
 use App\Security\Voter\ApiaryVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,12 +30,16 @@ final class ApiaryController extends AbstractController
     public function __construct(private readonly string $userFolderRoot) {}
 
     #[Route('/{id}', name: 'index')]
-    #[IsGranted(ApiaryVoter::BELONG, subject:'apiary')]
+    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
     public function index(
         Apiary $apiary,
+        #[CurrentUser] Apiculteur $user,
+        HiveRepository $repo,
     ): Response {
+        $hives = $repo->findHiveByApiaryAndOwner($apiary, $user);
         return $this->render('apiary/index.html.twig', [
-            'apiary' => $apiary
+            'apiary' => $apiary,
+            'hives' => $hives
         ]);
     }
 
@@ -60,7 +65,7 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/info/{id}', name: 'info')]
-    #[IsGranted(ApiaryVoter::BELONG, subject:'apiary')]
+    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
     public function info(
         Apiary $apiary,
     ): Response {
@@ -70,7 +75,7 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/update/{id}', name: 'update')]
-    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function update(
         Apiary $apiary,
         Request $request,
@@ -90,7 +95,7 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/edition/{id}', name: 'edition')]
-    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function edition(Apiary $apiary, #[CurrentUser] Apiculteur $user): Response
     {
         return $this->render('apiary/editions/index.html.twig', [
@@ -99,7 +104,7 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/cartography/{id}', name: 'cartography', methods: ['GET', 'POST'])]
-    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function cartography(
         Apiary $apiary,
         Request $request,
@@ -127,7 +132,7 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/cartography/{id}/see', name: 'see_carto')]
-    #[IsGranted(ApiaryVoter::BELONG, subject:'apiary')]
+    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
     public function seeApiaryCarto(Apiary $apiary): Response
     {
         return $this->render('apiary/carto_see.html.twig', [
@@ -137,7 +142,7 @@ final class ApiaryController extends AbstractController
     }
 
     #[Route('/cartography/save/{id}', name: 'save_carto', methods: ['POST'])]
-    #[IsGranted(ApiaryVoter::OWN, subject:'apiary')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function saveApiaryCarto(
         Request $request,
         Apiary $apiary,

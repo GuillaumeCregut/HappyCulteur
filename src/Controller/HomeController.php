@@ -22,8 +22,10 @@ final class HomeController extends AbstractController
         /**@var Apiculteur $user */
         if ($user) {
             $apiaries = $user->getApiaries();
+            $sharedAparies = $user->getSharedApiaries();
         } else {
             $apiaries = [];
+            $sharedAparies = [];
         }
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -31,7 +33,8 @@ final class HomeController extends AbstractController
             'value' => $value,
             'last_username' => $lastUsername,
             'error' => $error,
-            'apiaries' => $apiaries
+            'apiaries' => $apiaries,
+            'shared' => $sharedAparies
         ]);
     }
 

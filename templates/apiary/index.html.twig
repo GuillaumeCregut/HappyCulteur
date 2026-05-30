@@ -13,7 +13,7 @@
 	<div class="apiaries-hive-container">
 		<p class="item">Ruches</p>
 		<ul class="apiaries-hives">
-			{% for hive in apiary.hives %}
+			{% for hive in hives %}
 			<li>
 				<a href="{{ path('app_hive_index',{id: hive.id}) }}">
 					<div class="apiaries-hivecard">

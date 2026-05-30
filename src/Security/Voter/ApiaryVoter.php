@@ -50,6 +50,9 @@ final class ApiaryVoter extends Voter
 
     private function belong(Apiary $apiary, Apiculteur $user): bool
     {
-        return $user === $apiary->getOwner();
+        if ($apiary->getBeeKeepers()->contains($user) || $user === $apiary->getOwner()) {
+            return true;
+        }
+        return false;
     }
 }
