@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/apiary.css')}}">
+{% endblock %}
+{% block title %}Rucher : Ajouter un utilisateur{% endblock %}
+
+{% block body %}
+<h1 class="title">Ajout d'un utilisateur</h1>
+<p class="apiary-info">Voici la liste des utilisateurs qui partagent votre rucher.<br>
+{{ form_start(form) }}
+ {{ form_row(form.userList,  {
+     row_attr: {
+                class: 'apiary-form-user-row'
+            },
+    label: 'Utilisateur : ',
+    attr : {
+        class: 'form-input'
+    }
+    }) }}
+<button class="form-button">Valider</button>
+{{ form_end(form) }}
+<p class="return-home"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class="form-button">Retour au rucher</a></p>
+{% endblock %}

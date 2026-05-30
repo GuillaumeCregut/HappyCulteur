@@ -8,6 +8,8 @@ use App\Service\Uploader;
 use App\Entity\Apiculteur;
 use App\Form\ApiaryFormType;
 use App\Form\ApiaryPictureType;
+use App\Form\ApiaryUsersType;
+use App\Repository\ApiculteurRepository;
 use App\Repository\HiveRepository;
 use App\Security\Voter\ApiaryVoter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -177,6 +179,54 @@ final class ApiaryController extends AbstractController
         $apiary->setLastPicture($relativePath . $filename);
         $em->flush();
         return $this->json(['success' => 'success'], 200);
+    }
+
+    #[Route('/users/{id}', name: 'users_home', methods: ['GET'])]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
+    public function usersToApiary(
+        Apiary $apiary,
+    ): Response {
+        return $this->render('apiary/users.html.twig', [
+            'apiary' => $apiary,
+        ]);
+    }
+
+    #[Route('/{id}/users/add', name: 'user_add', methods: ['GET', 'POST'])]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
+    public function addUserToApiary(
+        Apiary $apiary,
+        ApiculteurRepository $userRepo,
+        Request $request,
+        EntityManagerInterface $em,
+    ): Response {
+        $owner = $apiary->getOwner();
+        $users = $apiary->getBeekeepers()->toArray();
+        $users[] = $owner;
+        $allUsers = $userRepo->findAll();
+        $availableUsers = array_udiff($allUsers, $users, fn(Apiculteur $a, Apiculteur $b) => $a->getId() - $b->getId());
+        $form = $this->createForm(ApiaryUsersType::class, null, ['users' => $availableUsers]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->get('userList')->getNormData();
+            $apiary->addBeekeeper($user);
+            $em->flush();
+            return $this->redirectToRoute('app_apiary_users_home', ['id' => $apiary->getId()]);
+        }
+        return $this->render('apiary/add_user.html.twig', [
+            'apiary' => $apiary,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/{id}/users/delete', name: 'user_delete', methods: ['POST'])]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
+    public function deleteUserToApiary(
+        Apiary $apiary,
+    ): Response {
+        //TODO: Changer pour supprimer l'utilisateur
+        return $this->render('apiary/users.html.twig', [
+            'apiary' => $apiary,
+        ]);
     }
 
     /**

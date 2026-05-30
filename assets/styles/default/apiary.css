@@ -198,6 +198,28 @@
     margin: 1rem;
 }
 
+/* Apiary users */
+.apiary-user-table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.apiary-user-table th, td{
+    text-align: left;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+.apiary-user-table caption {
+    min-width: max-content;
+    margin-bottom: 0.5rem;
+}
+
+.apiary-form-user-row{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 @media screen and (max-width: 280px) {
 
     .apiaries-actions,
