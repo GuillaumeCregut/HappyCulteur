@@ -95,7 +95,8 @@ final class HiveController extends AbstractController
         $form = $this->createForm(HiveTransferType::class, null, ['dtos' =>  $dtos]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $newId = $form->get('apiaryList')->getNormData();
+            $dto = $form->get('apiaryList')->getNormData();
+            $newId = $dto->id;
             $newApiary = $repo->findOneBy(['id' => $newId]);
             $hive->setApiary($newApiary);
             $hive->setState(HiveState::ACTIVE_HIVE);

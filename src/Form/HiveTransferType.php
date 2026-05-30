@@ -14,14 +14,11 @@ class HiveTransferType extends AbstractType
     {
         $dtos = $options['dtos'];
 
-        $choices =[];
-        /**@var ApiaryDto $dto */
-        foreach($dtos as $dto) {
-            $choices[$dto->name] = $dto->id;
-        }
         $builder
             ->add('apiaryList', ChoiceType::class,[
-                'choices'=> $choices,
+                'choices'=> $dtos,
+                'choice_label' => fn(ApiaryDto $dto) => $dto->name,
+                'choice_value' => fn(?ApiaryDto $dto) => $dto?->id,
             ])
         ;
     }
