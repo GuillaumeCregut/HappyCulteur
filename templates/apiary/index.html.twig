@@ -17,7 +17,7 @@
 			<li>
 				<a href="{{ path('app_hive_index',{id: hive.id}) }}">
 					<div class="apiaries-hivecard">
-						<img src="{{ asset('uploads/' ~ hive.kind.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
+						<img src="{{ asset('uploads/' ~ hive.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
 						<p class="apiaries-hivecard-title">{{ hive.name }}</p>
 					</div>
 				</a>
@@ -39,8 +39,8 @@
 		<ul class="apiaries-hives">
 			{% for hive in othersHives %}
 			<li>
-					<div class="apiaries-hivecard  apiaries-hivecard-others" data-label ="{{ hive.beekeeper.firstname ~ ' ' ~ hive.beekeeper.name }}">
-						<img src="{{ asset('uploads/' ~ hive.kind.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
+					<div class="apiaries-hivecard  apiaries-hivecard-others" data-label ="{{ hive.beekeeperFirstname ~ ' ' ~ hive.beekeeperName }}">
+						<img src="{{ asset('uploads/' ~ hive.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
 						<p class="apiaries-hivecard-title">{{ hive.name }}</p>
 					</div>
 			</li>

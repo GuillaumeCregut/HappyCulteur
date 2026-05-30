@@ -36,11 +36,11 @@ final class ApiaryController extends AbstractController
         #[CurrentUser] Apiculteur $user,
         HiveRepository $repo,
     ): Response {
-        $allHives = $repo->findBy(['apiary'=> $apiary->getId()]);
+        $allHives = $repo->findHivesForApiaryDisplay($apiary);
         $hives = [];
-        $otherHives = []; 
-        foreach($allHives as $hive) {
-            if($user === $hive->getBeekeeper()) {
+        $otherHives = [];
+        foreach ($allHives as $hive) {
+            if ($user->getId() === $hive['beekeeper']) {
                 $hives[] = $hive;
             } else {
                 $otherHives[] = $hive;
@@ -48,7 +48,7 @@ final class ApiaryController extends AbstractController
         }
         return $this->render('apiary/index.html.twig', [
             'apiary' => $apiary,
-            'hives' => $hives, 
+            'hives' => $hives,
             'othersHives' => $otherHives,
         ]);
     }
