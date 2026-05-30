@@ -34,7 +34,7 @@ class Apiary
                 $pdf->setHiveState($quantity, $name);
             }
         }
-        //TODO : Change this
+        //TODO : Change this to have only user's harvests
         $harvests = $this->repo->findHarvestsByApiary($apiary, $apiary->getOwner());
         $archiveHarvests = $this->getArchivesHarvests($apiary, $user);
         $harvests = array_merge($harvests, $archiveHarvests);
