@@ -181,7 +181,7 @@ final class ApiaryController extends AbstractController
         return $this->json(['success' => 'success'], 200);
     }
 
-    #[Route('/users/{id}', name: 'users_home', methods: ['GET'])]
+    #[Route('/{id}/users', name: 'users_home', methods: ['GET'])]
     #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function usersToApiary(
         Apiary $apiary,
@@ -222,11 +222,21 @@ final class ApiaryController extends AbstractController
     #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function deleteUserToApiary(
         Apiary $apiary,
+        Request $request,
+        ApiculteurRepository $repo,
+        EntityManagerInterface $em
     ): Response {
-        //TODO: Changer pour supprimer l'utilisateur
-        return $this->render('apiary/users.html.twig', [
-            'apiary' => $apiary,
-        ]);
+
+        if ($this->isCsrfTokenValid('delete' . $apiary->getId(), $request->request->get('_token'))) {
+            $id = (int) $request->request->get('beekeeperId');
+            $beekeeper = $repo->findOneBy(['id' => $id]);
+            if (null === $beekeeper) {
+                throw $this->createNotFoundException('Beekeeper not found');
+            }
+            $apiary->removeBeekeeper($beekeeper);
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_apiary_users_home', ['id' => $apiary->getId()]);
     }
 
     /**
