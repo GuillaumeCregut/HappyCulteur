@@ -33,6 +33,7 @@ final class AdminController extends AbstractController
     public function removeUser(Request $request, Apiculteur $user, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
+            //TODO purger tout l'utilisateur avant de le supprimer
             $em->remove($user);
             $em->flush();
         }

@@ -19,12 +19,24 @@ class ApiaryRepository extends ServiceEntityRepository
 
     public function findByBeekeeper(Apiculteur $beekeeper): array
     {
-        return $this->createQueryBuilder('a')
-            ->Where('a.beekeeper = :beekeeper')
-            ->setParameter('beekeeper', $beekeeper)
-            ->orderBy('a.name', 'ASC')
+        $owned = $this->createQueryBuilder('a')
+            ->where('a.owner = :user')
+            ->setParameter('user', $beekeeper)
             ->getQuery()
             ->getResult();
+        $shared = $this->createQueryBuilder('a')
+            ->join('a.beekeepers', 'u')
+            ->where('u = :user')
+            ->setParameter('user', $beekeeper)
+            ->getQuery()
+            ->getResult();
+        $merged = array_merge($owned, $shared);
+
+        $unique = [];
+        foreach ($merged as $entity) {
+            $unique[$entity->getId()] = $entity;
+        }
+        return array_values($unique);
     }
 
     public function findApiaryHiveCountbyBeekeeper(Apiculteur $user): array
@@ -32,7 +44,7 @@ class ApiaryRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('ap')
             ->select('ap.name', 'COUNT(hv.id) AS hiveCount')
             ->leftJoin('ap.hives', 'hv')
-            ->where('ap.beekeeper = :beekeeper')
+            ->where('ap.owner = :beekeeper')
             ->setParameter('beekeeper', $user)
             ->groupBy('ap.id')
             ->orderBy('ap.name', 'ASC');

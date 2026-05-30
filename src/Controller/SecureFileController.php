@@ -7,6 +7,7 @@ use App\Entity\Apiary;
 use App\Tool\PathMaker;
 use App\Entity\Apiculteur;
 use App\Dto\DataloggerStatsDto;
+use App\Security\Voter\ApiaryVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,13 +22,11 @@ final class SecureFileController extends AbstractController
     public function __construct(private readonly string $userFolderRoot) {}
 
     #[Route('/declaration/{id}', name: 'declaration')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function index(
         #[CurrentUser] Apiculteur $user,
         Apiary $apiary
     ): Response {
-        if ($user !== $apiary->getBeekeeper()) {
-            throw $this->createAccessDeniedException();
-        }
         $relativePath = PathMaker::makeApiaryDeclarationPath($user, $this->userFolderRoot);
         $fullPath = $this->userFolderRoot . $relativePath;
         $filename = "declaration_{$apiary->getIdentification()}.pdf";
@@ -45,13 +44,10 @@ final class SecureFileController extends AbstractController
     }
 
     #[Route('/carto/apiary/{id}', name: 'carto_apiary')]
+    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
     public function apiaryCarto(
         Apiary $apiary,
-        #[CurrentUser] Apiculteur $user,
     ): Response {
-        if ($user !== $apiary->getBeekeeper()) {
-            throw $this->createAccessDeniedException();
-        }
         $filename = $this->userFolderRoot . $apiary->getPathImage();
         return $this->file($filename);
     }
@@ -156,14 +152,10 @@ final class SecureFileController extends AbstractController
     }
 
     #[Route('/stats/results/apiary/{id}', name: 'stats_apiary_results_file')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function apiaryResults(
-        Apiary $apiary,
         Request $request,
-        #[CurrentUser] Apiculteur $user,
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         $data = $request->getSession()->get('apiary_stats_results');
         $filename = $this->userFolderRoot . $data;
         return $this->file($filename);

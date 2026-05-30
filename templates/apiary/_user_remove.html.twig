@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_apiary_user_delete', {'id': apiary.id}) }}" onsubmit="return confirm('Voulez vous supprimer cet utilisateur ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ apiary.id) }}">
+    <input type="hidden" name="beekeeperId" value="{{ beekeeper.id }}">
+    <button class="form-button">Supprimer</button>
+</form>

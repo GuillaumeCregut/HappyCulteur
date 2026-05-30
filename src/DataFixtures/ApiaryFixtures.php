@@ -22,7 +22,7 @@ class ApiaryFixtures extends Fixture  implements DependentFixtureInterface
                 ->setLocalisation($faker->city())
                 ->setIdentification($faker->bothify('???###'));
             $user = $this->getReference('admin', Apiculteur::class);
-            $apiary->setBeekeeper($user);
+            $apiary->setOwner($user);
             $manager->persist($apiary);
             $this->addReference('apiary_admin_' . $i, $apiary);
         }
@@ -33,7 +33,7 @@ class ApiaryFixtures extends Fixture  implements DependentFixtureInterface
                 ->setLocalisation($faker->city())
                 ->setIdentification($faker->bothify('???###'));
             $user = $this->getReference('user_' .  $faker->numberBetween(0, 4), Apiculteur::class);
-            $apiary->setBeekeeper($user);
+            $apiary->setOwner($user);
             $manager->persist($apiary);
             $this->addReference('apiary_' . $i, $apiary);
         }

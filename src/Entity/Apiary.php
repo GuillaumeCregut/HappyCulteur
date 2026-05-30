@@ -42,7 +42,7 @@ class Apiary
 
     #[ORM\ManyToOne(inversedBy: 'apiaries')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Apiculteur $beekeeper = null;
+    private ?Apiculteur $owner = null;
 
     /**
      * @var Collection<int, Hive>
@@ -50,9 +50,16 @@ class Apiary
     #[ORM\OneToMany(targetEntity: Hive::class, mappedBy: 'apiary')]
     private Collection $hives;
 
+    /**
+     * @var Collection<int, Apiculteur>
+     */
+    #[ORM\ManyToMany(targetEntity: Apiculteur::class, inversedBy: 'sharedApiaries')]
+    private Collection $beekeepers;
+
     public function __construct()
     {
         $this->hives = new ArrayCollection();
+        $this->beekeepers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,14 +163,14 @@ class Apiary
         return $this;
     }
 
-    public function getBeekeeper(): ?Apiculteur
+    public function getOwner(): ?Apiculteur
     {
-        return $this->beekeeper;
+        return $this->owner;
     }
 
-    public function setBeekeeper(?Apiculteur $beekeeper): static
+    public function setOwner(?Apiculteur $beekeeper): static
     {
-        $this->beekeeper = $beekeeper;
+        $this->owner = $beekeeper;
 
         return $this;
     }
@@ -194,6 +201,30 @@ class Apiary
                 $hive->setApiary(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Apiculteur>
+     */
+    public function getBeekeepers(): Collection
+    {
+        return $this->beekeepers;
+    }
+
+    public function addBeekeeper(Apiculteur $beekeeper): static
+    {
+        if (!$this->beekeepers->contains($beekeeper)) {
+            $this->beekeepers->add($beekeeper);
+        }
+
+        return $this;
+    }
+
+    public function removeBeekeeper(Apiculteur $beekeeper): static
+    {
+        $this->beekeepers->removeElement($beekeeper);
 
         return $this;
     }

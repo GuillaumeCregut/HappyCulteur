@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('styles/default/apiary.css')}}">
+{% endblock %}
+{% block title %}Rucher : Utilisateurs{% endblock %}
+
+{% block body %}
+<h1 class="title">Gestion des utilisateurs</h1>
+<p class="apiary-info">Voici la liste des utilisateurs qui partagent votre rucher.<br>
+Vous pouvez ajouter ou supprimer ces utilisateurs. Si vous supprimer un utilisateur, ses ruches seront automatiquement restockées chez lui.</p>
+<table class="apiary-user-table">
+    <caption>Utilisateurs possédant des ruches sur ce rucher</caption>
+    <thead>
+        <tr>
+            <th>Action</th>
+            <th>Nom - Prénom</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for beekeeper in apiary.beekeepers %}
+        <tr>
+            <td>{{ include('apiary/_user_remove.html.twig') }}</td>
+            <td>{{ beekeeper.name ~ ' ' ~ beekeeper.firstname }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2">Aucun utilisteur invité</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="return-home"><a href="{{ path('app_apiary_user_add', {id: apiary.id}) }}" class="form-button">Ajouter un utilisateur</a></p>
+<p class="return-home"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class="form-button">Retour au rucher</a></p>
+{% endblock %}

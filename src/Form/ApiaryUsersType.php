@@ -2,32 +2,32 @@
 
 namespace App\Form;
 
-use App\Dto\ApiaryDto;
+use App\Entity\Apiculteur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class HiveTransferType extends AbstractType
+class ApiaryUsersType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $dtos = $options['dtos'];
+        $users = $options['users'];
 
         $builder
-            ->add('apiaryList', ChoiceType::class,[
-                'choices'=> $dtos,
-                'choice_label' => fn(ApiaryDto $dto) => $dto->name,
-                'choice_value' => fn(?ApiaryDto $dto) => $dto?->id,
-            ])
-        ;
+            ->add('userList', ChoiceType::class, [
+                'choices' => $users,
+                'choice_label' => fn(Apiculteur $user) => "{$user->getFirstname()} {$user->getName()}",
+                'choice_value' => fn(?Apiculteur $user) => $user?->getId(),
+                'placeholder' => '-- Choisir un utilisateur --',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'dtos'       => [], 
+            'users'       => [],
         ]);
     }
 }

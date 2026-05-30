@@ -2,7 +2,7 @@
 	<div class="apiary-container">
 		<p class="item">Ruchers</p>
 		<ul class="apiaries">
-		{% for apiary in apiaries%}
+		{% for apiary in apiaries %}
 			<li>
 				<a href="{{ path('app_apiary_index', {id: apiary.id}) }}">
 					<div class="hivecard">
@@ -28,6 +28,22 @@
 					</div>
 				</a>
 			</li>
+		</ul>
+	</div>
+	<hr>
+	<div class="apiary-container">
+		<p class="item">Ruchers partagés</p>
+		<ul class="apiaries">
+		{% for apiary in shared %}
+			<li>
+				<a href="{{ path('app_apiary_index', {id: apiary.id}) }}">
+					<div class="hivecard">
+						<img src="{{ asset('pictures/apiaries/sharedApiary.png') }}" alt="rucher1" class="apiary-picture">
+						<p class="apiary-card-title">{{ apiary.name }}</p>
+					</div>
+				</a>
+			</li>
+			{% endfor %}
 		</ul>
 	</div>
     <hr>

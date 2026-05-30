@@ -15,6 +15,7 @@ use App\Service\Stats\Beekeeper;
 use App\Service\Stats\Datalogger;
 use App\Service\Stats\Hygrometry;
 use App\Service\Stats\HiveResults;
+use App\Security\Voter\ApiaryVoter;
 use Symfony\Component\Form\FormError;
 use App\Service\Stats\Apiary as StatsApiary;
 use Symfony\Component\HttpFoundation\Request;
@@ -330,15 +331,13 @@ final class StatsController extends AbstractController
     }
 
     #[Route('/apiary/{id}/results', name: 'apiary_results')]
+    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
     public function apiaryResult(
         Apiary $apiary,
         Request $request,
         #[CurrentUser] Apiculteur $user,
         StatsApiary $statsApiary,
     ): Response {
-        if ($apiary->getBeekeeper()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
         $stats = $statsApiary->getApiaryStats($apiary, $this->userFolderRoot, $user);
         $request->getSession()->set('apiary_stats_results', $stats['path']);
         return $this->render('stats/apiary/index.html.twig', [

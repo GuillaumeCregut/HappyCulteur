@@ -13,11 +13,11 @@
 	<div class="apiaries-hive-container">
 		<p class="item">Ruches</p>
 		<ul class="apiaries-hives">
-			{% for hive in apiary.hives %}
+			{% for hive in hives %}
 			<li>
 				<a href="{{ path('app_hive_index',{id: hive.id}) }}">
 					<div class="apiaries-hivecard">
-						<img src="{{ asset('uploads/' ~ hive.kind.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
+						<img src="{{ asset('uploads/' ~ hive.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
 						<p class="apiaries-hivecard-title">{{ hive.name }}</p>
 					</div>
 				</a>
@@ -34,6 +34,20 @@
 		</ul>
 	</div>
     <hr>
+	<div class="apiaries-hive-container">
+		<p class="item">Ruches des autres apiculteurs</p>
+		<ul class="apiaries-hives">
+			{% for hive in othersHives %}
+			<li>
+					<div class="apiaries-hivecard  apiaries-hivecard-others" data-label ="{{ hive.beekeeperFirstname ~ ' ' ~ hive.beekeeperName }}">
+						<img src="{{ asset('uploads/' ~ hive.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
+						<p class="apiaries-hivecard-title">{{ hive.name }}</p>
+					</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<hr>
 	<div class="apiaries-actions-container">
 		<p class="item">Divers</p>
 		<ul class="apiaries-actions">
@@ -45,22 +59,32 @@
 					</div>
 				</a>
 			</li>
-            <li>
-				<a href="{{ path('app_apiary_edition', {id: apiary.id}) }}">
-					<div class="apiaries-action-card">
-						<img src="{{ asset('pictures/apiaries/edit1.png') }}" alt="paramètres" class="apiaries-action-picture">
-						<p class="apiaries-action-card-title">Editions</p>
-					</div>
-				</a>
-			</li>
-            <li>
-				<a href="{{ path('app_apiary_cartography',{id:apiary.id}) }}">
-					<div class="apiaries-action-card">
-						<img src="{{ asset('pictures/apiaries/carto.png') }}" alt="achats" class="apiaries-action-picture">
-						<p class="apiaries-action-card-title">Cartographie</p>
-					</div>
-				</a>
-			</li>
+			{% if app.user == apiary.owner %}
+				<li>
+					<a href="{{ path('app_apiary_edition', {id: apiary.id}) }}">
+						<div class="apiaries-action-card">
+							<img src="{{ asset('pictures/apiaries/edit1.png') }}" alt="Editions" class="apiaries-action-picture">
+							<p class="apiaries-action-card-title">Editions</p>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="{{ path('app_apiary_cartography',{id:apiary.id}) }}">
+						<div class="apiaries-action-card">
+							<img src="{{ asset('pictures/apiaries/carto.png') }}" alt="cartographie" class="apiaries-action-picture">
+							<p class="apiaries-action-card-title">Cartographie</p>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="{{ path('app_apiary_users_home', {id: apiary.id}) }}">
+						<div class="apiaries-action-card">
+							<img src="{{ asset('pictures/admin/user.png') }}" alt="utilisateurs" class="apiaries-action-picture">
+							<p class="apiaries-action-card-title">Gestion usagers</p>
+						</div>
+					</a>
+				</li>
+			{% endif %}
             <li>
 				<a href="{{ path('app_help_apiary') }}" target="_blank">
 					<div class="apiaries-action-card">

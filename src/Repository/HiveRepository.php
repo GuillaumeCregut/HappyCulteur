@@ -63,28 +63,36 @@ class HiveRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    //    /**
-    //     * @return Hive[] Returns an array of Hive objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('h.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findHiveByApiaryAndOwner(Apiary $apiary, Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.apiary = :apiary')
+            ->andWhere('h.beekeeper = :beekeeper')
+            ->setParameter('apiary', $apiary)
+            ->setParameter('beekeeper', $user)
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Hive
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findHivesByApiariesNotOwner(Apiary $apiary, Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.apiary = :apiary')
+            ->andWhere('h.beekeeper <> :beekeeper')
+            ->setParameter('apiary', $apiary)
+            ->setParameter('beekeeper', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findHivesForApiaryDisplay(Apiary $apiary): array
+    {
+        $qb = $this->createQueryBuilder('h')
+            ->select('h.name', 'h.id', 'h.state', 'k.picture', 'b.name as beekeeperName', 'b.firstname  as beekeeperFirstname', 'b.id as beekeeper',)
+            ->join('h.beekeeper', 'b')
+            ->join('h.kind', 'k')
+            ->where('h.apiary = :apiary')
+            ->setParameter('apiary', $apiary);
+        return $qb->getQuery()->getResult();
+    }
 }

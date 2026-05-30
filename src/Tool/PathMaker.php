@@ -167,7 +167,7 @@ class PathMaker
 
     public static function makeApiaryStatsPath(Apiary $apiary, string $basePath): string
     {
-        $user = $apiary->getBeekeeper();
+        $user = $apiary->getOwner();
         $path = $user->getId() . DIRECTORY_SEPARATOR;
         $path .= 'stats' . DIRECTORY_SEPARATOR . 'apiary' . DIRECTORY_SEPARATOR;
         $path .= $apiary->getId() . DIRECTORY_SEPARATOR;
@@ -178,7 +178,7 @@ class PathMaker
 
     public static function makeApiaryFullCartoPath(Apiary $apiary, string $basePath): string
     {
-        $user = $apiary->getBeekeeper();
+        $user = $apiary->getOwner();
         $path = $user->getId() . DIRECTORY_SEPARATOR;
         $path .= 'carto' . DIRECTORY_SEPARATOR . 'apiary' . DIRECTORY_SEPARATOR;
         $path .= $apiary->getId() . DIRECTORY_SEPARATOR;

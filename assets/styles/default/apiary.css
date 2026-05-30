@@ -88,6 +88,28 @@
     margin-right: 5px;
 }
 
+.apiaries-hivecard-others {
+    position: relative;
+}
+
+.apiaries-hivecard-others::before {
+    position: absolute;
+    content : attr(data-label);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: yellow;
+    padding: 3px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: max-content;
+}
+
+.apiaries-hivecard-others:hover::before {
+    display: flex;
+}
+
 .apiaries-hivecard:hover {
     background-color: #ccffff;
 }
@@ -174,6 +196,28 @@
     width: 40%;
     padding: 1rem;
     margin: 1rem;
+}
+
+/* Apiary users */
+.apiary-user-table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.apiary-user-table th, td{
+    text-align: left;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+.apiary-user-table caption {
+    min-width: max-content;
+    margin-bottom: 0.5rem;
+}
+
+.apiary-form-user-row{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 @media screen and (max-width: 280px) {

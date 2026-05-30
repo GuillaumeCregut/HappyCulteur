@@ -2,8 +2,13 @@
 
 namespace App\Service;
 
+use App\Constant\HiveState;
+use App\Entity\Apiary;
 use App\Entity\Apiculteur;
+use App\Entity\Hive;
+use App\Repository\HiveRepository;
 use App\Tool\PathMaker;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -19,6 +24,17 @@ class UserConnected
             $test[] = $fullPath;
             $this->removePath($fullPath);
         }
+    }
+
+    public function removeHivesFromSharedApiary(Apiculteur $user, Apiary $apiary, HiveRepository $repo, EntityManagerInterface $em): void
+    {
+        /**@var Hive[] $hives */
+        $hives = $repo->findHiveByApiaryAndOwner($apiary, $user);
+        foreach ($hives as $hive) {
+            $hive->setApiary(null);
+            $hive->setState(HiveState::STOCK_HIVE);
+        }
+        $em->flush();
     }
 
     private function removePath(string $path): void
