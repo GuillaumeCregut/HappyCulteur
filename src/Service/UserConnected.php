@@ -30,7 +30,7 @@ class UserConnected
     {
         /**@var Hive[] $hives */
         $hives = $repo->findHiveByApiaryAndOwner($apiary, $user);
-        foreach($hives as $hive) {
+        foreach ($hives as $hive) {
             $hive->setApiary(null);
             $hive->setState(HiveState::STOCK_HIVE);
         }

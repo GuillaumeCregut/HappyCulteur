@@ -15,20 +15,19 @@ class ApiaryUsersType extends AbstractType
         $users = $options['users'];
 
         $builder
-            ->add('userList', ChoiceType::class,[
-                'choices'=> $users,
+            ->add('userList', ChoiceType::class, [
+                'choices' => $users,
                 'choice_label' => fn(Apiculteur $user) => "{$user->getFirstname()} {$user->getName()}",
                 'choice_value' => fn(?Apiculteur $user) => $user?->getId(),
                 'placeholder' => '-- Choisir un utilisateur --',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'users'       => [], 
+            'users'       => [],
         ]);
     }
 }
