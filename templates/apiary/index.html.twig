@@ -34,6 +34,20 @@
 		</ul>
 	</div>
     <hr>
+	<div class="apiaries-hive-container">
+		<p class="item">Ruches des autres apiculteurs</p>
+		<ul class="apiaries-hives">
+			{% for hive in othersHives %}
+			<li>
+					<div class="apiaries-hivecard  apiaries-hivecard-others" data-label ="{{ hive.beekeeper.firstname ~ ' ' ~ hive.beekeeper.name }}">
+						<img src="{{ asset('uploads/' ~ hive.kind.picture ~ hive.state.label ~ '.png') }}" alt="icon {{ hive.name }}" class="apiaries-hives-picture">
+						<p class="apiaries-hivecard-title">{{ hive.name }}</p>
+					</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<hr>
 	<div class="apiaries-actions-container">
 		<p class="item">Divers</p>
 		<ul class="apiaries-actions">
