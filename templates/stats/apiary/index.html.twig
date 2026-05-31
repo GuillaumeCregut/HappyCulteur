@@ -26,6 +26,6 @@
         <li>Aucune récolte</li>    
     {% endfor %}
 </ul>
-<p class="stats-line"><a href="{{ path('app_secure_stats_apiary_results_file', {id:apiary.id}) }}"><img src="{{asset('pictures/pdf.png')}}" alt="imprimer"></a>
+<p class="stats-line"><a href="{{ path('app_secure_stats_apiary_results_file', {id:apiary.id}) }}"><img src="{{asset('pictures/options/pdf.png')}}" alt="imprimer"></a>
 <p class="apiary-edition-btn-container"><a href="{{ path('app_apiary_index', {id: apiary.id}) }}" class= "form-button">Retour au rucher</a></p>
 {% endblock %}

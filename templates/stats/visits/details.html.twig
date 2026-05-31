@@ -10,7 +10,7 @@
 <p class="stats-line">Ruche : {{ hive.name }}</p>
 <p class="stats-line">Recherche du {{ startDate}} au {{ endDate }} </p>
 {% if doc %}
-<p class="stats-line"><a href="{{ path('app_secure_stats_visit_hive', {id: hive.id}) }}" download><img src="{{ asset('pictures/print.png') }}" alt="imprimer" class="stat-visit-print-picture"></a></p>
+<p class="stats-line"><a href="{{ path('app_secure_stats_visit_hive', {id: hive.id}) }}" download><img src="{{ asset('pictures/options/print.png') }}" alt="imprimer" class="stat-visit-print-picture"></a></p>
 {% endif %}
 <ul class="stats-visit-container">
 {% for visit in visits %}
