@@ -51,6 +51,16 @@ class ApiaryRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findByBeekeeperInShared(Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.beekeepers', 'b')
+            ->where('b = :beekeeper')
+            ->setParameter('beekeeper', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Apiary[] Returns an array of Apiary objects
     //     */

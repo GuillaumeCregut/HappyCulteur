@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Apiculteur;
 use App\Entity\Hive;
 use App\Entity\Visit;
 use DateTimeImmutable;
@@ -19,7 +20,7 @@ class VisitRepository extends ServiceEntityRepository
     }
 
     public function findByhiveAndDates(
-        Hive $hive, 
+        Hive $hive,
         DateTimeImmutable $endDate,
         ?DateTimeImmutable $startDate = null,
     ): array {
@@ -29,7 +30,7 @@ class VisitRepository extends ServiceEntityRepository
             ->setParameter('hive', $hive)
             ->setParameter('endDate', $endDate)
             ->orderBy('v.date', 'ASC');
-        if(null !== $startDate) {
+        if (null !== $startDate) {
             $query->andWhere('v.date>= :startDate')
                 ->setParameter('startDate', $startDate);
         }
@@ -37,20 +38,20 @@ class VisitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    //    /**
-    //     * @return Visit[] Returns an array of Visit objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return Visit[] Returns an array of Visit objects
+     */
+    public function findByBeekeper(Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('v')
+            ->join('v.hive', 'h')
+            ->andWhere('h.beekeeper = :val')
+            ->setParameter('val', $user)
+            ->orderBy('v.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Visit
     //    {

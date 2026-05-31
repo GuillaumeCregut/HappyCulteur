@@ -8,6 +8,12 @@ use App\Entity\Apiculteur;
 
 class PathMaker
 {
+    public static function makeUserPath(Apiculteur $user): string
+    {
+        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        return $path;
+    }
+
     /**
      * Will create and return the relative path where to store datalogger config file
      * 
@@ -18,7 +24,7 @@ class PathMaker
      */
     public static function makeDataloggerConfigPath(Apiculteur $user, Hive $hive, string $basePath): string
     {
-        $path =  $user->getId() . DIRECTORY_SEPARATOR;
+        $path =  self::makeUserPath($user);
         $path .= 'datalogger' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
         $path .= $hive->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -36,7 +42,8 @@ class PathMaker
      */
     public static function makeDataloggerFilePath(Apiculteur $user, Hive $hive, string $basePath): string
     {
-        $fullPath = $basePath . $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
+        $fullPath = $basePath . $path;
         $fullPath .= 'datalogger' . DIRECTORY_SEPARATOR . 'datas' . DIRECTORY_SEPARATOR;
         $fullPath .= $hive->getId() . DIRECTORY_SEPARATOR;
         self::makeFolder($fullPath);
@@ -54,7 +61,7 @@ class PathMaker
      */
     public static function makeUserHiveStatPath(Apiculteur $user, Hive $hive, string $typeDoc, string $basePath): string
     {
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'stats' . DIRECTORY_SEPARATOR . $typeDoc . DIRECTORY_SEPARATOR;
         $path .= $hive->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -71,7 +78,7 @@ class PathMaker
      */
     public static function makeApiaryDeclarationPath(Apiculteur $user, string $basePath): string
     {
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'documents' . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
         self::makeFolder($fullPath);
@@ -88,7 +95,7 @@ class PathMaker
      */
     public static function makeCartoApiaryPath(Apiculteur $user, Apiary $apiary, string $basePath): string
     {
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'carto' . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
         self::makeFolder($fullPath);
@@ -127,7 +134,7 @@ class PathMaker
 
     public static function makeStatPicturePath(Apiculteur $user, Hive $hive,  string $basePath): string
     {
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'stats' . DIRECTORY_SEPARATOR . 'pictures' . DIRECTORY_SEPARATOR;
         $path .= $hive->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -137,7 +144,7 @@ class PathMaker
 
     public static function makeDataloggerPicturePath(Apiculteur $user, Hive $hive,  string $basePath): string
     {
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'stats' . DIRECTORY_SEPARATOR . 'datalogger' . DIRECTORY_SEPARATOR;
         $path .= $hive->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -147,7 +154,7 @@ class PathMaker
 
     public static function makeHarvestPicturePath(Apiculteur $user, Hive $hive, string $basePath): string
     {
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'stats' . DIRECTORY_SEPARATOR . 'harvests' . DIRECTORY_SEPARATOR;
         $path .= $hive->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -157,7 +164,7 @@ class PathMaker
 
     public static function makeHiveResultPath(Apiculteur $user, Hive $hive, string $basePath): string
     {
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'stats' . DIRECTORY_SEPARATOR . 'results' . DIRECTORY_SEPARATOR;
         $path .= $hive->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -168,7 +175,7 @@ class PathMaker
     public static function makeApiaryStatsPath(Apiary $apiary, string $basePath): string
     {
         $user = $apiary->getOwner();
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'stats' . DIRECTORY_SEPARATOR . 'apiary' . DIRECTORY_SEPARATOR;
         $path .= $apiary->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -179,7 +186,7 @@ class PathMaker
     public static function makeApiaryFullCartoPath(Apiary $apiary, string $basePath): string
     {
         $user = $apiary->getOwner();
-        $path = $user->getId() . DIRECTORY_SEPARATOR;
+        $path = self::makeUserPath($user);
         $path .= 'carto' . DIRECTORY_SEPARATOR . 'apiary' . DIRECTORY_SEPARATOR;
         $path .= $apiary->getId() . DIRECTORY_SEPARATOR;
         $fullPath = $basePath . $path;
@@ -187,19 +194,11 @@ class PathMaker
         return $path;
     }
 
-
-    private static function makeFolder(string $fullPath): void
-    {
-        if (!is_dir($fullPath)) {
-            mkdir($fullPath, 0744, true);
-        }
-    }
-
     public static function getCleanPaths(Apiculteur $user): array
     {
         $returnArray = [];
         //Documents
-        $documentPath = $user->getId() . DIRECTORY_SEPARATOR;
+        $documentPath = self::makeUserPath($user);
         $documentPath .= 'documents' . DIRECTORY_SEPARATOR;
         $returnArray['documents'] = $documentPath;
         //Dataloggers datas
@@ -211,5 +210,12 @@ class PathMaker
         $statsPath .= 'stats' . DIRECTORY_SEPARATOR;
         $returnArray['stats'] = $statsPath;
         return $returnArray;
+    }
+
+    private static function makeFolder(string $fullPath): void
+    {
+        if (!is_dir($fullPath)) {
+            mkdir($fullPath, 0744, true);
+        }
     }
 }

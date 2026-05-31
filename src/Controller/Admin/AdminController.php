@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Apiculteur;
 use App\Repository\ApiculteurRepository;
+use App\Service\UserConnected;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[Route('/admin', name: 'app_admin_')]
 final class AdminController extends AbstractController
 {
+    public function __construct(private readonly string $userFolderRoot) {}
+
     #[Route('', name: 'index')]
     public function index(): Response
     {
@@ -30,10 +33,14 @@ final class AdminController extends AbstractController
     }
 
     #[Route('/user/delete/{id}', name: 'user_delete', methods: ['POST'])]
-    public function removeUser(Request $request, Apiculteur $user, EntityManagerInterface $em): Response
-    {
+    public function removeUser(
+        Request $request,
+        Apiculteur $user,
+        UserConnected $manager,
+        EntityManagerInterface $em
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
-            //TODO purger tout l'utilisateur avant de le supprimer
+            $manager->removeUser($user, $this->userFolderRoot, $em);
             $em->remove($user);
             $em->flush();
         }
@@ -46,16 +53,16 @@ final class AdminController extends AbstractController
         Request $request,
         EntityManagerInterface $em
     ): JsonResponse {
-        if(!$user) {
+        if (!$user) {
             return new JsonResponse(['error' => 'User not found'], 404);
         }
         $data = json_decode($request->getContent(), true);
         $isAdmin = $data['isAdmin'] ?? false;
-        $roles = $isAdmin 
-        ? array_unique([...$user->getRoles(), 'ROLE_ADMIN']) 
-        : array_filter($user->getRoles(), fn($role) => $role !== 'ROLE_ADMIN');
+        $roles = $isAdmin
+            ? array_unique([...$user->getRoles(), 'ROLE_ADMIN'])
+            : array_filter($user->getRoles(), fn($role) => $role !== 'ROLE_ADMIN');
         $user->setRoles(array_values($roles));
         $em->flush();
-        return new JsonResponse(['success' => true, 'roles' =>$user->getRoles()]);
+        return new JsonResponse(['success' => true, 'roles' => $user->getRoles()]);
     }
 }
