@@ -7,7 +7,7 @@
 }
 
 .stats-link-list {
-    list-style-image: url('../pictures/print.png');
+    list-style-image: url('../pictures/options/print.png');
     padding: revert;
 }
 
