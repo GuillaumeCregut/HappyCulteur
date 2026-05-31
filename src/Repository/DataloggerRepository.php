@@ -54,20 +54,20 @@ class DataloggerRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    //    /**
-    //     * @return Datalogger[] Returns an array of Datalogger objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('d.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return Datalogger[] Returns an array of Datalogger objects
+     */
+    public function findByBeekeeper(Apiculteur $user): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.beekeeper = :val')
+            ->setParameter('val', $user)
+            ->orderBy('d.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Datalogger
     //    {
