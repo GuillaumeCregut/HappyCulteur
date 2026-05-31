@@ -25,8 +25,11 @@ class Apiary
         $pdf->setHiveNumber(count($apiary->getHives()));
         $hivesStates = $this->getHiveStats();
         foreach ($apiary->getHives() as $hive) {
-            $state = $hive->getState()->translate();
-            $hivesStates[$state]++;
+            if ($user === $hive->getBeekeeper()) {
+
+                $state = $hive->getState()->translate();
+                $hivesStates[$state]++;
+            }
         }
         $returnArray['hivesStates'] = $hivesStates;
         foreach ($hivesStates as $name => $quantity) {
@@ -34,8 +37,7 @@ class Apiary
                 $pdf->setHiveState($quantity, $name);
             }
         }
-        //TODO : Change this to have only user's harvests
-        $harvests = $this->repo->findHarvestsByApiary($apiary, $apiary->getOwner());
+        $harvests = $this->repo->findHarvestsByApiary($apiary, $user);
         $archiveHarvests = $this->getArchivesHarvests($apiary, $user);
         $harvests = array_merge($harvests, $archiveHarvests);
         $totalHarvest = $this->getTotalHarvest($harvests);

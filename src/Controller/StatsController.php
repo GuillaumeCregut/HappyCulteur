@@ -331,7 +331,7 @@ final class StatsController extends AbstractController
     }
 
     #[Route('/apiary/{id}/results', name: 'apiary_results')]
-    #[IsGranted(ApiaryVoter::BELONG, subject: 'apiary')]
+    #[IsGranted(ApiaryVoter::OWN, subject: 'apiary')]
     public function apiaryResult(
         Apiary $apiary,
         Request $request,
