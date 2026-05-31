@@ -202,7 +202,6 @@ final class HiveController extends AbstractController
         #[CurrentUser] Apiculteur $user,
         HiveRepository $repo
     ): Response {
-        //TODO : Afficher uniquement nos ruches
         $hives = $repo->findByApiary($apiary);
         return $this->json($hives);
     }
